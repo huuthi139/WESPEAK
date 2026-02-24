@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, Languages } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -9,7 +10,16 @@ import Input from "@/components/ui/Input";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
-  const { signIn, isLoading } = useAuth();
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-dark"><div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
+  const { signIn, signInWithGoogle, isLoading } = useAuth();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,19 +29,24 @@ export default function LoginPage() {
     general?: string;
   }>({});
 
+  // Show error from URL params (e.g., OAuth failure redirect)
+  const urlError = searchParams.get("error");
+  const urlErrorMessage =
+    urlError === "auth" ? "Đăng nhập thất bại. Vui lòng thử lại." : null;
+
   const validate = (): boolean => {
     const newErrors: typeof errors = {};
 
     if (!email.trim()) {
-      newErrors.email = "Vui l\u00f2ng nh\u1eadp email";
+      newErrors.email = "Vui lòng nhập email";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Email kh\u00f4ng h\u1ee3p l\u1ec7";
+      newErrors.email = "Email không hợp lệ";
     }
 
     if (!password) {
-      newErrors.password = "Vui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u";
+      newErrors.password = "Vui lòng nhập mật khẩu";
     } else if (password.length < 6) {
-      newErrors.password = "M\u1eadt kh\u1ea9u ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 6 k\u00fd t\u1ef1";
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
     setErrors(newErrors);
@@ -42,17 +57,14 @@ export default function LoginPage() {
     e.preventDefault();
     if (!validate()) return;
 
-    try {
-      await signIn(email, password);
-    } catch {
-      setErrors({
-        general: "Email ho\u1eb7c m\u1eadt kh\u1ea9u kh\u00f4ng \u0111\u00fang",
-      });
+    const errorMessage = await signIn(email, password);
+    if (errorMessage) {
+      setErrors({ general: errorMessage });
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // TODO: Implement Google OAuth via Supabase
+  const handleGoogleSignIn = async () => {
+    await signInWithGoogle();
   };
 
   return (
@@ -81,6 +93,17 @@ export default function LoginPage() {
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* URL error from OAuth redirect */}
+          {urlErrorMessage && !errors.general && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="rounded-md bg-status-error/10 px-4 py-3 text-small text-status-error"
+            >
+              {urlErrorMessage}
+            </motion.div>
+          )}
+
           {errors.general && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
@@ -107,9 +130,9 @@ export default function LoginPage() {
           />
 
           <Input
-            label="M\u1eadt kh\u1ea9u"
+            label="Mật khẩu"
             type="password"
-            placeholder="Nh\u1eadp m\u1eadt kh\u1ea9u"
+            placeholder="Nhập mật khẩu"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -126,19 +149,19 @@ export default function LoginPage() {
               href="/login"
               className="text-small text-primary hover:text-primary-hover transition-colors"
             >
-              Qu\u00ean m\u1eadt kh\u1ea9u?
+              Quên mật khẩu?
             </Link>
           </div>
 
           <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
-            \u0110\u0103ng nh\u1eadp
+            Đăng nhập
           </Button>
         </form>
 
         {/* Divider */}
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-700" />
-          <span className="text-small text-gray-500">ho\u1eb7c</span>
+          <span className="text-small text-gray-500">hoặc</span>
           <div className="h-px flex-1 bg-gray-700" />
         </div>
 
@@ -167,7 +190,7 @@ export default function LoginPage() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          \u0110\u0103ng nh\u1eadp v\u1edbi Google
+          Đăng nhập với Google
         </Button>
 
         {/* Register Link */}
@@ -177,12 +200,12 @@ export default function LoginPage() {
           transition={{ delay: 0.4 }}
           className="mt-8 text-center text-body text-gray-400"
         >
-          Ch\u01b0a c\u00f3 t\u00e0i kho\u1ea3n?{" "}
+          Chưa có tài khoản?{" "}
           <Link
             href="/register"
             className="font-semibold text-primary hover:text-primary-hover transition-colors"
           >
-            \u0110\u0103ng k\u00fd
+            Đăng ký
           </Link>
         </motion.p>
       </motion.div>

@@ -29,13 +29,13 @@ const strengthConfig: Record<
   PasswordStrength,
   { label: string; color: string; width: string }
 > = {
-  weak: { label: "Y\u1ebfu", color: "bg-status-error", width: "w-1/3" },
+  weak: { label: "Yếu", color: "bg-status-error", width: "w-1/3" },
   medium: {
-    label: "Trung b\u00ecnh",
+    label: "Trung bình",
     color: "bg-status-warning",
     width: "w-2/3",
   },
-  strong: { label: "M\u1ea1nh", color: "bg-status-success", width: "w-full" },
+  strong: { label: "Mạnh", color: "bg-status-success", width: "w-full" },
 };
 
 interface FormErrors {
@@ -70,30 +70,27 @@ export default function RegisterPage() {
     const newErrors: FormErrors = {};
 
     if (!name.trim()) {
-      newErrors.name = "Vui l\u00f2ng nh\u1eadp t\u00ean c\u1ee7a b\u1ea1n";
+      newErrors.name = "Vui lòng nhập tên của bạn";
     } else if (name.trim().length < 2) {
-      newErrors.name =
-        "T\u00ean ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 2 k\u00fd t\u1ef1";
+      newErrors.name = "Tên phải có ít nhất 2 ký tự";
     }
 
     if (!email.trim()) {
-      newErrors.email = "Vui l\u00f2ng nh\u1eadp email";
+      newErrors.email = "Vui lòng nhập email";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Email kh\u00f4ng h\u1ee3p l\u1ec7";
+      newErrors.email = "Email không hợp lệ";
     }
 
     if (!password) {
-      newErrors.password = "Vui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u";
+      newErrors.password = "Vui lòng nhập mật khẩu";
     } else if (password.length < 6) {
-      newErrors.password =
-        "M\u1eadt kh\u1ea9u ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 6 k\u00fd t\u1ef1";
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
     if (!confirmPassword) {
-      newErrors.confirmPassword =
-        "Vui l\u00f2ng x\u00e1c nh\u1eadn m\u1eadt kh\u1ea9u";
+      newErrors.confirmPassword = "Vui lòng xác nhận mật khẩu";
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "M\u1eadt kh\u1ea9u kh\u00f4ng kh\u1edbp";
+      newErrors.confirmPassword = "Mật khẩu không khớp";
     }
 
     setErrors(newErrors);
@@ -104,13 +101,9 @@ export default function RegisterPage() {
     e.preventDefault();
     if (!validate()) return;
 
-    try {
-      await signUp(email, password, name);
-    } catch {
-      setErrors({
-        general:
-          "\u0110\u0103ng k\u00fd th\u1ea5t b\u1ea1i. Vui l\u00f2ng th\u1eed l\u1ea1i.",
-      });
+    const errorMessage = await signUp(email, password, name);
+    if (errorMessage) {
+      setErrors({ general: errorMessage });
     }
   };
 
@@ -132,12 +125,9 @@ export default function RegisterPage() {
           >
             <Languages className="h-8 w-8 text-primary" />
           </motion.div>
-          <h1 className="text-h1 text-white">
-            T\u1ea1o t\u00e0i kho\u1ea3n
-          </h1>
+          <h1 className="text-h1 text-white">Tạo tài khoản</h1>
           <p className="mt-1 text-body text-gray-400">
-            B\u1eaft \u0111\u1ea7u h\u00e0nh tr\u00ecnh h\u1ecdc ngo\u1ea1i
-            ng\u1eef
+            Bắt đầu hành trình học ngoại ngữ
           </p>
         </div>
 
@@ -154,9 +144,9 @@ export default function RegisterPage() {
           )}
 
           <Input
-            label="H\u1ecd v\u00e0 t\u00ean"
+            label="Họ và tên"
             type="text"
-            placeholder="Nguy\u1ec5n V\u0103n A"
+            placeholder="Nguyễn Văn A"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
@@ -184,7 +174,7 @@ export default function RegisterPage() {
           {/* Password with toggle visibility */}
           <div className="w-full">
             <label className="mb-1 block text-small text-gray-400">
-              M\u1eadt kh\u1ea9u
+              Mật khẩu
             </label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -192,7 +182,7 @@ export default function RegisterPage() {
               </div>
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="T\u1ea1o m\u1eadt kh\u1ea9u"
+                placeholder="Tạo mật khẩu"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -232,7 +222,7 @@ export default function RegisterPage() {
               >
                 <div className="mb-1 flex items-center justify-between">
                   <span className="text-small text-gray-500">
-                    \u0110\u1ed9 m\u1ea1nh m\u1eadt kh\u1ea9u
+                    Độ mạnh mật khẩu
                   </span>
                   <span
                     className={cn(
@@ -270,7 +260,7 @@ export default function RegisterPage() {
           {/* Confirm Password with toggle visibility */}
           <div className="w-full">
             <label className="mb-1 block text-small text-gray-400">
-              X\u00e1c nh\u1eadn m\u1eadt kh\u1ea9u
+              Xác nhận mật khẩu
             </label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -278,7 +268,7 @@ export default function RegisterPage() {
               </div>
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Nh\u1eadp l\u1ea1i m\u1eadt kh\u1ea9u"
+                placeholder="Nhập lại mật khẩu"
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
@@ -310,7 +300,7 @@ export default function RegisterPage() {
           </div>
 
           <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
-            \u0110\u0103ng k\u00fd
+            Đăng ký
           </Button>
         </form>
 
@@ -321,12 +311,12 @@ export default function RegisterPage() {
           transition={{ delay: 0.4 }}
           className="mt-8 text-center text-body text-gray-400"
         >
-          \u0110\u00e3 c\u00f3 t\u00e0i kho\u1ea3n?{" "}
+          Đã có tài khoản?{" "}
           <Link
             href="/login"
             className="font-semibold text-primary hover:text-primary-hover transition-colors"
           >
-            \u0110\u0103ng nh\u1eadp
+            Đăng nhập
           </Link>
         </motion.p>
       </motion.div>
