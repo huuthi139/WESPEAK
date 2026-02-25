@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { openai, CHAT_MODEL } from "@/lib/openai";
+import { getOpenAI, CHAT_MODEL } from "@/lib/openai";
 import type { ChatApiRequest, ChatScenario } from "@/types";
 
 const SCENARIO_PROMPTS: Record<ChatScenario, string> = {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       { role: "user" as const, content: message },
     ];
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: CHAT_MODEL,
       messages,
       max_tokens: 300,
