@@ -15,13 +15,21 @@ const protectedRoutes = [
 const publicRoutes = ["/login", "/register", "/onboarding", "/auth/callback"];
 
 export async function middleware(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // If Supabase is not configured, allow all requests (demo mode)
+  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes("your-project")) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -48,7 +56,8 @@ export async function middleware(request: NextRequest) {
     const { data } = await supabase.auth.getUser();
     user = data.user;
   } catch {
-    // Supabase not configured — allow access
+    // Supabase auth error — allow access
+    return supabaseResponse;
   }
 
   const { pathname } = request.nextUrl;
@@ -64,11 +73,7 @@ export async function middleware(request: NextRequest) {
   );
 
   // Redirect unauthenticated users away from protected routes
-  // Skip redirect if Supabase is not configured (demo mode)
-  const supabaseConfigured =
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-project");
-  if (!user && isProtectedRoute && !isPublicRoute && supabaseConfigured) {
+  if (!user && isProtectedRoute && !isPublicRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
