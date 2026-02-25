@@ -3,8 +3,31 @@
 import { useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { User, UserStats } from "@/types";
+
+const DEMO_USER: User = {
+  id: "demo",
+  email: "demo@wespeak.app",
+  name: "Người dùng",
+  avatar_url: null,
+  native_language: "vietnamese",
+  daily_goal_minutes: 15,
+  created_at: new Date().toISOString(),
+};
+
+const DEMO_STATS: UserStats = {
+  user_id: "demo",
+  total_xp: 1250,
+  current_streak: 5,
+  longest_streak: 12,
+  gems: 200,
+  level: 3,
+  lessons_completed: 8,
+  total_minutes: 120,
+  last_active_date: new Date().toISOString().split("T")[0],
+  updated_at: new Date().toISOString(),
+};
 
 export function useAuth() {
   const { user, stats, isLoading, setUser, setStats, setLoading, reset } =
@@ -14,7 +37,7 @@ export function useAuth() {
 
   const fetchUserProfile = useCallback(
     async (userId: string, email: string, metadataName?: string) => {
-      const supabase = createClient();
+      const supabase = createClient()!;
 
       // Fetch user profile from users table
       const { data: profile, error: profileError } = await supabase
@@ -126,7 +149,15 @@ export function useAuth() {
     if (initialized.current) return;
     initialized.current = true;
 
-    const supabase = createClient();
+    // Demo mode when Supabase is not configured
+    if (!isSupabaseConfigured) {
+      setUser(DEMO_USER);
+      setStats(DEMO_STATS);
+      setLoading(false);
+      return;
+    }
+
+    const supabase = createClient()!;
 
     // Check current session on mount
     const initSession = async () => {
@@ -170,14 +201,14 @@ export function useAuth() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [fetchUserProfile, setLoading, reset]);
+  }, [fetchUserProfile, setUser, setStats, setLoading, reset]);
 
   const signIn = async (
     email: string,
     password: string
   ): Promise<string | null> => {
     setLoading(true);
-    const supabase = createClient();
+    const supabase = createClient()!;
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -210,7 +241,7 @@ export function useAuth() {
     name: string
   ): Promise<string | null> => {
     setLoading(true);
-    const supabase = createClient();
+    const supabase = createClient()!;
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -290,7 +321,7 @@ export function useAuth() {
   };
 
   const signInWithGoogle = async (): Promise<void> => {
-    const supabase = createClient();
+    const supabase = createClient()!;
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -305,7 +336,7 @@ export function useAuth() {
   };
 
   const signOut = async (): Promise<void> => {
-    const supabase = createClient();
+    const supabase = createClient()!;
     await supabase.auth.signOut();
     reset();
     router.push("/login");
