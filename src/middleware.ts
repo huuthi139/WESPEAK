@@ -43,9 +43,13 @@ export async function middleware(request: NextRequest) {
   );
 
   // Refresh session by calling getUser
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Supabase not configured — allow access
+  }
 
   const { pathname } = request.nextUrl;
 
@@ -60,7 +64,11 @@ export async function middleware(request: NextRequest) {
   );
 
   // Redirect unauthenticated users away from protected routes
-  if (!user && isProtectedRoute && !isPublicRoute) {
+  // Skip redirect if Supabase is not configured (demo mode)
+  const supabaseConfigured =
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-project");
+  if (!user && isProtectedRoute && !isPublicRoute && supabaseConfigured) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
