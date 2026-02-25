@@ -73,34 +73,37 @@ export type LessonType =
   | "grammar"
   | "quiz";
 
+// Content matches JSONB in seed data migrations
 export interface LessonContent {
-  items?: VocabularyItem[];
-  questions?: QuizQuestion[];
-  dialogue?: DialogueLine[];
-  sentences?: string[];
+  // vocabulary
+  words?: VocabularyWord[];
+  // listening
+  audio_text?: string;
+  questions?: LessonQuestion[];
+  // speaking
+  phrases?: SpeakingPhrase[];
+  // grammar
   explanation?: string;
+  examples?: string[];
+  exercises?: LessonQuestion[];
 }
 
-export interface VocabularyItem {
+export interface VocabularyWord {
   word: string;
+  translation: string;
   phonetic: string;
-  meaning: string;
   example: string;
-  audio_url?: string;
-  image_url?: string;
 }
 
-export interface QuizQuestion {
+export interface LessonQuestion {
   question: string;
   options: string[];
-  correct_index: number;
-  explanation?: string;
+  correct: number;
 }
 
-export interface DialogueLine {
-  speaker: "ai" | "user";
+export interface SpeakingPhrase {
   text: string;
-  translation?: string;
+  translation: string;
 }
 
 export interface UserProgress {
