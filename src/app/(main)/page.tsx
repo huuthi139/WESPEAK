@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 import Card from "@/components/ui/Card";
 import ProgressBar from "@/components/ui/ProgressBar";
+import MascotAvatar from "@/components/shared/MascotAvatar";
 import { useAuth } from "@/hooks/useAuth";
 import { cn, getGreeting, formatXP } from "@/lib/utils";
 
@@ -202,9 +203,7 @@ export default function HomePage() {
           animated={false}
         >
           <div className="flex items-start gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/20 text-2xl">
-              🌍
-            </div>
+            <MascotAvatar size="lg" mood="waving" />
             <div className="flex-1">
               <h2 className="text-h3 text-white">
                 Chào {name}! {getGreeting()}

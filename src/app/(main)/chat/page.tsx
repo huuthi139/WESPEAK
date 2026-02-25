@@ -10,11 +10,14 @@ import {
   Mic,
   Volume2,
   Clock,
+  Gauge,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import Button from "@/components/ui/Button";
+import MascotAvatar from "@/components/shared/MascotAvatar";
 import { useChatStore } from "@/stores/chatStore";
+import { useSettingsStore, SPEED_OPTIONS } from "@/stores/settingsStore";
 import { useSpeech } from "@/hooks/useSpeech";
 import { cn } from "@/lib/utils";
 import type { ChatScenario, ScenarioInfo } from "@/types";
@@ -24,38 +27,38 @@ import type { ChatScenario, ScenarioInfo } from "@/types";
 const SCENARIOS: ScenarioInfo[] = [
   {
     key: "free_chat",
-    label: "Tro chuyen tu do",
-    description: "Tro chuyen tu do voi AI",
+    label: "Trò chuyện tự do",
+    description: "Trò chuyện tự do với AI",
     icon: "\u{1F4AC}",
   },
   {
     key: "job_interview",
-    label: "Phong van xin viec",
-    description: "Luyen tap phong van",
+    label: "Phỏng vấn xin việc",
+    description: "Luyện tập phỏng vấn",
     icon: "\u{1F4BC}",
   },
   {
     key: "restaurant",
-    label: "Nha hang",
-    description: "Goi mon tai nha hang",
+    label: "Nhà hàng",
+    description: "Gọi món tại nhà hàng",
     icon: "\u{1F37D}\u{FE0F}",
   },
   {
     key: "shopping",
-    label: "Mua sam",
-    description: "Mua sam tai cua hang",
+    label: "Mua sắm",
+    description: "Mua sắm tại cửa hàng",
     icon: "\u{1F6CD}\u{FE0F}",
   },
   {
     key: "travel",
-    label: "Du lich",
-    description: "Hoi duong va du lich",
+    label: "Du lịch",
+    description: "Hỏi đường và du lịch",
     icon: "\u2708\u{FE0F}",
   },
   {
     key: "hotel",
-    label: "Khach san",
-    description: "Nhan phong khach san",
+    label: "Khách sạn",
+    description: "Nhận phòng khách sạn",
     icon: "\u{1F3E8}",
   },
 ];
@@ -63,27 +66,27 @@ const SCENARIOS: ScenarioInfo[] = [
 const SCENARIO_GREETINGS: Record<ChatScenario, { content: string; translation: string }> = {
   free_chat: {
     content: "Hi there! I'm your AI tutor. What would you like to talk about today? Feel free to speak about anything!",
-    translation: "Xin chao! Toi la gia su AI cua ban. Hom nay ban muon noi ve dieu gi? Hay thoai mai noi ve bat cu dieu gi!",
+    translation: "Xin chào! Tôi là gia sư AI của bạn. Hôm nay bạn muốn nói về điều gì? Hãy thoải mái nói về bất cứ điều gì!",
   },
   job_interview: {
     content: "Welcome! I'm the HR manager. Please have a seat. Let's start with a simple question: Can you tell me a little about yourself?",
-    translation: "Chao mung! Toi la quan ly nhan su. Moi ban ngoi. Hay bat dau voi mot cau hoi don gian: Ban co the gioi thieu doi chut ve ban than khong?",
+    translation: "Chào mừng! Tôi là quản lý nhân sự. Mời bạn ngồi. Hãy bắt đầu với một câu hỏi đơn giản: Bạn có thể giới thiệu đôi chút về bản thân không?",
   },
   restaurant: {
     content: "Good evening! Welcome to our restaurant. Here is the menu. Are you ready to order, or would you like a few more minutes?",
-    translation: "Chao buoi toi! Chao mung den nha hang cua chung toi. Day la thuc don. Ban da san sang goi mon chua, hay can them vai phut?",
+    translation: "Chào buổi tối! Chào mừng đến nhà hàng của chúng tôi. Đây là thực đơn. Bạn đã sẵn sàng gọi món chưa, hay cần thêm vài phút?",
   },
   shopping: {
     content: "Hello! Welcome to our store. Is there anything specific you're looking for today? I'd be happy to help!",
-    translation: "Xin chao! Chao mung den cua hang cua chung toi. Hom nay ban dang tim gi cu the khong? Toi rat vui duoc giup!",
+    translation: "Xin chào! Chào mừng đến cửa hàng của chúng tôi. Hôm nay bạn đang tìm gì cụ thể không? Tôi rất vui được giúp!",
   },
   travel: {
     content: "Hey! Welcome to the city! I'm your local guide. Where would you like to go? I can help you with directions and recommendations.",
-    translation: "Xin chao! Chao mung den thanh pho! Toi la huong dan vien dia phuong. Ban muon di dau? Toi co the giup ban chi duong va goi y.",
+    translation: "Xin chào! Chào mừng đến thành phố! Tôi là hướng dẫn viên địa phương. Bạn muốn đi đâu? Tôi có thể giúp bạn chỉ đường và gợi ý.",
   },
   hotel: {
     content: "Good afternoon! Welcome to Grand Hotel. Do you have a reservation? I'd be happy to help you check in.",
-    translation: "Chao buoi chieu! Chao mung den Grand Hotel. Ban da dat phong chua? Toi rat vui duoc giup ban nhan phong.",
+    translation: "Chào buổi chiều! Chào mừng đến Grand Hotel. Bạn đã đặt phòng chưa? Tôi rất vui được giúp bạn nhận phòng.",
   },
 };
 
@@ -141,11 +144,60 @@ function BouncingDots() {
   );
 }
 
+// ==================== Speed Pill ====================
+
+function SpeedPill() {
+  const [open, setOpen] = useState(false);
+  const { speechSpeed, setSpeechSpeed } = useSettingsStore();
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 rounded-full bg-dark-elevated px-2.5 py-1 text-small font-mono text-gray-400 transition-colors hover:text-white hover:bg-dark-elevated/80"
+      >
+        <Gauge className="h-3 w-3" />
+        {speechSpeed}x
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -4, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.95 }}
+            className="absolute right-0 top-full mt-1 z-30 rounded-lg border border-gray-800/50 bg-dark-card shadow-lg shadow-black/40 overflow-hidden"
+          >
+            {SPEED_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => {
+                  setSpeechSpeed(opt.value);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "block w-full px-4 py-2 text-left text-small font-mono transition-colors hover:bg-dark-elevated",
+                  opt.value === speechSpeed
+                    ? "text-primary bg-primary/10"
+                    : "text-gray-300"
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ==================== Message Bubble ====================
 
 function MessageBubble({
   message,
   onSpeak,
+  isSpeaking,
 }: {
   message: {
     id: string;
@@ -156,6 +208,7 @@ function MessageBubble({
     timestamp: string;
   };
   onSpeak: (text: string) => void;
+  isSpeaking: boolean;
 }) {
   const isUser = message.role === "user";
 
@@ -164,23 +217,27 @@ function MessageBubble({
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}
+      className={cn("flex w-full gap-2", isUser ? "justify-end" : "justify-start")}
     >
+      {/* AI avatar */}
+      {!isUser && (
+        <MascotAvatar
+          size="sm"
+          mood={isSpeaking ? "speaking" : "happy"}
+          animate={false}
+        />
+      )}
+
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3",
+          "max-w-[75%] rounded-lg px-4 py-3",
           isUser
             ? "rounded-br-sm bg-primary text-white"
             : "rounded-bl-sm bg-dark-card text-white border border-gray-800/50"
         )}
       >
-        {/* AI prefix */}
-        {!isUser && (
-          <span className="mr-1 text-body">🌍</span>
-        )}
-
         {/* Message content */}
-        <p className="text-body leading-relaxed inline">{message.content}</p>
+        <p className="text-body leading-relaxed">{message.content}</p>
 
         {/* Translation for AI messages */}
         {!isUser && message.translation && (
@@ -208,7 +265,7 @@ function MessageBubble({
             className="mt-3 rounded-md border border-status-warning/30 bg-status-warning/10 px-3 py-2"
           >
             <p className="text-small font-semibold text-status-warning">
-              📝 Goi y sua loi:
+              Gợi ý sửa lỗi:
             </p>
             {message.feedback.corrections.map((correction, idx) => (
               <p key={idx} className="mt-1 text-small text-gray-300">
@@ -252,6 +309,7 @@ export default function ChatPage() {
   const {
     speak,
     stopSpeaking,
+    isSpeaking,
     startListening,
     stopListening,
     isListening,
@@ -355,27 +413,27 @@ export default function ChatPage() {
         const mockResponses: Record<ChatScenario, { content: string; translation: string }> = {
           free_chat: {
             content: "That's interesting! Could you tell me more about that? I'd love to hear your thoughts.",
-            translation: "Thu vi qua! Ban co the ke them ve dieu do khong? Toi muon nghe suy nghi cua ban.",
+            translation: "Thú vị quá! Bạn có thể kể thêm về điều đó không? Tôi muốn nghe suy nghĩ của bạn.",
           },
           job_interview: {
             content: "That's a great answer. Now, can you tell me about a challenging situation you faced at work and how you handled it?",
-            translation: "Cau tra loi hay lam. Bay gio, ban co the ke ve mot tinh huong kho khan ban gap o cong viec va cach ban xu ly no?",
+            translation: "Câu trả lời hay lắm. Bây giờ, bạn có thể kể về một tình huống khó khăn bạn gặp ở công việc và cách bạn xử lý nó?",
           },
           restaurant: {
             content: "Excellent choice! Would you like anything to drink with that? We have some great specials today.",
-            translation: "Lua chon tuyet voi! Ban co muon goi do uong kem theo khong? Hom nay chung toi co mot so mon dac biet.",
+            translation: "Lựa chọn tuyệt vời! Bạn có muốn gọi đồ uống kèm theo không? Hôm nay chúng tôi có một số món đặc biệt.",
           },
           shopping: {
             content: "We have that in several colors and sizes. Would you like to try it on? The fitting room is right over there.",
-            translation: "Chung toi co san pham do voi nhieu mau va kich co. Ban co muon thu khong? Phong thu do o ngay kia.",
+            translation: "Chúng tôi có sản phẩm đó với nhiều màu và kích cỡ. Bạn có muốn thử không? Phòng thử đồ ở ngay kia.",
           },
           travel: {
             content: "That's a wonderful place to visit! You can take bus number 5 from here, or I can show you the walking route on the map.",
-            translation: "Do la mot noi tuyet voi de tham quan! Ban co the bat xe bus so 5 tu day, hoac toi co the chi ban duong di bo tren ban do.",
+            translation: "Đó là một nơi tuyệt vời để tham quan! Bạn có thể bắt xe bus số 5 từ đây, hoặc tôi có thể chỉ bạn đường đi bộ trên bản đồ.",
           },
           hotel: {
             content: "I've found your reservation. You're in room 405 on the 4th floor. Here's your key card. Breakfast is served from 7 to 10 AM.",
-            translation: "Toi da tim thay dat phong cua ban. Ban o phong 405 tang 4. Day la the phong. Bua sang phuc vu tu 7 den 10 gio sang.",
+            translation: "Tôi đã tìm thấy đặt phòng của bạn. Bạn ở phòng 405 tầng 4. Đây là thẻ phòng. Bữa sáng phục vụ từ 7 đến 10 giờ sáng.",
           },
         };
 
@@ -431,6 +489,7 @@ export default function ChatPage() {
         </button>
 
         <div className="flex items-center gap-2">
+          <MascotAvatar size="sm" mood={isSpeaking ? "speaking" : "happy"} animate={false} />
           <h1 className="text-h3 text-white">AI Tutor</h1>
           <div className="flex items-center gap-1 rounded-md bg-dark-elevated px-2 py-0.5">
             <Clock className="h-3 w-3 text-gray-400" />
@@ -448,25 +507,30 @@ export default function ChatPage() {
         </button>
       </motion.header>
 
-      {/* ==================== Scenario Selector ==================== */}
+      {/* ==================== Scenario + Speed Bar ==================== */}
       <div className="relative z-10 border-b border-gray-800/50 bg-dark px-4 py-2">
-        <button
-          onClick={() => setShowScenarioDropdown(!showScenarioDropdown)}
-          className="flex w-full items-center justify-between rounded-lg bg-dark-card px-3 py-2 transition-colors hover:bg-dark-elevated"
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-body">{currentScenario.icon}</span>
-            <span className="text-body font-semibold text-white">
-              {currentScenario.label}
-            </span>
-          </div>
-          <motion.div
-            animate={{ rotate: showScenarioDropdown ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowScenarioDropdown(!showScenarioDropdown)}
+            className="flex flex-1 items-center justify-between rounded-lg bg-dark-card px-3 py-2 transition-colors hover:bg-dark-elevated"
           >
-            <ChevronDown className="h-4 w-4 text-gray-400" />
-          </motion.div>
-        </button>
+            <div className="flex items-center gap-2">
+              <span className="text-body">{currentScenario.icon}</span>
+              <span className="text-body font-semibold text-white">
+                {currentScenario.label}
+              </span>
+            </div>
+            <motion.div
+              animate={{ rotate: showScenarioDropdown ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </motion.div>
+          </button>
+
+          {/* Speed pill */}
+          <SpeedPill />
+        </div>
 
         {/* Dropdown */}
         <AnimatePresence>
@@ -519,6 +583,7 @@ export default function ChatPage() {
                 key={msg.id}
                 message={msg}
                 onSpeak={speak}
+                isSpeaking={isSpeaking}
               />
             ))}
           </AnimatePresence>
@@ -528,8 +593,9 @@ export default function ChatPage() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex justify-start"
+              className="flex items-center gap-2 justify-start"
             >
+              <MascotAvatar size="sm" mood="thinking" animate={false} />
               <div className="rounded-lg rounded-bl-sm border border-gray-800/50 bg-dark-card">
                 <BouncingDots />
               </div>
@@ -555,7 +621,7 @@ export default function ChatPage() {
               transition={{ duration: 1, repeat: Infinity }}
             />
             <span className="text-small text-gray-400">
-              Dang nghe... Hay noi gi do
+              Đang nghe... Hãy nói gì đó
             </span>
             {transcript && (
               <span className="ml-2 text-small text-white italic">
@@ -603,7 +669,7 @@ export default function ChatPage() {
               value={isListening ? transcript : inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Nhap tin nhan..."
+              placeholder="Nhập tin nhắn..."
               disabled={isListening}
               className="w-full rounded-lg border border-gray-800/50 bg-dark-card px-4 py-2.5 text-body text-white placeholder-gray-500 outline-none transition-colors focus:border-primary/50"
             />

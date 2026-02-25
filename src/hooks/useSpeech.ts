@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useSettingsStore } from "@/stores/settingsStore";
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
@@ -29,27 +30,70 @@ declare global {
 
 interface UseSpeechOptions {
   lang?: string;
-  rate?: number;
-  pitch?: number;
+}
+
+export interface VoiceInfo {
+  name: string;
+  lang: string;
+  voiceURI: string;
+  localService: boolean;
 }
 
 export function useSpeech(options: UseSpeechOptions = {}) {
-  const { lang = "en-US", rate = 1, pitch = 1 } = options;
+  const { lang = "en-US" } = options;
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [availableVoices, setAvailableVoices] = useState<VoiceInfo[]>([]);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
+  const { speechSpeed, selectedVoiceURI, pitch } = useSettingsStore();
+
+  // Load available voices
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.speechSynthesis) return;
+
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const langPrefix = lang.split("-")[0].toLowerCase();
+      const filtered = voices
+        .filter((v) => v.lang.toLowerCase().startsWith(langPrefix))
+        .map((v) => ({
+          name: v.name,
+          lang: v.lang,
+          voiceURI: v.voiceURI,
+          localService: v.localService,
+        }));
+      setAvailableVoices(filtered);
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, [lang]);
 
   // Text-to-Speech
   const speak = useCallback(
-    (text: string, speechRate?: number) => {
+    (text: string, overrideSpeed?: number) => {
       if (typeof window === "undefined" || !window.speechSynthesis) return;
 
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
-      utterance.rate = speechRate ?? rate;
+      utterance.rate = overrideSpeed ?? speechSpeed;
       utterance.pitch = pitch;
+
+      // Find and set selected voice
+      if (selectedVoiceURI) {
+        const voices = window.speechSynthesis.getVoices();
+        const match = voices.find((v) => v.voiceURI === selectedVoiceURI);
+        if (match) {
+          utterance.voice = match;
+        }
+      }
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
@@ -57,7 +101,7 @@ export function useSpeech(options: UseSpeechOptions = {}) {
 
       window.speechSynthesis.speak(utterance);
     },
-    [lang, rate, pitch]
+    [lang, speechSpeed, pitch, selectedVoiceURI]
   );
 
   const stopSpeaking = useCallback(() => {
@@ -116,6 +160,7 @@ export function useSpeech(options: UseSpeechOptions = {}) {
     speak,
     stopSpeaking,
     isSpeaking,
+    availableVoices,
     // STT
     startListening,
     stopListening,
