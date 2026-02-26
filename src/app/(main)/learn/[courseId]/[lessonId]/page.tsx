@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import ProgressBar from "@/components/ui/ProgressBar";
+import VocabIllustration from "@/components/shared/VocabIllustration";
 import { useSpeech } from "@/hooks/useSpeech";
 import { cn } from "@/lib/utils";
 import { findLesson, type MockLesson } from "@/data/english-courses";
@@ -71,6 +72,7 @@ function VocabularyLesson({
             className="w-full rounded-xl bg-dark-card border border-gray-800/50 p-6 text-center cursor-pointer"
             onClick={() => setFlipped(!flipped)}
           >
+            <VocabIllustration word={word.word} size="lg" className="mx-auto mb-4" />
             <h2 className="text-[40px] font-bold tracking-wider text-white mb-1">
               {word.word}
             </h2>

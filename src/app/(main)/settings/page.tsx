@@ -41,6 +41,7 @@ export default function SettingsPage() {
   const {
     speechSpeed,
     selectedVoiceURI,
+    pitch,
     setSpeechSpeed,
     setSelectedVoiceURI,
   } = useSettingsStore();
@@ -75,10 +76,11 @@ export default function SettingsPage() {
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(
-      "Hello! I'm your AI tutor."
+      "Hello! I'm your AI tutor. Let's practice speaking English together."
     );
     utterance.lang = "en-US";
     utterance.rate = speed ?? speechSpeed;
+    utterance.pitch = pitch;
 
     const uri = voiceURI ?? selectedVoiceURI;
     if (uri) {

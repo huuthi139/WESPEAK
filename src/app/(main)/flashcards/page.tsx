@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Volume2, RotateCcw, Check, X } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import VocabIllustration from "@/components/shared/VocabIllustration";
 import { cn } from "@/lib/utils";
 
 const flashcards = [
@@ -121,16 +122,18 @@ export default function FlashcardsPage() {
                 >
                   {!isFlipped ? (
                     <>
+                      <VocabIllustration word={current.word} size="lg" className="mx-auto mb-4" />
                       <h2 className="text-3xl font-bold mb-2">{current.word}</h2>
                       <p className="text-secondary text-small mb-4">{current.phonetic}</p>
                       <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
                         <Volume2 size={16} />
                         <span className="text-small">Nghe</span>
                       </button>
-                      <p className="text-small text-gray-600 mt-8">Nhấn để xem nghĩa</p>
+                      <p className="text-small text-gray-600 mt-6">Nhấn để xem nghĩa</p>
                     </>
                   ) : (
                     <>
+                      <VocabIllustration word={current.word} size="md" className="mx-auto mb-3" />
                       <p className="text-h1 font-bold text-primary mb-2">{current.meaning}</p>
                       <h3 className="text-h3 text-gray-300 mb-4">{current.word}</h3>
                       <p className="text-small text-gray-400 italic">
