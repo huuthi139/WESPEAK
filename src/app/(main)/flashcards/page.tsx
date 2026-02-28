@@ -6,6 +6,7 @@ import { ChevronLeft, Volume2, RotateCcw, Check, X } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import VocabIllustration from "@/components/shared/VocabIllustration";
+import { useSpeech } from "@/hooks/useSpeech";
 import { cn } from "@/lib/utils";
 
 const flashcards = [
@@ -21,6 +22,7 @@ export default function FlashcardsPage() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [known, setKnown] = useState<number[]>([]);
   const [unknown, setUnknown] = useState<number[]>([]);
+  const { speak } = useSpeech({ lang: "en-US" });
 
   const current = flashcards[currentIndex];
   const total = flashcards.length;
@@ -125,7 +127,10 @@ export default function FlashcardsPage() {
                       <VocabIllustration word={current.word} size="lg" className="mx-auto mb-4" />
                       <h2 className="text-3xl font-bold mb-2">{current.word}</h2>
                       <p className="text-secondary text-small mb-4">{current.phonetic}</p>
-                      <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); speak(current.word); }}
+                        className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
+                      >
                         <Volume2 size={16} />
                         <span className="text-small">Nghe</span>
                       </button>

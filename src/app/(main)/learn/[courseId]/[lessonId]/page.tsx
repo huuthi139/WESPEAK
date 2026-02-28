@@ -19,7 +19,7 @@ import ProgressBar from "@/components/ui/ProgressBar";
 import VocabIllustration from "@/components/shared/VocabIllustration";
 import { useSpeech } from "@/hooks/useSpeech";
 import { cn } from "@/lib/utils";
-import { findLesson, type MockLesson } from "@/data/english-courses";
+import { findLesson, type MockLesson } from "@/data/multi-lang-courses";
 import type { LessonContent, VocabularyWord, LessonQuestion, SpeakingPhrase } from "@/types";
 
 // ==================== Slide Variants ====================

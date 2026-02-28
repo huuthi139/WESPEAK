@@ -7,7 +7,32 @@ import { Search, BookOpen, Clock, GraduationCap } from "lucide-react";
 import Card from "@/components/ui/Card";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { cn } from "@/lib/utils";
-import { ENGLISH_COURSES, type MockCourse } from "@/data/english-courses";
+import {
+  ALL_COURSES,
+  getCoursesByLanguage,
+  type MockCourse,
+} from "@/data/multi-lang-courses";
+
+// --- Language tabs ---
+
+interface LanguageTab {
+  key: string;
+  label: string;
+  flag: string;
+}
+
+const LANGUAGE_TABS: LanguageTab[] = [
+  { key: "all", label: "Tất cả", flag: "🌍" },
+  { key: "english", label: "Tiếng Anh", flag: "🇬🇧" },
+  { key: "chinese", label: "Tiếng Trung", flag: "🇨🇳" },
+  { key: "korean", label: "Tiếng Hàn", flag: "🇰🇷" },
+  { key: "japanese", label: "Tiếng Nhật", flag: "🇯🇵" },
+];
+
+function getLanguageFlag(language: string): string {
+  const tab = LANGUAGE_TABS.find((t) => t.key === language);
+  return tab?.flag ?? "🌍";
+}
 
 // --- Helpers ---
 
@@ -38,14 +63,19 @@ const itemVariants = {
 export default function LearnPage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [courses, setCourses] = useState<MockCourse[]>(ENGLISH_COURSES);
+  const [activeLanguage, setActiveLanguage] = useState("all");
+  const [courses, setCourses] = useState<MockCourse[]>(ALL_COURSES);
 
   // Try fetching from API; fall back to mock data
   useEffect(() => {
     let cancelled = false;
     async function fetchCourses() {
       try {
-        const res = await fetch("/api/courses?language=english");
+        const url =
+          activeLanguage === "all"
+            ? "/api/courses"
+            : `/api/courses?language=${activeLanguage}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("api");
         const data = await res.json();
         if (!cancelled && Array.isArray(data) && data.length > 0) {
@@ -66,12 +96,21 @@ export default function LearnPage() {
           );
         }
       } catch {
-        // Use mock data (already set)
+        // Use mock data based on active language filter
+        if (!cancelled) {
+          setCourses(
+            activeLanguage === "all"
+              ? ALL_COURSES
+              : getCoursesByLanguage(activeLanguage)
+          );
+        }
       }
     }
     fetchCourses();
-    return () => { cancelled = true; };
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [activeLanguage]);
 
   const filtered = courses.filter(
     (c) =>
@@ -82,6 +121,12 @@ export default function LearnPage() {
   const enrolled = filtered.filter((c) => c.progress > 0);
   const explore = filtered.filter((c) => c.progress === 0);
 
+  const activeTab = LANGUAGE_TABS.find((t) => t.key === activeLanguage);
+  const pageTitle =
+    activeLanguage === "all"
+      ? "Tất cả ngôn ngữ"
+      : activeTab?.label ?? "Khóa học";
+
   return (
     <div className="px-4 pt-6 pb-4">
       {/* Header */}
@@ -90,8 +135,32 @@ export default function LearnPage() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <span className="text-[28px]">🇬🇧</span>
-        <h1 className="text-h1 text-white">Tiếng Anh</h1>
+        <span className="text-[28px]">{activeTab?.flag ?? "🌍"}</span>
+        <h1 className="text-h1 text-white">{pageTitle}</h1>
+      </motion.div>
+
+      {/* Language filter tabs */}
+      <motion.div
+        className="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-hide"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.03 }}
+      >
+        {LANGUAGE_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveLanguage(tab.key)}
+            className={cn(
+              "flex items-center gap-1.5 shrink-0 rounded-full px-3.5 py-2 text-small font-medium transition-colors",
+              activeLanguage === tab.key
+                ? "bg-primary text-white"
+                : "bg-dark-elevated text-gray-400 hover:bg-dark-elevated/80"
+            )}
+          >
+            <span className="text-[16px]">{tab.flag}</span>
+            {tab.label}
+          </button>
+        ))}
       </motion.div>
 
       {/* Search bar */}
@@ -140,7 +209,7 @@ export default function LearnPage() {
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-md bg-dark-elevated text-[28px] shrink-0">
-                      🇬🇧
+                      {getLanguageFlag(course.language)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
@@ -195,7 +264,7 @@ export default function LearnPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15 }}
           >
-            {enrolled.length > 0 ? "Khám phá thêm" : "Khóa học tiếng Anh"}
+            {enrolled.length > 0 ? "Khám phá thêm" : "Khóa học"}
           </motion.h2>
 
           <motion.div
@@ -211,7 +280,7 @@ export default function LearnPage() {
                   onClick={() => router.push(`/learn/${course.id}`)}
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-md bg-dark-elevated text-[28px] shrink-0">
-                    🇬🇧
+                    {getLanguageFlag(course.language)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">

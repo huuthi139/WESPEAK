@@ -25,7 +25,7 @@ import {
   type MockCourse,
   type MockUnit,
   type MockLesson,
-} from "@/data/english-courses";
+} from "@/data/multi-lang-courses";
 import type { LessonType } from "@/types";
 
 // --------------- Helpers ---------------
@@ -255,7 +255,7 @@ export default function CourseDetailPage() {
         >
           <div className="flex items-start gap-3 mb-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-dark-elevated text-[32px] shrink-0">
-              🇬🇧
+              {course.language === "chinese" ? "🇨🇳" : course.language === "korean" ? "🇰🇷" : course.language === "japanese" ? "🇯🇵" : "🇬🇧"}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">

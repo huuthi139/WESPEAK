@@ -42,25 +42,7 @@ const itemVariants = {
 
 // --------------- Mock data ---------------
 
-const MOCK_CONTINUE = {
-  courseTitle: "English Communication",
-  unitName: "Unit 3: Business Meeting",
-  progress: 65,
-};
-
-const MOCK_DAILY = {
-  current: 15,
-  goal: 20,
-};
-
-const MOCK_STREAK_DAYS = [true, true, true, true, true, false, false];
 const DAY_LABELS = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-
-const MOCK_CHALLENGE = {
-  title: "Học 7 ngày",
-  current: 4,
-  total: 7,
-};
 
 // --------------- Circular Progress SVG ---------------
 
@@ -137,7 +119,18 @@ export default function HomePage() {
   const streak = stats?.current_streak ?? 0;
   const xp = stats?.total_xp ?? 0;
   const gems = stats?.gems ?? 0;
-  const remaining = Math.max(MOCK_DAILY.goal - MOCK_DAILY.current, 0);
+  const dailyGoal = user?.daily_goal_minutes ?? 15;
+  const totalMinutes = stats?.total_minutes ?? 0;
+  const dailyCurrent = Math.min(totalMinutes % dailyGoal === 0 && totalMinutes > 0 ? dailyGoal : totalMinutes % dailyGoal, dailyGoal);
+  const remaining = Math.max(dailyGoal - dailyCurrent, 0);
+  const lessonsCompleted = stats?.lessons_completed ?? 0;
+
+  // Build streak calendar from current streak count
+  const today = new Date().getDay(); // 0=Sun
+  const streakDays = DAY_LABELS.map((_, idx) => {
+    const daysAgo = (today - idx + 7) % 7;
+    return daysAgo < streak;
+  });
 
   return (
     <motion.div
@@ -246,24 +239,21 @@ export default function HomePage() {
         <h2 className="mb-3 text-h3 text-white">Tiếp tục học</h2>
         <Card
           className="flex items-center gap-3"
-          onClick={() => router.push("/learn/course-1")}
+          onClick={() => router.push("/learn/english-a1")}
         >
-          {/* Course icon */}
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-secondary/20">
             <BookOpen className="h-6 w-6 text-secondary" />
           </div>
-
-          {/* Info */}
           <div className="flex-1 min-w-0">
             <h3 className="text-body font-semibold text-white truncate">
-              {MOCK_CONTINUE.courseTitle}
+              English for Beginners
             </h3>
             <p className="text-small text-gray-400 truncate">
-              {MOCK_CONTINUE.unitName}
+              {lessonsCompleted > 0 ? `Đã hoàn thành ${lessonsCompleted} bài` : "Bắt đầu ngay"}
             </p>
             <div className="mt-2">
               <ProgressBar
-                value={MOCK_CONTINUE.progress}
+                value={Math.min(lessonsCompleted * 5, 100)}
                 max={100}
                 color="bg-secondary"
                 size="sm"
@@ -271,8 +261,6 @@ export default function HomePage() {
               />
             </div>
           </div>
-
-          {/* Play button */}
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary">
             <Play className="h-5 w-5 text-dark fill-dark" />
           </div>
@@ -284,12 +272,12 @@ export default function HomePage() {
         <h2 className="mb-3 text-h3 text-white">Mục tiêu hôm nay</h2>
         <Card className="flex items-center gap-5" animated={false}>
           <CircularProgress
-            current={MOCK_DAILY.current}
-            goal={MOCK_DAILY.goal}
+            current={dailyCurrent}
+            goal={dailyGoal}
           />
           <div className="flex-1">
             <h3 className="text-h3 text-white">
-              {MOCK_DAILY.current}/{MOCK_DAILY.goal} phút
+              {dailyCurrent}/{dailyGoal} phút
             </h3>
             <p className="mt-1 text-small text-gray-400">
               {remaining > 0
@@ -298,8 +286,8 @@ export default function HomePage() {
             </p>
             <div className="mt-3">
               <ProgressBar
-                value={MOCK_DAILY.current}
-                max={MOCK_DAILY.goal}
+                value={dailyCurrent}
+                max={dailyGoal}
                 color="bg-primary"
                 size="sm"
               />
@@ -367,7 +355,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center justify-between">
             {DAY_LABELS.map((day, idx) => {
-              const active = MOCK_STREAK_DAYS[idx];
+              const active = streakDays[idx];
               return (
                 <div
                   key={day}
@@ -412,21 +400,21 @@ export default function HomePage() {
           <div className="flex items-center gap-2 mb-3">
             <Trophy className="h-5 w-5 text-status-warning" />
             <h3 className="text-h3 text-white">
-              Thử thách tuần: {MOCK_CHALLENGE.title}
+              Thử thách tuần: Học 7 ngày
             </h3>
           </div>
           <ProgressBar
-            value={MOCK_CHALLENGE.current}
-            max={MOCK_CHALLENGE.total}
+            value={Math.min(streak, 7)}
+            max={7}
             color="bg-status-warning"
             size="md"
           />
           <p className="mt-2 text-small text-gray-400">
             <span className="text-white font-semibold">
-              {MOCK_CHALLENGE.current}/{MOCK_CHALLENGE.total}
+              {Math.min(streak, 7)}/7
             </span>
             {" | "}
-            {MOCK_CHALLENGE.total - MOCK_CHALLENGE.current} ngày còn
+            {streak >= 7 ? "Hoàn thành!" : `${7 - streak} ngày còn`}
           </p>
         </Card>
       </motion.div>

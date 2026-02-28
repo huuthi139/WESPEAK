@@ -15,18 +15,49 @@ const tabs: { key: Tab; label: string }[] = [
   { key: "all", label: "Tất cả" },
 ];
 
-const mockLeaderboard = [
-  { rank: 1, name: "Linh Nguyễn", xp: 15420, streak: 28, initial: "L", color: "bg-accent-streak" },
-  { rank: 2, name: "Hùng Trần", xp: 14850, streak: 25, initial: "H", color: "bg-gray-400" },
-  { rank: 3, name: "Mai Phạm", xp: 13200, streak: 20, initial: "M", color: "bg-accent-streak" },
-  { rank: 4, name: "Tú Lê", xp: 12450, streak: 28, initial: "T", color: "bg-gray-600" },
-  { rank: 5, name: "Nguyễn Minh", xp: 12450, streak: 15, initial: "N", color: "bg-primary", isUser: true },
-  { rank: 6, name: "Hà Vũ", xp: 11800, streak: 22, initial: "H", color: "bg-gray-600" },
-  { rank: 7, name: "Dũng Đỗ", xp: 10950, streak: 19, initial: "D", color: "bg-gray-600" },
-  { rank: 8, name: "Lan Hoàng", xp: 10200, streak: 16, initial: "L", color: "bg-gray-600" },
-  { rank: 9, name: "Quang Bùi", xp: 9850, streak: 14, initial: "Q", color: "bg-gray-600" },
-  { rank: 10, name: "Thảo Đinh", xp: 9500, streak: 12, initial: "T", color: "bg-gray-600" },
-];
+type LeaderboardEntry = {
+  rank: number; name: string; xp: number; streak: number;
+  initial: string; color: string; isUser?: boolean;
+};
+
+const LEADERBOARD_DATA: Record<Tab, LeaderboardEntry[]> = {
+  today: [
+    { rank: 1, name: "Hùng Trần", xp: 320, streak: 25, initial: "H", color: "bg-accent-streak" },
+    { rank: 2, name: "Mai Phạm", xp: 280, streak: 20, initial: "M", color: "bg-gray-400" },
+    { rank: 3, name: "Nguyễn Minh", xp: 250, streak: 15, initial: "N", color: "bg-primary", isUser: true },
+    { rank: 4, name: "Linh Nguyễn", xp: 220, streak: 28, initial: "L", color: "bg-gray-600" },
+    { rank: 5, name: "Tú Lê", xp: 190, streak: 28, initial: "T", color: "bg-gray-600" },
+    { rank: 6, name: "Hà Vũ", xp: 160, streak: 22, initial: "H", color: "bg-gray-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 140, streak: 19, initial: "D", color: "bg-gray-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 120, streak: 16, initial: "L", color: "bg-gray-600" },
+    { rank: 9, name: "Quang Bùi", xp: 95, streak: 14, initial: "Q", color: "bg-gray-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 80, streak: 12, initial: "T", color: "bg-gray-600" },
+  ],
+  week: [
+    { rank: 1, name: "Linh Nguyễn", xp: 2420, streak: 28, initial: "L", color: "bg-accent-streak" },
+    { rank: 2, name: "Hùng Trần", xp: 2150, streak: 25, initial: "H", color: "bg-gray-400" },
+    { rank: 3, name: "Mai Phạm", xp: 1900, streak: 20, initial: "M", color: "bg-accent-streak" },
+    { rank: 4, name: "Tú Lê", xp: 1750, streak: 28, initial: "T", color: "bg-gray-600" },
+    { rank: 5, name: "Nguyễn Minh", xp: 1650, streak: 15, initial: "N", color: "bg-primary", isUser: true },
+    { rank: 6, name: "Hà Vũ", xp: 1480, streak: 22, initial: "H", color: "bg-gray-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 1350, streak: 19, initial: "D", color: "bg-gray-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 1200, streak: 16, initial: "L", color: "bg-gray-600" },
+    { rank: 9, name: "Quang Bùi", xp: 1050, streak: 14, initial: "Q", color: "bg-gray-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 950, streak: 12, initial: "T", color: "bg-gray-600" },
+  ],
+  all: [
+    { rank: 1, name: "Linh Nguyễn", xp: 15420, streak: 28, initial: "L", color: "bg-accent-streak" },
+    { rank: 2, name: "Hùng Trần", xp: 14850, streak: 25, initial: "H", color: "bg-gray-400" },
+    { rank: 3, name: "Mai Phạm", xp: 13200, streak: 20, initial: "M", color: "bg-accent-streak" },
+    { rank: 4, name: "Tú Lê", xp: 12450, streak: 28, initial: "T", color: "bg-gray-600" },
+    { rank: 5, name: "Nguyễn Minh", xp: 12450, streak: 15, initial: "N", color: "bg-primary", isUser: true },
+    { rank: 6, name: "Hà Vũ", xp: 11800, streak: 22, initial: "H", color: "bg-gray-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 10950, streak: 19, initial: "D", color: "bg-gray-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 10200, streak: 16, initial: "L", color: "bg-gray-600" },
+    { rank: 9, name: "Quang Bùi", xp: 9850, streak: 14, initial: "Q", color: "bg-gray-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 9500, streak: 12, initial: "T", color: "bg-gray-600" },
+  ],
+};
 
 const podiumColors = {
   1: "from-yellow-500/20 to-yellow-600/5",
@@ -43,9 +74,10 @@ const crownColors = {
 export default function LeaderboardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("week");
 
-  const top3 = mockLeaderboard.slice(0, 3);
-  const rest = mockLeaderboard.slice(3);
-  const userEntry = mockLeaderboard.find((e) => e.isUser);
+  const currentData = LEADERBOARD_DATA[activeTab];
+  const top3 = currentData.slice(0, 3);
+  const rest = currentData.slice(3);
+  const userEntry = currentData.find((e) => e.isUser);
 
   // Rearrange top 3 for podium: [2nd, 1st, 3rd]
   const podiumOrder = [top3[1], top3[0], top3[2]];
