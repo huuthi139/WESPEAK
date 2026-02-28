@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOpenAI, CHAT_MODEL } from "@/lib/openai";
+import { getGemini, isGeminiConfigured, GEMINI_MODEL } from "@/lib/gemini";
 import type { ChatApiRequest, ChatScenario } from "@/types";
 
 const SCENARIO_PROMPTS: Record<ChatScenario, string> = {
@@ -13,8 +13,8 @@ Rules:
 - Be encouraging and warm. Praise good sentences.
 - Never end the conversation early. Always keep it flowing with questions.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation of your response", "feedback": {"hasCorrection": true/false, "corrections": ["correction 1"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation of your response here", "feedback": {"hasCorrection": true or false, "corrections": ["correction 1 if any"]}}`,
 
   job_interview: `You are an HR manager conducting a realistic job interview in English. Guide the student through a full interview with 8-10 questions.
 
@@ -28,8 +28,8 @@ Rules:
 - Stay in character as a professional but supportive interviewer.
 - Include Vietnamese translations for business vocabulary.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation", "feedback": {"hasCorrection": true/false, "corrections": ["correction"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 
   restaurant: `You are a friendly waiter at a nice restaurant. Guide the student through a complete dining experience over 8-10 exchanges.
 
@@ -42,8 +42,8 @@ Rules:
 - Correct language mistakes gently.
 - Include Vietnamese translations for food vocabulary.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation", "feedback": {"hasCorrection": true/false, "corrections": ["correction"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 
   shopping: `You are a helpful store assistant at a clothing/accessory shop. Guide the student through a full shopping experience over 8-10 exchanges.
 
@@ -56,8 +56,8 @@ Rules:
 - Correct language mistakes gently.
 - Include Vietnamese translations for shopping vocabulary.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation", "feedback": {"hasCorrection": true/false, "corrections": ["correction"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 
   travel: `You are a friendly, knowledgeable local tour guide. Guide the student through travel planning and exploration over 8-10 exchanges.
 
@@ -70,8 +70,8 @@ Rules:
 - Correct language mistakes gently.
 - Include Vietnamese translations for travel vocabulary.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation", "feedback": {"hasCorrection": true/false, "corrections": ["correction"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 
   hotel: `You are a professional, friendly hotel receptionist. Guide the student through a full hotel stay experience over 8-10 exchanges.
 
@@ -84,8 +84,8 @@ Rules:
 - Correct language mistakes gently.
 - Include Vietnamese translations for hotel vocabulary.
 
-Response format (JSON):
-{"message": "your English response", "translation": "Vietnamese translation", "feedback": {"hasCorrection": true/false, "corrections": ["correction"]}}`,
+IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. Use this exact format:
+{"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 };
 
 export async function POST(request: NextRequest) {
@@ -100,26 +100,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!isGeminiConfigured) {
+      return NextResponse.json(
+        { error: "AI service not configured" },
+        { status: 503 }
+      );
+    }
+
     const systemPrompt = SCENARIO_PROMPTS[scenario] || SCENARIO_PROMPTS.free_chat;
 
-    const messages = [
-      { role: "system" as const, content: systemPrompt },
-      ...history.slice(-10).map((msg) => ({
-        role: msg.role as "user" | "assistant",
-        content: msg.content,
-      })),
-      { role: "user" as const, content: message },
-    ];
+    // Build conversation history for Gemini
+    const chatHistory = history.slice(-10).map((msg) => ({
+      role: msg.role === "user" ? "user" as const : "model" as const,
+      parts: [{ text: msg.content }],
+    }));
 
-    const completion = await getOpenAI().chat.completions.create({
-      model: CHAT_MODEL,
-      messages,
-      max_tokens: 500,
-      temperature: 0.8,
-      response_format: { type: "json_object" },
+    const model = getGemini().getGenerativeModel({
+      model: GEMINI_MODEL,
+      systemInstruction: systemPrompt,
+      generationConfig: {
+        temperature: 0.8,
+        maxOutputTokens: 500,
+        responseMimeType: "application/json",
+      },
     });
 
-    const raw = completion.choices[0]?.message?.content || "";
+    const chat = model.startChat({ history: chatHistory });
+    const result = await chat.sendMessage(message);
+    const raw = result.response.text();
 
     // Try to parse structured JSON response
     try {
