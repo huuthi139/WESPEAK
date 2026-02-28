@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = SCENARIO_PROMPTS[scenario] || SCENARIO_PROMPTS.free_chat;
 
-    // Build conversation history for Gemini
-    const chatHistory = history.slice(-10).map((msg) => ({
+    // Build conversation history for Gemini (keep last 30 messages for better context)
+    const chatHistory = history.slice(-30).map((msg) => ({
       role: msg.role === "user" ? "user" as const : "model" as const,
       parts: [{ text: msg.content }],
     }));

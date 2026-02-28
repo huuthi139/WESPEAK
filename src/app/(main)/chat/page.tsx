@@ -385,6 +385,10 @@ export default function ChatPage() {
       if (!text || isLoading) return;
 
       setInputText("");
+
+      // Capture history BEFORE adding user message (so current msg isn't duplicated)
+      const historySnapshot = useChatStore.getState().messages;
+
       addMessage("user", text);
       setLoading(true);
 
@@ -395,11 +399,22 @@ export default function ChatPage() {
           body: JSON.stringify({
             message: text,
             scenario,
-            history: messages,
+            history: historySnapshot,
           }),
         });
 
-        if (!response.ok) throw new Error("API request failed");
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          if (response.status === 503) {
+            addMessage(
+              "assistant",
+              "Sorry, the AI service is not configured yet. Please set up your GEMINI_API_KEY to enable AI conversations.",
+              "Xin lỗi, dịch vụ AI chưa được cấu hình. Vui lòng thiết lập GEMINI_API_KEY để kích hoạt hội thoại AI."
+            );
+            return;
+          }
+          throw new Error(errorData?.error || "API request failed");
+        }
 
         const data = await response.json();
         addMessage(
@@ -409,93 +424,16 @@ export default function ChatPage() {
           data.feedback
         );
       } catch {
-        // Mock fallback with multi-turn conversation flows
-        const mockFlows: Record<ChatScenario, { content: string; translation: string }[]> = {
-          free_chat: [
-            { content: "That's interesting! Could you tell me more about that? I'd love to hear your thoughts.", translation: "Thú vị quá! Bạn có thể kể thêm về điều đó không? Tôi muốn nghe suy nghĩ của bạn." },
-            { content: "Great point! By the way, what do you enjoy doing in your free time? Do you have any hobbies?", translation: "Ý hay đó! Nhân tiện, bạn thích làm gì vào thời gian rảnh? Bạn có sở thích gì không?" },
-            { content: "That sounds fun! Have you been doing that for a long time? How did you get started?", translation: "Nghe vui quá! Bạn đã làm điều đó lâu chưa? Bạn bắt đầu như thế nào?" },
-            { content: "I see! Let's talk about something else. What kind of music do you like? Do you have a favorite singer?", translation: "Ra vậy! Hãy nói về chủ đề khác. Bạn thích loại nhạc nào? Bạn có ca sĩ yêu thích không?" },
-            { content: "Nice taste! Do you prefer listening to music at home or going to live concerts?", translation: "Gu tốt đấy! Bạn thích nghe nhạc ở nhà hay đi xem concert trực tiếp?" },
-            { content: "What about movies? Have you watched anything good recently?", translation: "Còn phim ảnh thì sao? Gần đây bạn có xem phim nào hay không?" },
-            { content: "That's a great choice! Do you usually watch movies alone or with friends?", translation: "Lựa chọn hay đó! Bạn thường xem phim một mình hay với bạn bè?" },
-            { content: "Let me ask you something different — if you could travel anywhere in the world, where would you go and why?", translation: "Để tôi hỏi bạn điều khác — nếu được đi bất cứ đâu trên thế giới, bạn sẽ đi đâu và tại sao?" },
-            { content: "That would be an amazing trip! What would be the first thing you'd do when you get there?", translation: "Đó sẽ là chuyến đi tuyệt vời! Điều đầu tiên bạn sẽ làm khi đến đó là gì?" },
-            { content: "You're doing really well with your English! Your sentences are getting more natural. Keep up the great work!", translation: "Tiếng Anh của bạn tiến bộ lắm! Câu văn nghe ngày càng tự nhiên hơn. Hãy tiếp tục phát huy nhé!" },
-          ],
-          job_interview: [
-            { content: "That's a great answer. Now, can you tell me about a challenging situation you faced at work and how you handled it?", translation: "Câu trả lời hay lắm. Bây giờ, bạn có thể kể về một tình huống khó khăn bạn gặp ở công việc và cách bạn xử lý nó?" },
-            { content: "Interesting! What are your greatest strengths? Can you give me a specific example?", translation: "Thú vị! Điểm mạnh lớn nhất của bạn là gì? Bạn có thể cho ví dụ cụ thể không?" },
-            { content: "Good. And what about your weaknesses? Everyone has areas they can improve.", translation: "Tốt lắm. Còn điểm yếu thì sao? Ai cũng có những mặt cần cải thiện." },
-            { content: "I appreciate your honesty. Why are you interested in this position? What attracted you to our company?", translation: "Tôi đánh giá cao sự thành thật của bạn. Tại sao bạn quan tâm đến vị trí này? Điều gì thu hút bạn đến công ty chúng tôi?" },
-            { content: "That's great to hear! Where do you see yourself in five years? What are your career goals?",  translation: "Rất vui khi nghe điều đó! Bạn thấy mình ở đâu trong 5 năm nữa? Mục tiêu nghề nghiệp của bạn là gì?" },
-            { content: "Excellent vision! Can you tell me about a time when you worked in a team? How did you contribute?", translation: "Tầm nhìn tuyệt vời! Bạn có thể kể về lần bạn làm việc nhóm không? Bạn đã đóng góp như thế nào?" },
-            { content: "Very impressive! How do you handle pressure and tight deadlines?", translation: "Rất ấn tượng! Bạn xử lý áp lực và deadline gấp như thế nào?" },
-            { content: "Good approach! What salary range are you expecting for this position?", translation: "Cách tiếp cận tốt! Bạn mong muốn mức lương bao nhiêu cho vị trí này?" },
-            { content: "That's reasonable. Do you have any questions for me about the company or the role?", translation: "Hợp lý. Bạn có câu hỏi nào cho tôi về công ty hoặc vị trí không?" },
-            { content: "Thank you for your time today! You did a great job. We'll get back to you within a week. Good luck!", translation: "Cảm ơn bạn đã dành thời gian hôm nay! Bạn đã làm rất tốt. Chúng tôi sẽ phản hồi trong vòng một tuần. Chúc may mắn!" },
-          ],
-          restaurant: [
-            { content: "Excellent choice! Would you like anything to drink with that? We have fresh juice, soda, or our house wine.", translation: "Lựa chọn tuyệt vời! Bạn có muốn gọi đồ uống kèm theo không? Chúng tôi có nước ép tươi, nước ngọt, hoặc rượu vang đặc biệt." },
-            { content: "Great! And for your main course, would you prefer the grilled chicken or the pan-seared salmon? Both come with vegetables.", translation: "Tuyệt! Còn món chính, bạn thích gà nướng hay cá hồi áp chảo? Cả hai đều kèm rau củ." },
-            { content: "That sounds delicious! How would you like it cooked? We can do it rare, medium, or well-done.", translation: "Nghe ngon đó! Bạn muốn nấu như thế nào? Chúng tôi có thể làm tái, vừa, hoặc chín kỹ." },
-            { content: "Perfect! Do you have any allergies or dietary restrictions I should know about?", translation: "Hoàn hảo! Bạn có bị dị ứng hay kiêng gì mà tôi cần biết không?" },
-            { content: "No problem! Would you like to add a side dish? We have mashed potatoes, garden salad, or garlic bread.", translation: "Không sao! Bạn có muốn thêm món phụ không? Chúng tôi có khoai tây nghiền, salad vườn, hoặc bánh mì bơ tỏi." },
-            { content: "I'll put that order in right away. While you wait, would you like some bread and butter for the table?", translation: "Tôi sẽ ghi order ngay. Trong khi chờ, bạn có muốn bánh mì và bơ trên bàn không?" },
-            { content: "Here's your meal! Enjoy! Is there anything else you need? More water, perhaps?", translation: "Đây là món của bạn! Chúc ngon miệng! Bạn cần gì thêm không? Thêm nước chẳng hạn?" },
-            { content: "I'm glad you're enjoying it! Would you like to see our dessert menu? We have a wonderful chocolate cake today.", translation: "Tôi vui vì bạn thích! Bạn có muốn xem menu tráng miệng không? Hôm nay chúng tôi có bánh sô-cô-la tuyệt vời." },
-            { content: "Here's your bill. The total is $45.50. You can pay by card or cash. Would you like to split the bill?", translation: "Đây là hóa đơn. Tổng cộng là $45.50. Bạn có thể thanh toán bằng thẻ hoặc tiền mặt. Bạn có muốn chia bill không?" },
-            { content: "Thank you so much! I hope you enjoyed your meal. Have a wonderful evening and please come again!", translation: "Cảm ơn bạn rất nhiều! Hy vọng bạn thích bữa ăn. Chúc buổi tối tốt lành và hẹn gặp lại!" },
-          ],
-          shopping: [
-            { content: "We have that in several colors and sizes. Would you like to try it on? The fitting room is right over there.", translation: "Chúng tôi có sản phẩm đó với nhiều màu và kích cỡ. Bạn có muốn thử không? Phòng thử đồ ở ngay kia." },
-            { content: "How does it fit? Do you need a different size? We have small, medium, large, and extra-large.", translation: "Mặc có vừa không? Bạn cần size khác không? Chúng tôi có S, M, L và XL." },
-            { content: "That looks great on you! We also have it in blue and black. Would you like to see those colors?", translation: "Trông bạn mặc đẹp lắm! Chúng tôi còn có màu xanh và đen. Bạn có muốn xem những màu đó không?" },
-            { content: "Good choice! This item is currently on sale — 20% off! The original price was $80, so now it's $64.", translation: "Lựa chọn hay! Sản phẩm này đang giảm giá — giảm 20%! Giá gốc là $80, giờ chỉ còn $64." },
-            { content: "Would you like to look at anything else? We just got some new arrivals that might interest you.", translation: "Bạn có muốn xem gì khác không? Chúng tôi vừa có hàng mới có thể bạn sẽ thích." },
-            { content: "These shoes would go perfectly with what you picked! Would you like to try them on?", translation: "Đôi giày này rất hợp với món bạn chọn! Bạn có muốn thử không?" },
-            { content: "Would you like a bag for your purchases? We have a loyalty card program too — would you like to sign up? You'll get 10% off your next visit!", translation: "Bạn có muốn túi đựng hàng không? Chúng tôi cũng có chương trình thẻ thành viên — bạn có muốn đăng ký không? Bạn sẽ được giảm 10% lần tới!" },
-            { content: "Your total comes to $120. We accept cash, credit cards, and mobile payment. How would you like to pay?", translation: "Tổng cộng là $120. Chúng tôi nhận tiền mặt, thẻ tín dụng và thanh toán di động. Bạn muốn thanh toán bằng gì?" },
-            { content: "Here's your receipt. You have 30 days to return or exchange if needed. Just keep the receipt and tags.", translation: "Đây là hóa đơn. Bạn có 30 ngày để đổi trả nếu cần. Chỉ cần giữ hóa đơn và nhãn mác." },
-            { content: "Thank you for shopping with us! You made some great choices today. See you next time!", translation: "Cảm ơn bạn đã mua sắm! Bạn đã chọn được những món rất đẹp hôm nay. Hẹn gặp lại!" },
-          ],
-          travel: [
-            { content: "That's a wonderful place to visit! You can take bus number 5 from here, or I can show you the walking route on the map.", translation: "Đó là nơi tuyệt vời để tham quan! Bạn có thể bắt xe bus số 5 từ đây, hoặc tôi có thể chỉ đường đi bộ trên bản đồ." },
-            { content: "The bus takes about 15 minutes. A taxi would be faster, around 8 minutes, but more expensive — about $10. Which do you prefer?", translation: "Xe bus mất khoảng 15 phút. Taxi nhanh hơn, khoảng 8 phút, nhưng đắt hơn — khoảng $10. Bạn thích đi gì?" },
-            { content: "By the way, have you visited the old town yet? It's one of the most popular spots for tourists. The architecture is beautiful!", translation: "Nhân tiện, bạn đã đến phố cổ chưa? Đó là một trong những điểm thu hút nhất cho khách du lịch. Kiến trúc rất đẹp!" },
-            { content: "I'd also recommend the local night market. It opens at 6 PM and has amazing street food. You should try the local specialties!", translation: "Tôi cũng gợi ý chợ đêm. Mở cửa lúc 6 giờ tối và có đồ ăn đường phố tuyệt vời. Bạn nên thử đặc sản địa phương!" },
-            { content: "For tomorrow, I suggest visiting the museum in the morning — it's free on Tuesdays! Then the beach in the afternoon. What do you think?", translation: "Ngày mai, tôi gợi ý tham quan bảo tàng buổi sáng — miễn phí vào thứ Ba! Rồi biển buổi chiều. Bạn nghĩ sao?" },
-            { content: "Do you need help booking any tours? There's a popular boat tour that goes around the islands. It's $25 per person and includes lunch.", translation: "Bạn có cần giúp đặt tour nào không? Có tour thuyền phổ biến đi quanh các đảo. $25/người và bao gồm bữa trưa." },
-            { content: "Here are some useful phrases in the local language: 'Thank you' is 'Cảm ơn', 'How much?' is 'Bao nhiêu?'. People here really appreciate when tourists try to speak the local language!", translation: "Đây là vài cụm từ hữu ích bằng tiếng địa phương: 'Thank you' là 'Cảm ơn', 'How much?' là 'Bao nhiêu?'. Người dân ở đây rất thích khi du khách cố nói tiếng địa phương!" },
-            { content: "Make sure to bring sunscreen and a hat — it gets very hot in the afternoon. Also, carry a water bottle with you. Stay hydrated!", translation: "Nhớ mang kem chống nắng và nón — buổi chiều rất nóng. Ngoài ra, mang theo bình nước. Giữ đủ nước nhé!" },
-            { content: "For getting back to your hotel, you can use the metro — it's cheap and fast. The station is just two blocks from here.", translation: "Để về khách sạn, bạn có thể đi metro — rẻ và nhanh. Trạm chỉ cách đây hai dãy nhà." },
-            { content: "I hope you enjoy the rest of your trip! If you need any more help, just come back to the tourist information center. Have fun!", translation: "Hy vọng bạn tận hưởng phần còn lại của chuyến đi! Nếu cần giúp đỡ thêm, hãy quay lại trung tâm thông tin du lịch. Chúc vui!" },
-          ],
-          hotel: [
-            { content: "I've found your reservation. You're in room 405 on the 4th floor. Here's your key card. Breakfast is served from 7 to 10 AM.", translation: "Tôi đã tìm thấy đặt phòng. Bạn ở phòng 405 tầng 4. Đây là thẻ phòng. Bữa sáng phục vụ từ 7 đến 10 giờ sáng." },
-            { content: "The elevator is to your right. Your room has a city view, free Wi-Fi, and a minibar. The Wi-Fi password is on the desk.", translation: "Thang máy ở bên phải. Phòng bạn có view thành phố, Wi-Fi miễn phí và minibar. Mật khẩu Wi-Fi ở trên bàn." },
-            { content: "We have a gym on the 2nd floor and a swimming pool on the rooftop. Both are open from 6 AM to 10 PM.", translation: "Chúng tôi có phòng gym ở tầng 2 và hồ bơi trên sân thượng. Cả hai mở cửa từ 6 giờ sáng đến 10 giờ tối." },
-            { content: "Would you like a wake-up call tomorrow morning? And would you like us to arrange airport transportation for your departure?", translation: "Bạn có muốn gọi báo thức sáng mai không? Và bạn có muốn chúng tôi sắp xếp xe đưa ra sân bay khi trả phòng không?" },
-            { content: "Of course! We also offer laundry service. Just put your clothes in the bag in the closet and leave it outside your door before 9 AM.", translation: "Tất nhiên! Chúng tôi cũng có dịch vụ giặt ủi. Chỉ cần bỏ quần áo vào túi trong tủ và để ngoài cửa trước 9 giờ sáng." },
-            { content: "Room service is available 24 hours. You can find the menu on the tablet in your room. Would you like me to recommend some local restaurants too?", translation: "Dịch vụ phòng hoạt động 24 giờ. Bạn có thể xem menu trên máy tính bảng trong phòng. Bạn có muốn tôi gợi ý nhà hàng địa phương không?" },
-            { content: "There's a great Vietnamese restaurant two blocks away. Also, our hotel restaurant serves excellent international cuisine. The chef's special tonight is grilled lobster!", translation: "Có nhà hàng Việt Nam tuyệt vời cách đây hai dãy nhà. Ngoài ra, nhà hàng khách sạn phục vụ ẩm thực quốc tế xuất sắc. Món đặc biệt tối nay là tôm hùm nướng!" },
-            { content: "I see your checkout is on Friday. Would you like to extend your stay? We can offer you a 15% discount for additional nights.", translation: "Tôi thấy bạn trả phòng thứ Sáu. Bạn có muốn gia hạn không? Chúng tôi có thể giảm 15% cho đêm thêm." },
-            { content: "Is there anything about your room you'd like us to improve? Extra pillows, towels, or perhaps a different room temperature?", translation: "Có gì về phòng bạn muốn chúng tôi cải thiện không? Thêm gối, khăn, hoặc điều chỉnh nhiệt độ phòng?" },
-            { content: "We hope you're enjoying your stay! Don't hesitate to call the front desk anytime — we're here to help 24/7. Have a wonderful evening!", translation: "Hy vọng bạn đang tận hưởng kỳ nghỉ! Đừng ngại gọi lễ tân bất cứ lúc nào — chúng tôi luôn sẵn sàng 24/7. Chúc buổi tối tốt lành!" },
-          ],
-        };
-
-        // Pick response based on user message count (how many turns so far)
-        const userMsgCount = messages.filter((m) => m.role === "user").length;
-        const flow = mockFlows[scenario];
-        const idx = Math.min(userMsgCount, flow.length - 1);
-        const mock = flow[idx];
-        addMessage("assistant", mock.content, mock.translation);
+        addMessage(
+          "assistant",
+          "I'm having trouble connecting right now. Please check your internet connection and try again.",
+          "Tôi đang gặp sự cố kết nối. Vui lòng kiểm tra kết nối mạng và thử lại."
+        );
       } finally {
         setLoading(false);
       }
     },
-    [inputText, isLoading, messages, scenario, addMessage, setLoading]
+    [inputText, isLoading, scenario, addMessage, setLoading]
   );
 
   // Toggle microphone
