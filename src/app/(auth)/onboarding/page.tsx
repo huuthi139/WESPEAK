@@ -158,8 +158,17 @@ export default function OnboardingPage() {
       setDirection(1);
       setStep((prev) => prev + 1);
     } else {
-      // Onboarding complete — save preferences and redirect
-      // TODO: Save to Supabase (selectedLanguages, selectedLevel, selectedGoal)
+      // Onboarding complete — save preferences to localStorage
+      try {
+        localStorage.setItem(
+          "wespeak_onboarding",
+          JSON.stringify({
+            languages: selectedLanguages,
+            level: selectedLevel,
+            dailyGoalMinutes: selectedGoal,
+          })
+        );
+      } catch { /* ignore */ }
       router.push("/");
     }
   };

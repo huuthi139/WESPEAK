@@ -145,12 +145,31 @@ function LoginForm() {
           />
 
           <div className="flex justify-end">
-            <Link
-              href="/login"
+            <button
+              type="button"
+              onClick={async () => {
+                if (!email.trim()) {
+                  setErrors({ email: "Vui lòng nhập email để đặt lại mật khẩu" });
+                  return;
+                }
+                try {
+                  const { createClient } = await import("@/lib/supabase/client");
+                  const supabase = createClient();
+                  if (supabase) {
+                    await supabase.auth.resetPasswordForEmail(email, {
+                      redirectTo: `${window.location.origin}/login`,
+                    });
+                  }
+                  setErrors({ general: undefined });
+                  alert("Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.");
+                } catch {
+                  alert("Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại.");
+                }
+              }}
               className="text-small text-primary hover:text-primary-hover transition-colors"
             >
               Quên mật khẩu?
-            </Link>
+            </button>
           </div>
 
           <Button type="submit" fullWidth size="lg" isLoading={isLoading}>

@@ -21,6 +21,7 @@ import {
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 import {
   useSettingsStore,
   SPEED_OPTIONS,
@@ -30,6 +31,7 @@ import type { VoiceInfo } from "@/hooks/useSpeech";
 const dailyGoals = [5, 10, 15, 20, 30, 60];
 
 export default function SettingsPage() {
+  const { signOut } = useAuth();
   const [dailyGoal, setDailyGoal] = useState(20);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -165,9 +167,8 @@ export default function SettingsPage() {
             <Languages size={18} className="text-secondary" />
             <span>Ngôn ngữ đang học</span>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
-            <span className="text-small">English</span>
-            <ChevronRight size={16} />
+          <div className="flex items-center gap-1">
+            <span className="text-small text-secondary font-medium">English</span>
           </div>
         </div>
 
@@ -177,9 +178,8 @@ export default function SettingsPage() {
             <MessageSquare size={18} className="text-accent-gems" />
             <span>Ngôn ngữ giao diện</span>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
-            <span className="text-small">Tiếng Việt</span>
-            <ChevronRight size={16} />
+          <div className="flex items-center gap-1">
+            <span className="text-small text-secondary font-medium">Tiếng Việt</span>
           </div>
         </div>
       </Card>
@@ -429,7 +429,10 @@ export default function SettingsPage() {
       </Card>
 
       {/* Logout */}
-      <button className="w-full flex items-center justify-center gap-2 py-3 text-status-error rounded-md hover:bg-status-error/10 transition-colors">
+      <button
+        onClick={() => signOut()}
+        className="w-full flex items-center justify-center gap-2 py-3 text-status-error rounded-md hover:bg-status-error/10 transition-colors"
+      >
         <LogOut size={18} />
         <span className="font-medium">Đăng xuất</span>
       </button>

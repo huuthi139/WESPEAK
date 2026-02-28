@@ -35,9 +35,11 @@ const slideVariants = {
 function VocabularyLesson({
   words,
   onComplete,
+  onStepChange,
 }: {
   words: VocabularyWord[];
   onComplete: () => void;
+  onStepChange?: (step: number) => void;
 }) {
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(0);
@@ -52,6 +54,7 @@ function VocabularyLesson({
     setDir(next > step ? 1 : -1);
     setStep(next);
     setFlipped(false);
+    onStepChange?.(next + 1);
   };
 
   return (
@@ -334,9 +337,11 @@ function ListeningLesson({
 function SpeakingLesson({
   phrases,
   onComplete,
+  onStepChange,
 }: {
   phrases: SpeakingPhrase[];
   onComplete: () => void;
+  onStepChange?: (step: number) => void;
 }) {
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(0);
@@ -350,6 +355,7 @@ function SpeakingLesson({
     if (next < 0 || next >= total) return;
     setDir(next > step ? 1 : -1);
     setStep(next);
+    onStepChange?.(next + 1);
   };
 
   return (
@@ -851,6 +857,7 @@ export default function LessonPlayerPage() {
   const [lesson, setLesson] = useState<MockLesson | null>(null);
   const [completed, setCompleted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     const found = findLesson(lessonId);
@@ -945,7 +952,7 @@ export default function LessonPlayerPage() {
         {!completed && (
           <div className="mt-2">
             <ProgressBar
-              value={1}
+              value={currentStep}
               max={getTotalSteps()}
               color="bg-primary"
               size="sm"
@@ -969,6 +976,7 @@ export default function LessonPlayerPage() {
               <VocabularyLesson
                 words={content.words}
                 onComplete={() => handleComplete()}
+                onStepChange={setCurrentStep}
               />
             )}
 
@@ -986,6 +994,7 @@ export default function LessonPlayerPage() {
               <SpeakingLesson
                 phrases={content.phrases}
                 onComplete={() => handleComplete()}
+                onStepChange={setCurrentStep}
               />
             )}
 

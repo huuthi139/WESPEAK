@@ -6,6 +6,8 @@ import { ChevronLeft, Volume2, Mic, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
+import VocabIllustration from "@/components/shared/VocabIllustration";
+import { useSpeech } from "@/hooks/useSpeech";
 import { cn } from "@/lib/utils";
 
 const words = [
@@ -70,10 +72,17 @@ function getScoreIcon(score: number) {
   return "❌";
 }
 
+const SPEED_MAP: Record<string, number> = {
+  "Chậm": 0.6,
+  "Bình thường": 0.9,
+  "Nhanh": 1.3,
+};
+
 export default function PronunciationPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [hasResult, setHasResult] = useState(false);
+  const { speak } = useSpeech({ lang: "en-US" });
 
   const current = words[currentIndex];
   const overallScore = hasResult
@@ -126,6 +135,7 @@ export default function PronunciationPage() {
           exit={{ opacity: 0, x: -20 }}
         >
           <Card className="text-center py-8 mb-4">
+            <VocabIllustration word={current.word} size="md" className="mx-auto mb-3" />
             <h2 className="text-3xl font-bold tracking-wider mb-2">
               {current.word}
             </h2>
@@ -136,6 +146,7 @@ export default function PronunciationPage() {
               {["Chậm", "Bình thường", "Nhanh"].map((speed) => (
                 <button
                   key={speed}
+                  onClick={() => speak(current.word, SPEED_MAP[speed])}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-dark-elevated text-small text-gray-300 hover:text-white transition-colors"
                 >
                   <Volume2 size={14} />

@@ -60,9 +60,13 @@ export default function ProfilePage() {
   const totalHours = Math.round(totalMinutes / 60);
   const levelTitle = getLevelTitle(level);
 
-  const xpInLevel = totalXP % 5000;
-  const xpForLevel = 5000;
-  const levelProgress = Math.round((xpInLevel / xpForLevel) * 100);
+  // XP thresholds per level range from CLAUDE.md
+  const LEVEL_THRESHOLDS = [0, 200, 400, 600, 800, 1000, 1800, 2600, 3400, 4200, 5000, 6500, 8000, 9500, 11000, 12500, 15000, 17500, 20000, 22500, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000, 80000, 90000, 100000];
+  const currentThreshold = LEVEL_THRESHOLDS[Math.min(level - 1, 30)] || 0;
+  const nextThreshold = LEVEL_THRESHOLDS[Math.min(level, 30)] || currentThreshold + 5000;
+  const xpInLevel = totalXP - currentThreshold;
+  const xpForLevel = nextThreshold - currentThreshold;
+  const levelProgress = Math.min(Math.round((xpInLevel / xpForLevel) * 100), 100);
 
   return (
     <motion.div
@@ -91,9 +95,12 @@ export default function ProfilePage() {
             <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-2xl font-bold mx-auto">
               {name.charAt(0).toUpperCase()}
             </div>
-            <button className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-dark-elevated border border-gray-700 flex items-center justify-center">
+            <Link
+              href="/settings"
+              className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-dark-elevated border border-gray-700 flex items-center justify-center hover:border-primary transition-colors"
+            >
               <Pencil size={14} className="text-gray-400" />
-            </button>
+            </Link>
           </div>
           <h2 className="text-h2 font-bold">Nguyễn {name}</h2>
           <p className="text-small text-gray-400 mb-4">{email}</p>
@@ -133,7 +140,7 @@ export default function ProfilePage() {
           <h3 className="text-h3 font-semibold flex items-center gap-2">
             🏅 Thành tích
           </h3>
-          <button className="text-small text-primary">Xem tất cả</button>
+          <Link href="/leaderboard" className="text-small text-primary hover:text-primary-hover transition-colors">Xem tất cả</Link>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {mockAchievements.map((achievement, i) => (
