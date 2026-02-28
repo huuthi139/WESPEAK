@@ -6,6 +6,8 @@ import {
   ENGLISH_COURSES,
   ALL_UNITS as ENGLISH_UNITS,
 } from "./english-courses";
+import { B1_COURSE, B1_UNITS } from "./english-b1-course";
+import { B2_COURSE, B2_UNITS } from "./english-b2-course";
 
 // ==================== CHINESE (Mandarin) ====================
 
@@ -510,6 +512,8 @@ const JAPANESE_UNITS: MockUnit[] = [
 /** All courses across all languages */
 export const ALL_COURSES: MockCourse[] = [
   ...ENGLISH_COURSES,
+  B1_COURSE,
+  B2_COURSE,
   ...CHINESE_COURSES,
   ...KOREAN_COURSES,
   ...JAPANESE_COURSES,
@@ -518,6 +522,8 @@ export const ALL_COURSES: MockCourse[] = [
 /** All units across all languages */
 export const ALL_MULTI_LANG_UNITS: MockUnit[] = [
   ...ENGLISH_UNITS,
+  ...B1_UNITS,
+  ...B2_UNITS,
   ...CHINESE_UNITS,
   ...KOREAN_UNITS,
   ...JAPANESE_UNITS,
