@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Bell,
@@ -104,9 +105,8 @@ function CircularProgress({
 export default function HomePage() {
   const { user, stats, isLoading } = useAuth();
   const router = useRouter();
-
-  // Get last accessed course or default to first English A1 course
   const [continueCourse, setContinueCourse] = useState(ALL_COURSES[0]);
+
   useEffect(() => {
     try {
       const stored = localStorage.getItem("wespeak_last_course");

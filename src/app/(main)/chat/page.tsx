@@ -19,6 +19,7 @@ import MascotAvatar from "@/components/shared/MascotAvatar";
 import { useChatStore } from "@/stores/chatStore";
 import { useSettingsStore, SPEED_OPTIONS } from "@/stores/settingsStore";
 import { useSpeech } from "@/hooks/useSpeech";
+import { FREE_MODELS } from "@/lib/ai-models";
 import { cn } from "@/lib/utils";
 import type { ChatScenario, ScenarioInfo } from "@/types";
 
@@ -200,6 +201,14 @@ function useTimer() {
   const formatted = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 
   return { seconds, formatted, start, stop, reset, isRunning };
+}
+
+// ==================== Model Label ====================
+
+function ModelLabel() {
+  const { aiModel } = useSettingsStore();
+  const name = FREE_MODELS.find((m) => m.id === aiModel)?.name || "Gemini";
+  return <p className="text-[10px] text-gray-500">{name}</p>;
 }
 
 // ==================== Bouncing Dots ====================
@@ -468,6 +477,7 @@ export default function ChatPage() {
 
       // Capture history BEFORE adding user message (so current msg isn't duplicated)
       const historySnapshot = useChatStore.getState().messages;
+      const selectedModel = useSettingsStore.getState().aiModel;
 
       addMessage("user", text);
       setLoading(true);
@@ -480,6 +490,7 @@ export default function ChatPage() {
             message: text,
             scenario,
             history: historySnapshot,
+            model: selectedModel,
           }),
         });
 
@@ -557,7 +568,10 @@ export default function ChatPage() {
 
         <div className="flex items-center gap-2">
           <MascotAvatar size="sm" mood={isSpeaking ? "speaking" : "happy"} animate={false} />
-          <h1 className="text-h3 text-white">AI Tutor</h1>
+          <div>
+            <h1 className="text-h3 text-white">AI Tutor</h1>
+            <ModelLabel />
+          </div>
           <div className="flex items-center gap-1 rounded-md bg-dark-elevated px-2 py-0.5">
             <Clock className="h-3 w-3 text-gray-400" />
             <span className="text-small font-mono text-gray-400">

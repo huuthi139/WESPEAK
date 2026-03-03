@@ -1,12 +1,11 @@
 // OpenRouter API client — compatible with OpenAI chat completions format
 // Docs: https://openrouter.ai/docs/quickstart
 
+import { DEFAULT_MODEL } from "@/lib/ai-models";
+
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 
 export const isOpenRouterConfigured = !!process.env.OPENROUTER_API_KEY;
-
-// Free models on OpenRouter (no credit needed)
-export const OPENROUTER_MODEL = "google/gemini-2.0-flash-exp:free";
 
 export interface OpenRouterMessage {
   role: "system" | "user" | "assistant";
@@ -34,7 +33,7 @@ export async function chatWithOpenRouter(
       "X-Title": "WeSPEAK",
     },
     body: JSON.stringify({
-      model: model || OPENROUTER_MODEL,
+      model: model || DEFAULT_MODEL,
       messages,
       temperature: 0.8,
       max_tokens: 500,

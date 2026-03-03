@@ -32,23 +32,27 @@ export async function GET(request: NextRequest) {
 
     // Get lessons for all units
     const unitIds = units?.map((u) => u.id) || [];
-    if (unitIds.length === 0) {
-      return NextResponse.json([]);
-    }
 
-    const { data: lessons, error: lessonsError } = await supabase
-      .from("lessons")
-      .select("*")
-      .in("unit_id", unitIds)
-      .order("order_index", { ascending: true });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let lessons: any[] = [];
+    if (unitIds.length > 0) {
+      const { data: lessonsData, error: lessonsError } = await supabase
+        .from("lessons")
+        .select("*")
+        .in("unit_id", unitIds)
+        .order("order_index", { ascending: true });
 
-    if (lessonsError) {
-      return NextResponse.json({ error: "Failed to fetch lessons" }, { status: 500 });
+      if (lessonsError) {
+        return NextResponse.json({ error: "Failed to fetch lessons" }, { status: 500 });
+      }
+      lessons = lessonsData || [];
     }
 
     // Get user progress
     const lessonIds = lessons?.map((l) => l.id) || [];
-    let progress: { lesson_id: string }[] = [];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let progress: any[] = [];
     if (lessonIds.length > 0) {
       const { data: progressData } = await supabase
         .from("user_progress")
