@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGemini, isGeminiConfigured, GEMINI_MODEL } from "@/lib/gemini";
-import type { ChatApiRequest, ChatScenario } from "@/types";
+import { chatWithOpenRouter, isOpenRouterConfigured, type OpenRouterMessage } from "@/lib/openrouter";
+import { FREE_MODELS, DEFAULT_MODEL } from "@/lib/ai-models";
+import type { ChatScenario } from "@/types";
 
 const SCENARIO_PROMPTS: Record<ChatScenario, string> = {
   free_chat: `You are a friendly, patient English tutor for Vietnamese learners. Your goal is to keep the conversation going naturally for at least 10-15 exchanges.
@@ -88,10 +90,110 @@ IMPORTANT: You MUST respond with valid JSON only, no markdown, no code blocks. U
 {"message": "your English response here", "translation": "Vietnamese translation here", "feedback": {"hasCorrection": true or false, "corrections": ["correction if any"]}}`,
 };
 
+// Parse AI response (shared between providers)
+function parseAiResponse(raw: string) {
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      message: parsed.message || raw,
+      translation: parsed.translation || undefined,
+      feedback: parsed.feedback || { hasCorrection: false, corrections: [] },
+    };
+  } catch {
+    const hasCorrection =
+      raw.toLowerCase().includes("correct") ||
+      raw.toLowerCase().includes("should be") ||
+      raw.toLowerCase().includes("instead of") ||
+      raw.toLowerCase().includes("remember to");
+
+    return {
+      message: raw,
+      feedback: {
+        hasCorrection,
+        corrections: hasCorrection ? [raw.split(".")[0]] : [],
+      },
+    };
+  }
+}
+
+// Strategy 1: OpenRouter (primary) — with model fallback
+async function callOpenRouter(
+  systemPrompt: string,
+  message: string,
+  history: { role: string; content: string }[],
+  preferredModel?: string
+): Promise<string> {
+  const messages: OpenRouterMessage[] = [
+    { role: "system", content: systemPrompt },
+    ...history.slice(-30).map((msg) => ({
+      role: (msg.role === "user" ? "user" : "assistant") as "user" | "assistant",
+      content: msg.content,
+    })),
+    { role: "user", content: message },
+  ];
+
+  // Build fallback order: preferred model first, then remaining free models
+  const model = preferredModel || DEFAULT_MODEL;
+  const fallbackModels = FREE_MODELS
+    .map((m) => m.id)
+    .filter((id) => id !== model);
+
+  // Try preferred model first
+  try {
+    return await chatWithOpenRouter(messages, model);
+  } catch (primaryError) {
+    console.error(`Model ${model} failed:`, primaryError);
+
+    // Try fallback models
+    for (const fallback of fallbackModels) {
+      try {
+        console.log(`Trying fallback model: ${fallback}`);
+        return await chatWithOpenRouter(messages, fallback);
+      } catch (fallbackError) {
+        console.error(`Fallback ${fallback} failed:`, fallbackError);
+      }
+    }
+
+    // All OpenRouter models failed
+    throw primaryError;
+  }
+}
+
+// Strategy 2: Gemini (fallback)
+async function callGemini(
+  systemPrompt: string,
+  message: string,
+  history: { role: string; content: string }[]
+): Promise<string> {
+  const chatHistory = history.slice(-30).map((msg) => ({
+    role: msg.role === "user" ? ("user" as const) : ("model" as const),
+    parts: [{ text: msg.content }],
+  }));
+
+  const model = getGemini().getGenerativeModel({
+    model: GEMINI_MODEL,
+    systemInstruction: systemPrompt,
+    generationConfig: {
+      temperature: 0.8,
+      maxOutputTokens: 500,
+      responseMimeType: "application/json",
+    },
+  });
+
+  const chat = model.startChat({ history: chatHistory });
+  const result = await chat.sendMessage(message);
+  return result.response.text();
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body: ChatApiRequest = await request.json();
-    const { message, scenario, history } = body;
+    const body = await request.json();
+    const { message, scenario, history, model: preferredModel } = body as {
+      message: string;
+      scenario: ChatScenario;
+      history: { role: string; content: string }[];
+      model?: string;
+    };
 
     if (!message || !scenario) {
       return NextResponse.json(
@@ -100,7 +202,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!isGeminiConfigured) {
+    if (!isOpenRouterConfigured && !isGeminiConfigured) {
       return NextResponse.json(
         { error: "AI service not configured" },
         { status: 503 }
@@ -109,50 +211,25 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = SCENARIO_PROMPTS[scenario] || SCENARIO_PROMPTS.free_chat;
 
-    // Build conversation history for Gemini (keep last 30 messages for better context)
-    const chatHistory = history.slice(-30).map((msg) => ({
-      role: msg.role === "user" ? "user" as const : "model" as const,
-      parts: [{ text: msg.content }],
-    }));
+    let raw: string;
 
-    const model = getGemini().getGenerativeModel({
-      model: GEMINI_MODEL,
-      systemInstruction: systemPrompt,
-      generationConfig: {
-        temperature: 0.8,
-        maxOutputTokens: 500,
-        responseMimeType: "application/json",
-      },
-    });
-
-    const chat = model.startChat({ history: chatHistory });
-    const result = await chat.sendMessage(message);
-    const raw = result.response.text();
-
-    // Try to parse structured JSON response
-    try {
-      const parsed = JSON.parse(raw);
-      return NextResponse.json({
-        message: parsed.message || raw,
-        translation: parsed.translation || undefined,
-        feedback: parsed.feedback || { hasCorrection: false, corrections: [] },
-      });
-    } catch {
-      // Fallback: AI returned plain text instead of JSON
-      const hasCorrection =
-        raw.toLowerCase().includes("correct") ||
-        raw.toLowerCase().includes("should be") ||
-        raw.toLowerCase().includes("instead of") ||
-        raw.toLowerCase().includes("remember to");
-
-      return NextResponse.json({
-        message: raw,
-        feedback: {
-          hasCorrection,
-          corrections: hasCorrection ? [raw.split(".")[0]] : [],
-        },
-      });
+    // Try OpenRouter first (with model fallback), then Gemini as last resort
+    if (isOpenRouterConfigured) {
+      try {
+        raw = await callOpenRouter(systemPrompt, message, history, preferredModel);
+      } catch (openRouterError) {
+        console.error("All OpenRouter models failed, trying Gemini:", openRouterError);
+        if (isGeminiConfigured) {
+          raw = await callGemini(systemPrompt, message, history);
+        } else {
+          throw openRouterError;
+        }
+      }
+    } else {
+      raw = await callGemini(systemPrompt, message, history);
     }
+
+    return NextResponse.json(parseAiResponse(raw!));
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(

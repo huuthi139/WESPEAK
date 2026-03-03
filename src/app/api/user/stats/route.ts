@@ -25,7 +25,7 @@ export async function GET() {
 
     return NextResponse.json(stats);
   } catch (error) {
-    console.error("Stats API error:", error);
+    console.error("User stats API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

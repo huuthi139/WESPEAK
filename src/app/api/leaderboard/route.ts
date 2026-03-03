@@ -27,17 +27,17 @@ export async function GET(request: NextRequest) {
         .limit(50);
 
       const userIds = data?.map((d) => d.user_id) || [];
-      let users: { id: string; name: string; avatar_url: string | null }[] = [];
-      if (userIds.length > 0) {
-        const { data: usersData } = await supabase
-          .from("users")
-          .select("id, name, avatar_url")
-          .in("id", userIds);
-        users = usersData || [];
+      if (userIds.length === 0) {
+        return NextResponse.json([]);
       }
 
+      const { data: users } = await supabase
+        .from("users")
+        .select("id, name, avatar_url")
+        .in("id", userIds);
+
       leaderboardData = data?.map((entry, index) => {
-        const userInfo = users.find((u) => u.id === entry.user_id);
+        const userInfo = users?.find((u) => u.id === entry.user_id);
         return {
           rank: index + 1,
           user_id: entry.user_id,
@@ -56,14 +56,14 @@ export async function GET(request: NextRequest) {
         .limit(50);
 
       const userIds = data?.map((d) => d.user_id) || [];
-      let users: { id: string; name: string; avatar_url: string | null }[] = [];
-      if (userIds.length > 0) {
-        const { data: usersData } = await supabase
-          .from("users")
-          .select("id, name, avatar_url")
-          .in("id", userIds);
-        users = usersData || [];
+      if (userIds.length === 0) {
+        return NextResponse.json([]);
       }
+
+      const { data: users } = await supabase
+        .from("users")
+        .select("id, name, avatar_url")
+        .in("id", userIds);
 
       leaderboardData = data?.map((entry, index) => {
         const userInfo = users?.find((u) => u.id === entry.user_id);

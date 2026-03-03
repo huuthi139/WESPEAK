@@ -15,10 +15,14 @@ interface SettingsState {
   selectedVoiceURI: string | null;
   pitch: number;
 
+  // AI model
+  aiModel: string;
+
   // Actions
   setSpeechSpeed: (speed: SpeechSpeed) => void;
   setSelectedVoiceURI: (uri: string | null) => void;
   setPitch: (pitch: number) => void;
+  setAiModel: (model: string) => void;
 }
 
 export const SPEED_OPTIONS: { value: SpeechSpeed; label: string }[] = [
@@ -37,10 +41,12 @@ export const useSettingsStore = create<SettingsState>()(
       speechSpeed: 0.9,
       selectedVoiceURI: null,
       pitch: 0.95,
+      aiModel: "google/gemini-2.0-flash-exp:free",
 
       setSpeechSpeed: (speechSpeed) => set({ speechSpeed }),
       setSelectedVoiceURI: (selectedVoiceURI) => set({ selectedVoiceURI }),
       setPitch: (pitch) => set({ pitch }),
+      setAiModel: (aiModel) => set({ aiModel }),
     }),
     {
       name: "wespeak-settings",

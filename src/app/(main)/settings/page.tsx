@@ -17,6 +17,7 @@ import {
   Play,
   Gauge,
   Mic2,
+  Bot,
 } from "lucide-react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
@@ -26,6 +27,7 @@ import {
   useSettingsStore,
   SPEED_OPTIONS,
 } from "@/stores/settingsStore";
+import { FREE_MODELS } from "@/lib/ai-models";
 import type { VoiceInfo } from "@/hooks/useSpeech";
 
 const dailyGoals = [5, 10, 15, 20, 30, 60];
@@ -38,14 +40,17 @@ export default function SettingsPage() {
   const [showGoalPicker, setShowGoalPicker] = useState(false);
   const [showSpeedPicker, setShowSpeedPicker] = useState(false);
   const [showVoicePicker, setShowVoicePicker] = useState(false);
+  const [showModelPicker, setShowModelPicker] = useState(false);
   const [voices, setVoices] = useState<VoiceInfo[]>([]);
 
   const {
     speechSpeed,
     selectedVoiceURI,
     pitch,
+    aiModel,
     setSpeechSpeed,
     setSelectedVoiceURI,
+    setAiModel,
   } = useSettingsStore();
 
   // Load voices
@@ -182,6 +187,75 @@ export default function SettingsPage() {
             <span className="text-small text-secondary font-medium">Tiếng Việt</span>
           </div>
         </div>
+      </Card>
+
+      {/* AI Model Settings */}
+      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+        AI Model
+      </h3>
+      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+        <button
+          onClick={() => setShowModelPicker(!showModelPicker)}
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Bot size={18} className="text-primary" />
+            <div>
+              <span>Model AI</span>
+              <p className="text-[11px] text-gray-500">Chọn model cho chat</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-gray-400">
+            <span className="text-small truncate max-w-[120px]">
+              {FREE_MODELS.find((m) => m.id === aiModel)?.name || "Gemini 2.0 Flash"}
+            </span>
+            <ChevronRight size={16} />
+          </div>
+        </button>
+
+        {showModelPicker && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            className="bg-dark-elevated/30"
+          >
+            {FREE_MODELS.map((m) => (
+              <button
+                key={m.id}
+                onClick={() => {
+                  setAiModel(m.id);
+                  setShowModelPicker(false);
+                }}
+                className={cn(
+                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-dark-elevated",
+                  aiModel === m.id && "bg-primary/10"
+                )}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p
+                      className={cn(
+                        "text-small font-medium",
+                        aiModel === m.id ? "text-primary" : "text-white"
+                      )}
+                    >
+                      {m.name}
+                    </p>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-dark-elevated text-gray-400">
+                      {m.provider}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-0.5">
+                    {m.description}
+                  </p>
+                </div>
+                {aiModel === m.id && (
+                  <span className="text-primary text-small ml-2">✓</span>
+                )}
+              </button>
+            ))}
+          </motion.div>
+        )}
       </Card>
 
       {/* Voice & TTS Settings */}

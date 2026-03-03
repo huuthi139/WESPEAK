@@ -119,6 +119,9 @@ export default function CourseDetailPage() {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    // Save as last visited course
+    try { localStorage.setItem("wespeak_last_course", courseId); } catch { /* ignore */ }
+
     // Load mock data immediately
     const mockCourse = findCourse(courseId);
     const mockUnits = getUnitsForCourse(courseId);
