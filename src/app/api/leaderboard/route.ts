@@ -27,13 +27,17 @@ export async function GET(request: NextRequest) {
         .limit(50);
 
       const userIds = data?.map((d) => d.user_id) || [];
-      const { data: users } = await supabase
-        .from("users")
-        .select("id, name, avatar_url")
-        .in("id", userIds);
+      let users: { id: string; name: string; avatar_url: string | null }[] = [];
+      if (userIds.length > 0) {
+        const { data: usersData } = await supabase
+          .from("users")
+          .select("id, name, avatar_url")
+          .in("id", userIds);
+        users = usersData || [];
+      }
 
       leaderboardData = data?.map((entry, index) => {
-        const userInfo = users?.find((u) => u.id === entry.user_id);
+        const userInfo = users.find((u) => u.id === entry.user_id);
         return {
           rank: index + 1,
           user_id: entry.user_id,
@@ -52,10 +56,14 @@ export async function GET(request: NextRequest) {
         .limit(50);
 
       const userIds = data?.map((d) => d.user_id) || [];
-      const { data: users } = await supabase
-        .from("users")
-        .select("id, name, avatar_url")
-        .in("id", userIds);
+      let users: { id: string; name: string; avatar_url: string | null }[] = [];
+      if (userIds.length > 0) {
+        const { data: usersData } = await supabase
+          .from("users")
+          .select("id, name, avatar_url")
+          .in("id", userIds);
+        users = usersData || [];
+      }
 
       leaderboardData = data?.map((entry, index) => {
         const userInfo = users?.find((u) => u.id === entry.user_id);
@@ -72,7 +80,8 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(leaderboardData || []);
-  } catch {
+  } catch (error) {
+    console.error("Leaderboard API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

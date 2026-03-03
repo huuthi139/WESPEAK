@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
           ? "Khá tốt! Hãy thử luyện thêm."
           : "Cần luyện tập thêm. Hãy nghe lại và thử lại.",
     });
-  } catch {
+  } catch (error) {
+    console.error("Pronunciation API error:", error);
     return NextResponse.json(
       { error: "Failed to process pronunciation" },
       { status: 500 }

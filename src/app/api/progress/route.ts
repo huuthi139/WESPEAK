@@ -49,7 +49,8 @@ export async function GET() {
       weekly: weekActivity || [],
       total_completed: progress?.filter((p) => p.completed).length || 0,
     });
-  } catch {
+  } catch (error) {
+    console.error("Progress API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

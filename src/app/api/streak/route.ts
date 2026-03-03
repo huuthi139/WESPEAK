@@ -55,7 +55,7 @@ export async function POST() {
     const longestStreak = Math.max(newStreak, stats.longest_streak);
 
     // Update stats
-    await supabase
+    const { error: updateError } = await supabase
       .from("user_stats")
       .update({
         current_streak: newStreak,
@@ -64,6 +64,11 @@ export async function POST() {
         updated_at: new Date().toISOString(),
       })
       .eq("user_id", user.id);
+
+    if (updateError) {
+      console.error("Streak update error:", updateError);
+      return NextResponse.json({ error: "Failed to update streak" }, { status: 500 });
+    }
 
     // Calculate streak XP bonus
     const streakXP = 5 * newStreak;
@@ -74,7 +79,8 @@ export async function POST() {
       streak_xp_bonus: streakXP,
       streak_maintained: true,
     });
-  } catch {
+  } catch (error) {
+    console.error("Streak API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

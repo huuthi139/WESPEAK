@@ -32,6 +32,10 @@ export async function GET(request: NextRequest) {
 
     // Get lessons for all units
     const unitIds = units?.map((u) => u.id) || [];
+    if (unitIds.length === 0) {
+      return NextResponse.json([]);
+    }
+
     const { data: lessons, error: lessonsError } = await supabase
       .from("lessons")
       .select("*")
@@ -44,11 +48,15 @@ export async function GET(request: NextRequest) {
 
     // Get user progress
     const lessonIds = lessons?.map((l) => l.id) || [];
-    const { data: progress } = await supabase
-      .from("user_progress")
-      .select("*")
-      .eq("user_id", user.id)
-      .in("lesson_id", lessonIds);
+    let progress: { lesson_id: string }[] = [];
+    if (lessonIds.length > 0) {
+      const { data: progressData } = await supabase
+        .from("user_progress")
+        .select("*")
+        .eq("user_id", user.id)
+        .in("lesson_id", lessonIds);
+      progress = progressData || [];
+    }
 
     // Combine data
     const unitsWithLessons = units?.map((unit) => ({
@@ -62,7 +70,8 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json(unitsWithLessons);
-  } catch {
+  } catch (error) {
+    console.error("Lessons API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -127,7 +136,7 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (currentStats) {
-        await supabase
+        const { error: fallbackError } = await supabase
           .from("user_stats")
           .update({
             total_xp: currentStats.total_xp + xpReward,
@@ -135,11 +144,15 @@ export async function POST(request: NextRequest) {
             updated_at: new Date().toISOString(),
           })
           .eq("user_id", user.id);
+        if (fallbackError) {
+          console.error("Stats fallback update error:", fallbackError);
+        }
       }
     }
 
     return NextResponse.json({ success: true, xp_earned: xpReward });
-  } catch {
+  } catch (error) {
+    console.error("Lessons API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

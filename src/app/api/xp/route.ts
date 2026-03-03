@@ -71,18 +71,24 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existing) {
-      await supabase
+      const { error: dailyError } = await supabase
         .from("daily_activity")
         .update({
           xp_earned: existing.xp_earned + amount,
         })
         .eq("id", existing.id);
+      if (dailyError) {
+        console.error("Daily activity update error:", dailyError);
+      }
     } else {
-      await supabase.from("daily_activity").insert({
+      const { error: dailyError } = await supabase.from("daily_activity").insert({
         user_id: user.id,
         date: today,
         xp_earned: amount,
       });
+      if (dailyError) {
+        console.error("Daily activity insert error:", dailyError);
+      }
     }
 
     const leveledUp = newLevel > stats.level;
@@ -94,7 +100,8 @@ export async function POST(request: NextRequest) {
       leveled_up: leveledUp,
       activity: activity || "unknown",
     });
-  } catch {
+  } catch (error) {
+    console.error("XP API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

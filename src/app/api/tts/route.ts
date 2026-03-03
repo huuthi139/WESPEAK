@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
       text,
       lang: lang || "en-US",
     });
-  } catch {
+  } catch (error) {
+    console.error("TTS API error:", error);
     return NextResponse.json(
       { error: "Failed to process TTS request" },
       { status: 500 }

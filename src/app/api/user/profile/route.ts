@@ -24,7 +24,8 @@ export async function GET() {
     }
 
     return NextResponse.json(profile);
-  } catch {
+  } catch (error) {
+    console.error("Profile API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -63,7 +64,8 @@ export async function PUT(request: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch {
+  } catch (error) {
+    console.error("Profile API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

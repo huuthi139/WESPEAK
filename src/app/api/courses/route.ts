@@ -65,7 +65,8 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.json(coursesWithProgress);
-  } catch {
+  } catch (error) {
+    console.error("Courses API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

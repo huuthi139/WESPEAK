@@ -38,7 +38,8 @@ export async function GET() {
     }));
 
     return NextResponse.json(achievementsWithStatus);
-  } catch {
+  } catch (error) {
+    console.error("Achievements API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
