@@ -125,6 +125,9 @@ export default function CourseDetailPage() {
     if (mockCourse) setCourse(mockCourse);
     if (mockUnits.length > 0) setUnits(mockUnits);
 
+    // Save last accessed course for "Continue Learning"
+    try { localStorage.setItem("wespeak_last_course", courseId); } catch { /* ignore */ }
+
     // Try API
     let cancelled = false;
     async function fetchFromApi() {

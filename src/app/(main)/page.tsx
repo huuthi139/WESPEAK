@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import ProgressBar from "@/components/ui/ProgressBar";
 import MascotAvatar from "@/components/shared/MascotAvatar";
 import { useAuth } from "@/hooks/useAuth";
 import { cn, getGreeting, formatXP } from "@/lib/utils";
+import { ALL_COURSES } from "@/data/multi-lang-courses";
 
 // --------------- Animation variants ---------------
 
@@ -102,6 +104,18 @@ function CircularProgress({
 export default function HomePage() {
   const { user, stats, isLoading } = useAuth();
   const router = useRouter();
+
+  // Get last accessed course or default to first English A1 course
+  const [continueCourse, setContinueCourse] = useState(ALL_COURSES[0]);
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("wespeak_last_course");
+      if (stored) {
+        const found = ALL_COURSES.find((c) => c.id === stored);
+        if (found) setContinueCourse(found);
+      }
+    } catch { /* ignore */ }
+  }, []);
 
   if (isLoading) {
     return (
@@ -239,14 +253,14 @@ export default function HomePage() {
         <h2 className="mb-3 text-h3 text-white">Tiếp tục học</h2>
         <Card
           className="flex items-center gap-3"
-          onClick={() => router.push("/learn/english-a1")}
+          onClick={() => router.push(`/learn/${continueCourse.id}`)}
         >
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-secondary/20">
             <BookOpen className="h-6 w-6 text-secondary" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-body font-semibold text-white truncate">
-              English for Beginners
+              {continueCourse.title}
             </h3>
             <p className="text-small text-gray-400 truncate">
               {lessonsCompleted > 0 ? `Đã hoàn thành ${lessonsCompleted} bài` : "Bắt đầu ngay"}
