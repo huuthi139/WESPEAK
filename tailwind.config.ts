@@ -35,6 +35,11 @@ const config: Config = {
           warning: "#F59E0B",
           error: "#EF4444",
         },
+        text: {
+          primary: "#FFFFFF",
+          secondary: "#94A3B8",
+          muted: "#64748B",
+        },
         navy: {
           800: "#0D1542",
           900: "#070B24",

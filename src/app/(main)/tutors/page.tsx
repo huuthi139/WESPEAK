@@ -119,7 +119,7 @@ export default function TutorsPage() {
         <h1 className="text-h1 font-bold text-white">
           Ch\u1ECDn gia s\u01B0 AI c\u1EE7a b\u1EA1n
         </h1>
-        <p className="text-secondary mt-1 text-sm">
+        <p className="text-text-secondary mt-1 text-sm">
           B\u1EA1n c\u00F3 th\u1EC3 \u0111\u1ED5i b\u1EA5t c\u1EE9 l\u00FAc n\u00E0o
         </p>
       </motion.div>
