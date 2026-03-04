@@ -118,7 +118,7 @@ export default function FlashcardsPage() {
               >
                 <div
                   className={cn(
-                    "rounded-xl border border-slate-800 bg-dark-card p-8 min-h-[280px] flex flex-col items-center justify-center text-center",
+                    "glass-3d glass-shine rounded-xl border border-slate-800 bg-dark-card p-8 min-h-[280px] flex flex-col items-center justify-center text-center",
                     isFlipped && "border-primary/30"
                   )}
                 >
@@ -126,7 +126,7 @@ export default function FlashcardsPage() {
                     <>
                       <VocabIllustration word={current.word} size="lg" className="mx-auto mb-4" />
                       <h2 className="text-3xl font-bold mb-2">{current.word}</h2>
-                      <p className="text-secondary text-small mb-4">{current.phonetic}</p>
+                      <p className="text-secondary text-small mb-4 shadow-glow rounded-full px-3 py-0.5">{current.phonetic}</p>
                       <button
                         onClick={(e) => { e.stopPropagation(); speak(current.word); }}
                         className="flex items-center gap-1 text-slate-400 hover:text-white transition-colors"
@@ -160,14 +160,14 @@ export default function FlashcardsPage() {
             >
               <button
                 onClick={handleDontKnow}
-                className="flex flex-col items-center gap-1 px-8 py-3 rounded-xl bg-status-error/10 text-status-error hover:bg-status-error/20 transition-colors"
+                className="btn-3d flex flex-col items-center gap-1 px-8 py-3 rounded-xl bg-status-error/10 text-status-error hover:bg-status-error/20 transition-colors"
               >
                 <X size={24} />
                 <span className="text-small font-medium">Chưa biết</span>
               </button>
               <button
                 onClick={handleKnow}
-                className="flex flex-col items-center gap-1 px-8 py-3 rounded-xl bg-status-success/10 text-status-success hover:bg-status-success/20 transition-colors"
+                className="btn-3d flex flex-col items-center gap-1 px-8 py-3 rounded-xl bg-status-success/10 text-status-success hover:bg-status-success/20 transition-colors"
               >
                 <Check size={24} />
                 <span className="text-small font-medium">Đã biết</span>

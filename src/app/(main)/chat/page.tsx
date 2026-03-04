@@ -319,10 +319,10 @@ function MessageBubble({
 
       <div
         className={cn(
-          "max-w-[75%] rounded-lg px-4 py-3",
+          "max-w-[75%] rounded-xl px-4 py-3",
           isUser
-            ? "rounded-br-sm bg-primary text-white"
-            : "rounded-bl-sm bg-dark-card text-white border border-white/[0.08]"
+            ? "rounded-br-sm bg-primary-gradient text-white shadow-glow btn-3d glass-shine"
+            : "rounded-bl-sm glass-3d glass-shine text-white"
         )}
       >
         {/* Message content */}
@@ -339,7 +339,7 @@ function MessageBubble({
         {!isUser && (
           <button
             onClick={() => onSpeak(message.content)}
-            className="mt-2 flex items-center gap-1 rounded-md bg-white/[0.06] px-2.5 py-1 text-small text-secondary transition-colors hover:bg-white/[0.06]/80"
+            className="mt-2 flex items-center gap-1 rounded-lg bg-white/[0.08] px-2.5 py-1 text-small text-secondary transition-all hover:bg-white/[0.12] hover:-translate-y-0.5 active:translate-y-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_2px_6px_rgba(0,0,0,0.2)] press-glow-green"
           >
             <Volume2 className="h-3 w-3" />
             Nghe
@@ -557,7 +557,7 @@ export default function ChatPage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="relative z-20 flex items-center justify-between border-b border-white/[0.08] bg-dark-surface px-4 py-3"
+        className="relative z-20 flex items-center justify-between glass-3d-heavy px-4 py-3"
       >
         <button
           onClick={() => router.back()}
@@ -589,7 +589,7 @@ export default function ChatPage() {
       </motion.header>
 
       {/* ==================== Scenario + Speed Bar ==================== */}
-      <div className="relative z-10 border-b border-white/[0.08] bg-dark-surface px-4 py-2">
+      <div className="relative z-10 glass-3d px-4 py-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowScenarioDropdown(!showScenarioDropdown)}
@@ -718,17 +718,18 @@ export default function ChatPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="border-t border-white/[0.08] bg-dark-surface px-4 py-3"
+        className="glass-3d-heavy px-4 py-3"
       >
         <div className="flex items-center gap-2">
           {/* Microphone button */}
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9, y: 1 }}
             onClick={handleMicToggle}
             className={cn(
-              "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors",
+              "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all btn-3d",
               isListening
-                ? "bg-status-error text-white"
-                : "bg-white/[0.06] text-slate-400 hover:text-white"
+                ? "bg-status-error text-white shadow-[0_0_16px_rgba(239,68,68,0.4)]"
+                : "bg-white/[0.08] text-slate-400 hover:text-white hover:-translate-y-0.5"
             )}
           >
             {/* Pulsing ring when recording */}
@@ -740,7 +741,7 @@ export default function ChatPage() {
               />
             )}
             <Mic className="h-5 w-5" />
-          </button>
+          </motion.button>
 
           {/* Text input */}
           <div className="flex-1">
@@ -752,7 +753,7 @@ export default function ChatPage() {
               onKeyDown={handleKeyDown}
               placeholder="Nhập tin nhắn..."
               disabled={isListening}
-              className="w-full rounded-lg border border-white/[0.08] bg-dark-card px-4 py-2.5 text-body text-white placeholder-gray-500 outline-none transition-colors focus:border-primary/50"
+              className="w-full rounded-xl border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-body text-white placeholder-gray-500 outline-none transition-all focus:border-primary/50 focus:shadow-[0_0_12px_rgba(108,99,255,0.15)] shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]"
             />
           </div>
 

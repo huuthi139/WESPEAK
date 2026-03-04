@@ -155,8 +155,8 @@ export default function SettingsPage() {
                   className={cn(
                     "py-2 rounded-md text-small font-medium transition-colors",
                     goal === dailyGoal
-                      ? "bg-primary text-white"
-                      : "bg-white/[0.06] text-slate-400 hover:text-white"
+                      ? "bg-primary text-white btn-3d"
+                      : "bg-white/[0.06] text-slate-400 hover:text-white hover:-translate-y-0.5"
                   )}
                 >
                   {goal} phút
@@ -228,7 +228,9 @@ export default function SettingsPage() {
                 }}
                 className={cn(
                   "flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-white/[0.06]",
-                  aiModel === m.id && "bg-primary/10"
+                  aiModel === m.id
+                    ? "bg-primary/10 btn-3d glass-shine"
+                    : "hover:-translate-y-0.5"
                 )}
               >
                 <div className="flex-1 min-w-0">
@@ -437,7 +439,7 @@ export default function SettingsPage() {
           <button
             onClick={() => setNotificationsEnabled(!notificationsEnabled)}
             className={cn(
-              "w-11 h-6 rounded-full transition-colors relative",
+              "w-11 h-6 rounded-full transition-colors relative shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_6px_rgba(0,0,0,0.2)]",
               notificationsEnabled ? "bg-primary" : "bg-slate-700"
             )}
           >
@@ -458,7 +460,7 @@ export default function SettingsPage() {
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
             className={cn(
-              "w-11 h-6 rounded-full transition-colors relative",
+              "w-11 h-6 rounded-full transition-colors relative shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_6px_rgba(0,0,0,0.2)]",
               soundEnabled ? "bg-primary" : "bg-slate-700"
             )}
           >

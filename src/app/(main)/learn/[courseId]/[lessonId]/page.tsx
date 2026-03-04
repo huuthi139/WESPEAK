@@ -72,7 +72,7 @@ function VocabularyLesson({
         >
           {/* Card */}
           <div
-            className="w-full rounded-xl bg-dark-card border border-white/[0.08] p-6 text-center cursor-pointer"
+            className="w-full rounded-xl glass-3d glass-shine p-6 text-center cursor-pointer hover:shadow-3d-lg transition-shadow"
             onClick={() => setFlipped(!flipped)}
           >
             <VocabIllustration word={word.word} size="lg" className="mx-auto mb-4" />
@@ -103,21 +103,21 @@ function VocabularyLesson({
           {/* Listen buttons */}
           <div className="flex items-center gap-3 mt-4">
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-all btn-3d hover:-translate-y-0.5 active:translate-y-0 press-glow-green"
               onClick={() => speak(word.word, 0.7)}
             >
               <Volume2 size={14} />
               Chậm
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-all btn-3d hover:-translate-y-0.5 active:translate-y-0 press-glow-green"
               onClick={() => speak(word.word)}
             >
               <Volume2 size={14} />
               Nghe
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-all btn-3d hover:-translate-y-0.5 active:translate-y-0 press-glow-green"
               onClick={() => speak(word.example)}
             >
               <Volume2 size={14} />
@@ -213,7 +213,7 @@ function ListeningLesson({
     return (
       <div className="flex flex-col items-center flex-1">
         <div className="w-full max-w-sm">
-          <div className="rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-6">
+          <div className="rounded-xl glass-3d glass-shine p-5 mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Volume2 size={18} className="text-secondary" />
               <span className="text-h3 text-white">Nghe đoạn hội thoại</span>
@@ -286,7 +286,7 @@ function ListeningLesson({
               <motion.button
                 key={i}
                 className={cn(
-                  "w-full rounded-lg px-4 py-3 text-left text-body transition-colors",
+                  "w-full rounded-xl px-4 py-3 text-left text-body transition-all btn-3d",
                   optClass
                 )}
                 onClick={() => handleAnswer(i)}
@@ -372,14 +372,14 @@ function SpeakingLesson({
           className="flex flex-col items-center w-full max-w-sm"
         >
           {/* Phrase card */}
-          <div className="w-full rounded-xl bg-dark-card border border-white/[0.08] p-6 text-center">
+          <div className="w-full rounded-xl glass-3d glass-shine p-6 text-center">
             <h2 className="text-h1 text-white mb-2">{phrase.text}</h2>
             <p className="text-body text-slate-400">{phrase.translation}</p>
           </div>
 
           {/* Listen */}
           <button
-            className="mt-4 flex items-center gap-2 rounded-full bg-secondary/20 px-4 py-2 text-body text-secondary hover:bg-secondary/30 transition-colors"
+            className="mt-4 flex items-center gap-2 rounded-full bg-secondary/20 px-4 py-2 text-body text-secondary hover:bg-secondary/30 transition-all btn-3d hover:-translate-y-0.5 active:translate-y-0 press-glow-green"
             onClick={() => speak(phrase.text)}
           >
             <Volume2 size={16} />
@@ -389,12 +389,13 @@ function SpeakingLesson({
           {/* Mic */}
           <motion.button
             className={cn(
-              "mt-6 flex h-20 w-20 items-center justify-center rounded-full transition-colors",
+              "mt-6 flex h-20 w-20 items-center justify-center rounded-full transition-all btn-3d glass-shine",
               isListening
-                ? "bg-status-error shadow-lg shadow-status-error/30"
-                : "bg-primary shadow-lg shadow-primary/30"
+                ? "bg-status-error shadow-[0_0_24px_rgba(239,68,68,0.4),0_6px_20px_rgba(0,0,0,0.3)]"
+                : "bg-primary-gradient shadow-glow-lg"
             )}
-            whileTap={{ scale: 0.92 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.92, y: 2 }}
             onClick={() => {
               if (isListening) stopListening();
               else startListening();
@@ -494,7 +495,7 @@ function GrammarLesson({
       <div className="flex flex-col items-center flex-1">
         <div className="w-full max-w-sm">
           {/* Explanation */}
-          <div className="rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-4">
+          <div className="rounded-xl glass-3d glass-shine p-5 mb-4">
             <div className="flex items-center gap-2 mb-3">
               <BookOpen size={18} className="text-accent-gems" />
               <span className="text-h3 text-white">Ngữ pháp</span>
@@ -582,7 +583,7 @@ function GrammarLesson({
               <motion.button
                 key={i}
                 className={cn(
-                  "w-full rounded-lg px-4 py-3 text-left text-body transition-colors",
+                  "w-full rounded-xl px-4 py-3 text-left text-body transition-all btn-3d",
                   optClass
                 )}
                 onClick={() => handleAnswer(i)}
@@ -690,7 +691,7 @@ function QuizLesson({
               <motion.button
                 key={i}
                 className={cn(
-                  "w-full rounded-lg px-4 py-3 text-left text-body transition-colors",
+                  "w-full rounded-xl px-4 py-3 text-left text-body transition-all btn-3d",
                   optClass
                 )}
                 onClick={() => handleAnswer(i)}
@@ -776,7 +777,7 @@ function ResultScreen({
               size={40}
               className={cn(
                 s <= stars
-                  ? "text-status-warning fill-status-warning"
+                  ? "text-status-warning fill-status-warning drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]"
                   : "text-gray-600"
               )}
             />
@@ -804,7 +805,7 @@ function ResultScreen({
 
       {/* Stats */}
       <motion.div
-        className="w-full max-w-xs rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-6"
+        className="w-full max-w-xs rounded-xl glass-3d glass-shine p-5 mb-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
@@ -931,7 +932,7 @@ export default function LessonPlayerPage() {
     <div className="flex min-h-screen flex-col bg-dark">
       {/* Top Bar */}
       <motion.div
-        className="sticky top-0 z-10 bg-dark/95 backdrop-blur-sm px-4 py-3 border-b border-white/[0.08]"
+        className="sticky top-0 z-10 glass-3d-heavy px-4 py-3"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >

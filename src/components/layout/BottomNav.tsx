@@ -20,7 +20,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
       <div className="mx-auto max-w-md px-4 pb-[env(safe-area-inset-bottom)]">
-        <div className="glass-heavy mb-2 flex items-center justify-around rounded-2xl px-2 py-2 shadow-glass">
+        <div className="glass-3d-heavy mb-2 flex items-center justify-around rounded-2xl px-2 py-2">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -42,18 +42,27 @@ export default function BottomNav() {
                 {isActive && (
                   <motion.div
                     layoutId="nav-active"
-                    className="absolute inset-0 rounded-xl bg-primary/[0.12]"
+                    className="absolute inset-0 rounded-xl bg-primary/[0.15] shadow-[inset_0_1px_0_rgba(108,99,255,0.3),0_0_12px_rgba(108,99,255,0.15)]"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
-                <Icon
-                  size={22}
-                  strokeWidth={isActive ? 2.5 : 1.8}
-                  className="relative z-10"
-                />
-                <span className="relative z-10 text-[10px] font-medium">
-                  {item.label}
-                </span>
+                <motion.div
+                  whileTap={{ scale: 0.85, y: 1 }}
+                  transition={{ duration: 0.1 }}
+                  className="relative z-10 flex flex-col items-center gap-0.5"
+                >
+                  <Icon
+                    size={22}
+                    strokeWidth={isActive ? 2.5 : 1.8}
+                    className={cn(
+                      "transition-all",
+                      isActive && "drop-shadow-[0_0_6px_rgba(108,99,255,0.5)]"
+                    )}
+                  />
+                  <span className="text-[10px] font-medium">
+                    {item.label}
+                  </span>
+                </motion.div>
               </Link>
             );
           })}
