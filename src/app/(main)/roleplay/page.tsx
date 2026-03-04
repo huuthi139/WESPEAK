@@ -224,7 +224,7 @@ export default function RolePlayLabPage() {
               🎭
             </span>
           </h1>
-          <p className="text-secondary-text text-small mt-1">
+          <p className="text-text-secondary text-small mt-1">
             Luyen noi qua cac tinh huong thuc te
           </p>
         </motion.div>
@@ -232,15 +232,15 @@ export default function RolePlayLabPage() {
         {/* Search Bar */}
         <motion.div variants={itemVariants}>
           <div className="glass-3d rounded-xl px-4 py-3 flex items-center gap-3">
-            <Search className="w-5 h-5 text-muted-text shrink-0" />
+            <Search className="w-5 h-5 text-text-muted shrink-0" />
             <input
               type="text"
               placeholder="Tim kich ban..."
-              className="bg-transparent flex-1 text-body text-white placeholder:text-muted-text outline-none"
+              className="bg-transparent flex-1 text-body text-white placeholder:text-text-muted outline-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className="text-muted-text hover:text-primary transition-colors">
+            <button className="text-text-muted hover:text-primary transition-colors">
               <Mic className="w-5 h-5" />
             </button>
           </div>
@@ -257,7 +257,7 @@ export default function RolePlayLabPage() {
                   "shrink-0 px-4 py-2 rounded-full text-small font-medium transition-all border",
                   activeCategory === filter.key
                     ? "bg-primary-gradient text-white border-primary shadow-glow"
-                    : "glass-3d text-secondary-text border-white/10 hover:border-primary/40"
+                    : "glass-3d text-text-secondary border-white/10 hover:border-primary/40"
                 )}
               >
                 {filter.label}
@@ -277,7 +277,7 @@ export default function RolePlayLabPage() {
                   "px-3 py-1.5 rounded-lg text-small font-medium transition-all border",
                   activeDifficulty === filter.key
                     ? "bg-secondary-gradient text-white border-secondary shadow-glow-green"
-                    : "glass-3d text-secondary-text border-white/10 hover:border-secondary/40"
+                    : "glass-3d text-text-secondary border-white/10 hover:border-secondary/40"
                 )}
               >
                 {filter.label}
@@ -303,7 +303,7 @@ export default function RolePlayLabPage() {
                 <span className="text-body font-semibold text-white">
                   Ngau nhien
                 </span>
-                <span className="text-small text-secondary-text mt-1">
+                <span className="text-small text-text-secondary mt-1">
                   Thu thach bat ngo
                 </span>
               </div>
@@ -321,7 +321,7 @@ export default function RolePlayLabPage() {
                 <span className="text-body font-semibold text-white">
                   Tao kich ban rieng
                 </span>
-                <span className="text-small text-secondary-text mt-1">
+                <span className="text-small text-text-secondary mt-1">
                   Tu thiet ke tinh huong
                 </span>
               </div>
@@ -368,7 +368,7 @@ export default function RolePlayLabPage() {
                     >
                       {DIFFICULTY_CONFIG[scenario.difficulty].label}
                     </span>
-                    <span className="text-small text-muted-text flex items-center gap-1">
+                    <span className="text-small text-text-muted flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {scenario.duration} phut
                     </span>
@@ -378,7 +378,7 @@ export default function RolePlayLabPage() {
             ))}
 
             {filteredScenarios.length === 0 && (
-              <div className="w-full text-center py-8 text-secondary-text text-body">
+              <div className="w-full text-center py-8 text-text-secondary text-body">
                 Khong tim thay kich ban phu hop
               </div>
             )}
@@ -406,7 +406,7 @@ export default function RolePlayLabPage() {
                   <h3 className="text-body font-semibold text-white mt-2">
                     {category.title}
                   </h3>
-                  <p className="text-small text-muted-text mt-1">
+                  <p className="text-small text-text-muted mt-1">
                     {category.tags}
                   </p>
                 </div>
