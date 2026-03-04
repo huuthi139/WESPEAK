@@ -13,6 +13,10 @@ import {
   HelpCircle,
   Trophy,
   Flame,
+  BarChart3,
+  Bot,
+  Crown,
+  Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -237,7 +241,7 @@ export default function HomePage() {
             <motion.button
               whileHover={{ y: -2 }}
               whileTap={{ y: 1, scale: 0.96 }}
-              onClick={() => router.push("/chat")}
+              onClick={() => router.push("/roleplay")}
               className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.08] py-2.5 text-small font-semibold text-white btn-3d glass-shine press-glow"
             >
               <Users className="h-4 w-4" />
@@ -344,6 +348,20 @@ export default function HomePage() {
               bg: "bg-status-warning/15",
               route: "/learn",
             },
+            {
+              label: "Role-play",
+              icon: Users,
+              color: "text-accent-streak",
+              bg: "bg-accent-streak/15",
+              route: "/roleplay",
+            },
+            {
+              label: "Phân tích",
+              icon: BarChart3,
+              color: "text-primary",
+              bg: "bg-primary/15",
+              route: "/analysis",
+            },
           ].map((item) => (
             <Card
               key={item.label}
@@ -439,6 +457,51 @@ export default function HomePage() {
             {streak >= 7 ? "Hoàn thành!" : `${7 - streak} ngày còn`}
           </p>
         </Card>
+      </motion.div>
+
+      {/* ========== 8. Discover Features ========== */}
+      <motion.div variants={itemVariants}>
+        <h2 className="mb-3 text-h3 text-white">Khám phá</h2>
+        <div className="flex flex-col gap-3">
+          <Card onClick={() => router.push("/tutors")} glow="primary">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/20 shadow-[0_0_12px_rgba(108,99,255,0.15)]">
+                <Bot className="h-6 w-6 text-primary drop-shadow-[0_0_4px_rgba(108,99,255,0.4)]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-body font-semibold text-white">Chọn gia sư AI</h3>
+                <p className="text-small text-slate-400">Emma, James, Yuki, Minho & hơn nữa</p>
+              </div>
+              <Sparkles className="h-5 w-5 text-primary" />
+            </div>
+          </Card>
+
+          <Card onClick={() => router.push("/analysis")} glow="secondary">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/20 shadow-[0_0_12px_rgba(0,212,170,0.15)]">
+                <BarChart3 className="h-6 w-6 text-secondary drop-shadow-[0_0_4px_rgba(0,212,170,0.4)]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-body font-semibold text-white">Phân tích phát âm</h3>
+                <p className="text-small text-slate-400">5 yếu tố: Phát âm, Ngữ điệu, Lưu loát...</p>
+              </div>
+              <BarChart3 className="h-5 w-5 text-secondary" />
+            </div>
+          </Card>
+
+          <Card onClick={() => router.push("/premium")}>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-gold/20 shadow-[0_0_12px_rgba(251,191,36,0.15)]">
+                <Crown className="h-6 w-6 text-accent-gold drop-shadow-[0_0_4px_rgba(251,191,36,0.4)]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-body font-semibold text-white">WeSPEAK Premium</h3>
+                <p className="text-small text-slate-400">Mở khóa tất cả tính năng</p>
+              </div>
+              <span className="rounded-full bg-accent-gold/20 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">PRO</span>
+            </div>
+          </Card>
+        </div>
       </motion.div>
     </motion.div>
   );
