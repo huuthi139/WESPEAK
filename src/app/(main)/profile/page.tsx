@@ -79,12 +79,12 @@ export default function ProfilePage() {
       <motion.div variants={item} className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Link href="/">
-            <ChevronLeft size={24} className="text-gray-400" />
+            <ChevronLeft size={24} className="text-slate-400" />
           </Link>
           <h1 className="text-h2 font-bold">Hồ sơ</h1>
         </div>
         <Link href="/settings">
-          <Settings size={22} className="text-gray-400" />
+          <Settings size={22} className="text-slate-400" />
         </Link>
       </motion.div>
 
@@ -97,21 +97,21 @@ export default function ProfilePage() {
             </div>
             <Link
               href="/settings"
-              className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-dark-elevated border border-gray-700 flex items-center justify-center hover:border-primary transition-colors"
+              className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-white/[0.06] border border-slate-700 flex items-center justify-center hover:border-primary transition-colors"
             >
-              <Pencil size={14} className="text-gray-400" />
+              <Pencil size={14} className="text-slate-400" />
             </Link>
           </div>
           <h2 className="text-h2 font-bold">Nguyễn {name}</h2>
-          <p className="text-small text-gray-400 mb-4">{email}</p>
+          <p className="text-small text-slate-400 mb-4">{email}</p>
 
           <div className="text-left">
             <div className="flex justify-between text-small mb-1">
-              <span className="text-gray-400">Level: {levelTitle}</span>
+              <span className="text-slate-400">Level: {levelTitle}</span>
               <span className="text-primary font-semibold">{levelProgress}%</span>
             </div>
             <ProgressBar value={levelProgress} max={100} color="bg-primary" size="sm" />
-            <p className="text-small text-gray-500 mt-1 text-center">
+            <p className="text-small text-slate-500 mt-1 text-center">
               Còn {100 - levelProgress}% để lên {level <= 10 ? "Intermediate" : "Advanced"}
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
           <Card key={i} className="text-center py-3 px-2">
             <div className="flex justify-center mb-1">{stat.icon}</div>
             <p className="text-h3 font-bold">{stat.value}</p>
-            <p className="text-[11px] text-gray-500">{stat.label}</p>
+            <p className="text-[11px] text-slate-500">{stat.label}</p>
           </Card>
         ))}
       </motion.div>
@@ -147,7 +147,7 @@ export default function ProfilePage() {
             <Card key={i} className="text-center py-3 px-2">
               <span className="text-2xl block mb-1">{achievement.icon}</span>
               <p className="text-small font-semibold">{achievement.name}</p>
-              <p className="text-[10px] text-gray-500 mt-0.5">{achievement.desc}</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">{achievement.desc}</p>
             </Card>
           ))}
         </div>
@@ -156,20 +156,20 @@ export default function ProfilePage() {
       {/* Settings */}
       <motion.div variants={item}>
         <h3 className="text-h3 font-semibold mb-3">Cài đặt</h3>
-        <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden">
+        <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden">
           {settingsItems.map((setting, i) => {
             const Icon = setting.icon;
             return (
               <Link
                 key={i}
                 href="/settings"
-                className="flex items-center justify-between px-4 py-3.5 hover:bg-dark-elevated/50 transition-colors"
+                className="flex items-center justify-between px-4 py-3.5 hover:bg-white/[0.06]/50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Icon size={18} className="text-gray-400" />
+                  <Icon size={18} className="text-slate-400" />
                   <span className="text-body">{setting.label}</span>
                 </div>
-                <div className="flex items-center gap-1 text-gray-500">
+                <div className="flex items-center gap-1 text-slate-500">
                   <span className="text-small">{setting.value}</span>
                   <ChevronRight size={16} />
                 </div>

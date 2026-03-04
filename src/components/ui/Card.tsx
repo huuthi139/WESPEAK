@@ -24,8 +24,8 @@ export default function Card({
   return (
     <Component
       className={cn(
-        "rounded-lg bg-dark-card p-4 border border-gray-800/50",
-        onClick && "cursor-pointer hover:border-gray-700 transition-colors",
+        "glass rounded-xl p-4 shadow-glass-sm",
+        onClick && "cursor-pointer hover:border-white/[0.14] transition-all",
         className
       )}
       onClick={onClick}

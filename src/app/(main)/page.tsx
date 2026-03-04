@@ -71,7 +71,7 @@ function CircularProgress({
           cy={radius}
           r={normalizedRadius}
           fill="none"
-          stroke="#252540"
+          stroke="#19203C"
           strokeWidth={stroke}
         />
         {/* Progress circle */}
@@ -80,7 +80,7 @@ function CircularProgress({
           cy={radius}
           r={normalizedRadius}
           fill="none"
-          stroke="#8B5CF6"
+          stroke="#6C63FF"
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -93,7 +93,7 @@ function CircularProgress({
         <span className="text-h3 text-white">
           {current}/{goal}
         </span>
-        <span className="text-small text-gray-400">phút</span>
+        <span className="text-small text-slate-400">phút</span>
       </div>
     </div>
   );
@@ -163,21 +163,21 @@ export default function HomePage() {
             {name.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="text-small text-gray-400">{getGreeting()}</p>
+            <p className="text-small text-slate-400">{getGreeting()}</p>
             <h1 className="text-h3 text-white">{name}</h1>
           </div>
         </div>
 
         {/* Notification bell */}
-        <button className="relative rounded-lg p-2 transition-colors hover:bg-dark-elevated">
-          <Bell className="h-5 w-5 text-gray-400" />
+        <button className="relative rounded-lg p-2 transition-colors hover:bg-white/[0.06]">
+          <Bell className="h-5 w-5 text-slate-400" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-status-error" />
         </button>
       </motion.header>
 
       {/* Stats row */}
       <motion.div
-        className="flex items-center justify-around rounded-lg bg-dark-card px-3 py-3 border border-gray-800/50"
+        className="flex items-center justify-around rounded-lg bg-dark-card px-3 py-3 border border-white/[0.08]"
         variants={itemVariants}
       >
         <div className="flex items-center gap-1.5">
@@ -214,7 +214,7 @@ export default function HomePage() {
               <h2 className="text-h3 text-white">
                 Chào {name}! {getGreeting()}
               </h2>
-              <p className="mt-1 text-small text-gray-400">
+              <p className="mt-1 text-small text-slate-400">
                 Hôm nay bạn muốn luyện tập gì?
               </p>
             </div>
@@ -231,14 +231,14 @@ export default function HomePage() {
             </button>
             <button
               onClick={() => router.push("/chat")}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-dark-elevated py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/[0.06] py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
             >
               <Users className="h-4 w-4" />
               Role-play
             </button>
             <button
               onClick={() => router.push("/learn")}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-dark-elevated py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/[0.06] py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
             >
               <BookOpen className="h-4 w-4" />
               Học
@@ -261,7 +261,7 @@ export default function HomePage() {
             <h3 className="text-body font-semibold text-white truncate">
               {continueCourse.title}
             </h3>
-            <p className="text-small text-gray-400 truncate">
+            <p className="text-small text-slate-400 truncate">
               {lessonsCompleted > 0 ? `Đã hoàn thành ${lessonsCompleted} bài` : "Bắt đầu ngay"}
             </p>
             <div className="mt-2">
@@ -292,7 +292,7 @@ export default function HomePage() {
             <h3 className="text-h3 text-white">
               {dailyCurrent}/{dailyGoal} phút
             </h3>
-            <p className="mt-1 text-small text-gray-400">
+            <p className="mt-1 text-small text-slate-400">
               {remaining > 0
                 ? `Còn ${remaining} phút nữa`
                 : "Hoàn thành mục tiêu! 🎉"}
@@ -379,7 +379,7 @@ export default function HomePage() {
                       "flex h-9 w-9 items-center justify-center rounded-full text-small font-semibold transition-colors",
                       active
                         ? "bg-accent-streak text-white"
-                        : "bg-dark-elevated text-gray-500"
+                        : "bg-white/[0.06] text-slate-500"
                     )}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -395,7 +395,7 @@ export default function HomePage() {
                   <span
                     className={cn(
                       "text-small",
-                      active ? "text-accent-streak" : "text-gray-500"
+                      active ? "text-accent-streak" : "text-slate-500"
                     )}
                   >
                     {day}
@@ -422,7 +422,7 @@ export default function HomePage() {
             color="bg-status-warning"
             size="md"
           />
-          <p className="mt-2 text-small text-gray-400">
+          <p className="mt-2 text-small text-slate-400">
             <span className="text-white font-semibold">
               {Math.min(streak, 7)}/7
             </span>

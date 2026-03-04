@@ -36,7 +36,7 @@ export default function ProgressBar({
           <span>{percentage}%</span>
         </div>
       )}
-      <div className={cn("w-full rounded-full bg-dark-elevated overflow-hidden", heights[size])}>
+      <div className={cn("w-full rounded-full bg-white/[0.06] overflow-hidden", heights[size])}>
         <motion.div
           className={cn("h-full rounded-full", color)}
           initial={{ width: 0 }}

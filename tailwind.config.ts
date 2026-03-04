@@ -10,26 +10,35 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#8B5CF6",
-          hover: "#7C3AED",
+          DEFAULT: "#6C63FF",
+          hover: "#5A52E0",
+          light: "#8B85FF",
         },
         secondary: {
-          DEFAULT: "#22D3EE",
+          DEFAULT: "#00D4AA",
+          hover: "#00B894",
         },
         dark: {
-          DEFAULT: "#0F0F1A",
-          card: "#1A1A2E",
-          elevated: "#252540",
+          DEFAULT: "#0A0E1A",
+          card: "#0F1428",
+          elevated: "#19203C",
+          surface: "#111827",
         },
         accent: {
-          streak: "#F97316",
-          xp: "#A855F7",
-          gems: "#22C55E",
+          streak: "#FF6B6B",
+          xp: "#A78BFA",
+          gems: "#34D399",
+          gold: "#FBBF24",
         },
         status: {
           success: "#10B981",
           warning: "#F59E0B",
           error: "#EF4444",
+        },
+        navy: {
+          800: "#0D1542",
+          900: "#070B24",
+          950: "#040714",
         },
       },
       fontFamily: {
@@ -47,6 +56,7 @@ const config: Config = {
         md: "12px",
         lg: "16px",
         xl: "24px",
+        "2xl": "32px",
       },
       spacing: {
         "1": "4px",
@@ -58,6 +68,18 @@ const config: Config = {
         "8": "32px",
         "10": "40px",
         "12": "48px",
+      },
+      boxShadow: {
+        glass: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+        "glass-sm": "0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+        glow: "0 0 20px rgba(108, 99, 255, 0.3)",
+        "glow-green": "0 0 20px rgba(0, 212, 170, 0.3)",
+      },
+      backgroundImage: {
+        "navy-gradient": "linear-gradient(180deg, #0A0E1A 0%, #0D1542 50%, #070B24 100%)",
+        "card-gradient": "linear-gradient(135deg, rgba(15, 20, 40, 0.8) 0%, rgba(10, 14, 30, 0.6) 100%)",
+        "primary-gradient": "linear-gradient(135deg, #6C63FF 0%, #8B85FF 100%)",
+        "secondary-gradient": "linear-gradient(135deg, #00D4AA 0%, #00E5B8 100%)",
       },
     },
   },

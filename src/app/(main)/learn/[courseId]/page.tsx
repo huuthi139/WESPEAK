@@ -55,7 +55,7 @@ function getLessonTypeColor(type: LessonType): string {
     case "speaking": return "bg-accent-streak/20 text-accent-streak";
     case "grammar": return "bg-accent-gems/20 text-accent-gems";
     case "quiz": return "bg-status-warning/20 text-status-warning";
-    default: return "bg-gray-500/20 text-gray-400";
+    default: return "bg-gray-500/20 text-slate-400";
   }
 }
 
@@ -240,7 +240,7 @@ export default function CourseDetailPage() {
     <div className="px-4 pt-4 pb-4">
       {/* Back button */}
       <motion.button
-        className="mb-4 flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors"
+        className="mb-4 flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
         onClick={() => router.push("/learn")}
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
@@ -260,7 +260,7 @@ export default function CourseDetailPage() {
           animated={false}
         >
           <div className="flex items-start gap-3 mb-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-dark-elevated text-[32px] shrink-0">
+            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-white/[0.06] text-[32px] shrink-0">
               {course.language === "chinese" ? "🇨🇳" : course.language === "korean" ? "🇰🇷" : course.language === "japanese" ? "🇯🇵" : "🇬🇧"}
             </div>
             <div className="flex-1 min-w-0">
@@ -276,7 +276,7 @@ export default function CourseDetailPage() {
                 >
                   {course.level}
                 </span>
-                <span className="text-small text-gray-400">
+                <span className="text-small text-slate-400">
                   {course.description}
                 </span>
               </div>
@@ -290,7 +290,7 @@ export default function CourseDetailPage() {
                 <BookOpen size={14} className="text-secondary" />
                 <span className="text-h3">{totalLessons}</span>
               </div>
-              <span className="text-small text-gray-400">bài học</span>
+              <span className="text-small text-slate-400">bài học</span>
             </div>
             <div className="h-8 w-px bg-gray-700" />
             <div className="flex flex-col items-center gap-0.5">
@@ -298,7 +298,7 @@ export default function CourseDetailPage() {
                 <Clock size={14} className="text-accent-streak" />
                 <span className="text-h3">{course.duration_hours}</span>
               </div>
-              <span className="text-small text-gray-400">giờ</span>
+              <span className="text-small text-slate-400">giờ</span>
             </div>
             <div className="h-8 w-px bg-gray-700" />
             <div className="flex flex-col items-center gap-0.5">
@@ -306,7 +306,7 @@ export default function CourseDetailPage() {
                 <CheckCircle2 size={14} className="text-status-success" />
                 <span className="text-h3">{progressPercent}%</span>
               </div>
-              <span className="text-small text-gray-400">hoàn thành</span>
+              <span className="text-small text-slate-400">hoàn thành</span>
             </div>
           </div>
 
@@ -347,7 +347,7 @@ export default function CourseDetailPage() {
                 <h2
                   className={cn(
                     "text-h3 flex-1",
-                    unitStatus === "locked" ? "text-gray-500" : "text-white"
+                    unitStatus === "locked" ? "text-slate-500" : "text-white"
                   )}
                 >
                   {unit.title}
@@ -373,7 +373,7 @@ export default function CourseDetailPage() {
                           isCurrent
                             ? "bg-primary/10 border border-primary/30"
                             : isCompleted
-                            ? "bg-dark-card border border-gray-800/50"
+                            ? "bg-dark-card border border-white/[0.08]"
                             : "bg-dark-card/50 border border-gray-800/30",
                           "hover:border-gray-600"
                         )}
@@ -411,14 +411,14 @@ export default function CourseDetailPage() {
                               <TypeIcon size={10} />
                               {getLessonTypeLabel(lesson.type)}
                             </span>
-                            <span className="text-small text-gray-500">
+                            <span className="text-small text-slate-500">
                               +{lesson.xp_reward} XP
                             </span>
                           </div>
                         </div>
 
                         {/* Chevron */}
-                        <ChevronRight size={16} className="text-gray-500 shrink-0" />
+                        <ChevronRight size={16} className="text-slate-500 shrink-0" />
                       </div>
                     </motion.div>
                   );

@@ -62,17 +62,17 @@ export default function FlashcardsPage() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Link href="/">
-            <ChevronLeft size={24} className="text-gray-400" />
+            <ChevronLeft size={24} className="text-slate-400" />
           </Link>
           <h1 className="text-h2 font-bold">Flashcards</h1>
         </div>
-        <span className="text-small text-gray-400">
+        <span className="text-small text-slate-400">
           {Math.min(reviewed + 1, total)}/{total}
         </span>
       </div>
 
       {/* Progress */}
-      <div className="h-1.5 bg-dark-elevated rounded-full mb-6 overflow-hidden">
+      <div className="h-1.5 bg-white/[0.06] rounded-full mb-6 overflow-hidden">
         <motion.div
           className="h-full bg-primary rounded-full"
           animate={{ width: `${(reviewed / total) * 100}%` }}
@@ -87,7 +87,7 @@ export default function FlashcardsPage() {
         >
           <span className="text-5xl mb-4 block">🎉</span>
           <h2 className="text-h1 font-bold mb-2">Hoàn thành!</h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-slate-400 mb-6">
             Đã biết: {known.length}/{total} • Cần ôn: {unknown.length}/{total}
           </p>
           <div className="flex gap-3 max-w-xs mx-auto">
@@ -118,7 +118,7 @@ export default function FlashcardsPage() {
               >
                 <div
                   className={cn(
-                    "rounded-xl border border-gray-800 bg-dark-card p-8 min-h-[280px] flex flex-col items-center justify-center text-center",
+                    "rounded-xl border border-slate-800 bg-dark-card p-8 min-h-[280px] flex flex-col items-center justify-center text-center",
                     isFlipped && "border-primary/30"
                   )}
                 >
@@ -129,19 +129,19 @@ export default function FlashcardsPage() {
                       <p className="text-secondary text-small mb-4">{current.phonetic}</p>
                       <button
                         onClick={(e) => { e.stopPropagation(); speak(current.word); }}
-                        className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
+                        className="flex items-center gap-1 text-slate-400 hover:text-white transition-colors"
                       >
                         <Volume2 size={16} />
                         <span className="text-small">Nghe</span>
                       </button>
-                      <p className="text-small text-gray-600 mt-6">Nhấn để xem nghĩa</p>
+                      <p className="text-small text-slate-600 mt-6">Nhấn để xem nghĩa</p>
                     </>
                   ) : (
                     <>
                       <VocabIllustration word={current.word} size="md" className="mx-auto mb-3" />
                       <p className="text-h1 font-bold text-primary mb-2">{current.meaning}</p>
-                      <h3 className="text-h3 text-gray-300 mb-4">{current.word}</h3>
-                      <p className="text-small text-gray-400 italic">
+                      <h3 className="text-h3 text-slate-300 mb-4">{current.word}</h3>
+                      <p className="text-small text-slate-400 italic">
                         &ldquo;{current.example}&rdquo;
                       </p>
                     </>

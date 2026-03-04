@@ -126,7 +126,7 @@ export default function RegisterPage() {
             <Languages className="h-8 w-8 text-primary" />
           </motion.div>
           <h1 className="text-h1 text-white">Tạo tài khoản</h1>
-          <p className="mt-1 text-body text-gray-400">
+          <p className="mt-1 text-body text-slate-400">
             Bắt đầu hành trình học ngoại ngữ
           </p>
         </div>
@@ -173,11 +173,11 @@ export default function RegisterPage() {
 
           {/* Password with toggle visibility */}
           <div className="w-full">
-            <label className="mb-1 block text-small text-gray-400">
+            <label className="mb-1 block text-small text-slate-400">
               Mật khẩu
             </label>
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
                 <Lock className="h-4 w-4" />
               </div>
               <input
@@ -190,14 +190,14 @@ export default function RegisterPage() {
                 }}
                 autoComplete="new-password"
                 className={cn(
-                  "w-full rounded-md bg-dark-elevated border border-gray-700 pl-10 pr-10 py-2.5 text-body text-white placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors",
+                  "w-full rounded-md bg-white/[0.06] border border-gray-700 pl-10 pr-10 py-2.5 text-body text-white placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors",
                   errors.password && "border-status-error"
                 )}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -221,7 +221,7 @@ export default function RegisterPage() {
                 className="mt-2"
               >
                 <div className="mb-1 flex items-center justify-between">
-                  <span className="text-small text-gray-500">
+                  <span className="text-small text-slate-500">
                     Độ mạnh mật khẩu
                   </span>
                   <span
@@ -235,7 +235,7 @@ export default function RegisterPage() {
                     {strengthConfig[passwordStrength].label}
                   </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-dark-elevated">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{
@@ -259,11 +259,11 @@ export default function RegisterPage() {
 
           {/* Confirm Password with toggle visibility */}
           <div className="w-full">
-            <label className="mb-1 block text-small text-gray-400">
+            <label className="mb-1 block text-small text-slate-400">
               Xác nhận mật khẩu
             </label>
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
                 <Lock className="h-4 w-4" />
               </div>
               <input
@@ -276,14 +276,14 @@ export default function RegisterPage() {
                 }}
                 autoComplete="new-password"
                 className={cn(
-                  "w-full rounded-md bg-dark-elevated border border-gray-700 pl-10 pr-10 py-2.5 text-body text-white placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors",
+                  "w-full rounded-md bg-white/[0.06] border border-gray-700 pl-10 pr-10 py-2.5 text-body text-white placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors",
                   errors.confirmPassword && "border-status-error"
                 )}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -309,7 +309,7 @@ export default function RegisterPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 text-center text-body text-gray-400"
+          className="mt-8 text-center text-body text-slate-400"
         >
           Đã có tài khoản?{" "}
           <Link

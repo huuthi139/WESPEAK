@@ -23,39 +23,39 @@ type LeaderboardEntry = {
 const LEADERBOARD_DATA: Record<Tab, LeaderboardEntry[]> = {
   today: [
     { rank: 1, name: "Hùng Trần", xp: 320, streak: 25, initial: "H", color: "bg-accent-streak" },
-    { rank: 2, name: "Mai Phạm", xp: 280, streak: 20, initial: "M", color: "bg-gray-400" },
+    { rank: 2, name: "Mai Phạm", xp: 280, streak: 20, initial: "M", color: "bg-slate-400" },
     { rank: 3, name: "Nguyễn Minh", xp: 250, streak: 15, initial: "N", color: "bg-primary", isUser: true },
-    { rank: 4, name: "Linh Nguyễn", xp: 220, streak: 28, initial: "L", color: "bg-gray-600" },
-    { rank: 5, name: "Tú Lê", xp: 190, streak: 28, initial: "T", color: "bg-gray-600" },
-    { rank: 6, name: "Hà Vũ", xp: 160, streak: 22, initial: "H", color: "bg-gray-600" },
-    { rank: 7, name: "Dũng Đỗ", xp: 140, streak: 19, initial: "D", color: "bg-gray-600" },
-    { rank: 8, name: "Lan Hoàng", xp: 120, streak: 16, initial: "L", color: "bg-gray-600" },
-    { rank: 9, name: "Quang Bùi", xp: 95, streak: 14, initial: "Q", color: "bg-gray-600" },
-    { rank: 10, name: "Thảo Đinh", xp: 80, streak: 12, initial: "T", color: "bg-gray-600" },
+    { rank: 4, name: "Linh Nguyễn", xp: 220, streak: 28, initial: "L", color: "bg-slate-600" },
+    { rank: 5, name: "Tú Lê", xp: 190, streak: 28, initial: "T", color: "bg-slate-600" },
+    { rank: 6, name: "Hà Vũ", xp: 160, streak: 22, initial: "H", color: "bg-slate-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 140, streak: 19, initial: "D", color: "bg-slate-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 120, streak: 16, initial: "L", color: "bg-slate-600" },
+    { rank: 9, name: "Quang Bùi", xp: 95, streak: 14, initial: "Q", color: "bg-slate-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 80, streak: 12, initial: "T", color: "bg-slate-600" },
   ],
   week: [
     { rank: 1, name: "Linh Nguyễn", xp: 2420, streak: 28, initial: "L", color: "bg-accent-streak" },
-    { rank: 2, name: "Hùng Trần", xp: 2150, streak: 25, initial: "H", color: "bg-gray-400" },
+    { rank: 2, name: "Hùng Trần", xp: 2150, streak: 25, initial: "H", color: "bg-slate-400" },
     { rank: 3, name: "Mai Phạm", xp: 1900, streak: 20, initial: "M", color: "bg-accent-streak" },
-    { rank: 4, name: "Tú Lê", xp: 1750, streak: 28, initial: "T", color: "bg-gray-600" },
+    { rank: 4, name: "Tú Lê", xp: 1750, streak: 28, initial: "T", color: "bg-slate-600" },
     { rank: 5, name: "Nguyễn Minh", xp: 1650, streak: 15, initial: "N", color: "bg-primary", isUser: true },
-    { rank: 6, name: "Hà Vũ", xp: 1480, streak: 22, initial: "H", color: "bg-gray-600" },
-    { rank: 7, name: "Dũng Đỗ", xp: 1350, streak: 19, initial: "D", color: "bg-gray-600" },
-    { rank: 8, name: "Lan Hoàng", xp: 1200, streak: 16, initial: "L", color: "bg-gray-600" },
-    { rank: 9, name: "Quang Bùi", xp: 1050, streak: 14, initial: "Q", color: "bg-gray-600" },
-    { rank: 10, name: "Thảo Đinh", xp: 950, streak: 12, initial: "T", color: "bg-gray-600" },
+    { rank: 6, name: "Hà Vũ", xp: 1480, streak: 22, initial: "H", color: "bg-slate-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 1350, streak: 19, initial: "D", color: "bg-slate-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 1200, streak: 16, initial: "L", color: "bg-slate-600" },
+    { rank: 9, name: "Quang Bùi", xp: 1050, streak: 14, initial: "Q", color: "bg-slate-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 950, streak: 12, initial: "T", color: "bg-slate-600" },
   ],
   all: [
     { rank: 1, name: "Linh Nguyễn", xp: 15420, streak: 28, initial: "L", color: "bg-accent-streak" },
-    { rank: 2, name: "Hùng Trần", xp: 14850, streak: 25, initial: "H", color: "bg-gray-400" },
+    { rank: 2, name: "Hùng Trần", xp: 14850, streak: 25, initial: "H", color: "bg-slate-400" },
     { rank: 3, name: "Mai Phạm", xp: 13200, streak: 20, initial: "M", color: "bg-accent-streak" },
-    { rank: 4, name: "Tú Lê", xp: 12450, streak: 28, initial: "T", color: "bg-gray-600" },
+    { rank: 4, name: "Tú Lê", xp: 12450, streak: 28, initial: "T", color: "bg-slate-600" },
     { rank: 5, name: "Nguyễn Minh", xp: 12450, streak: 15, initial: "N", color: "bg-primary", isUser: true },
-    { rank: 6, name: "Hà Vũ", xp: 11800, streak: 22, initial: "H", color: "bg-gray-600" },
-    { rank: 7, name: "Dũng Đỗ", xp: 10950, streak: 19, initial: "D", color: "bg-gray-600" },
-    { rank: 8, name: "Lan Hoàng", xp: 10200, streak: 16, initial: "L", color: "bg-gray-600" },
-    { rank: 9, name: "Quang Bùi", xp: 9850, streak: 14, initial: "Q", color: "bg-gray-600" },
-    { rank: 10, name: "Thảo Đinh", xp: 9500, streak: 12, initial: "T", color: "bg-gray-600" },
+    { rank: 6, name: "Hà Vũ", xp: 11800, streak: 22, initial: "H", color: "bg-slate-600" },
+    { rank: 7, name: "Dũng Đỗ", xp: 10950, streak: 19, initial: "D", color: "bg-slate-600" },
+    { rank: 8, name: "Lan Hoàng", xp: 10200, streak: 16, initial: "L", color: "bg-slate-600" },
+    { rank: 9, name: "Quang Bùi", xp: 9850, streak: 14, initial: "Q", color: "bg-slate-600" },
+    { rank: 10, name: "Thảo Đinh", xp: 9500, streak: 12, initial: "T", color: "bg-slate-600" },
   ],
 };
 
@@ -67,7 +67,7 @@ const podiumColors = {
 
 const crownColors = {
   1: "text-yellow-400",
-  2: "text-gray-400",
+  2: "text-slate-400",
   3: "text-orange-400",
 };
 
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link href="/">
-          <ChevronLeft size={24} className="text-gray-400" />
+          <ChevronLeft size={24} className="text-slate-400" />
         </Link>
         <h1 className="text-h2 font-bold flex items-center gap-2">
           🏆 Bảng xếp hạng
@@ -126,7 +126,7 @@ export default function LeaderboardPage() {
       </motion.div>
 
       {/* Tabs */}
-      <div className="flex bg-dark-card rounded-lg p-1 mb-4 border border-gray-800/50">
+      <div className="flex bg-dark-card rounded-lg p-1 mb-4 border border-white/[0.08]">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -134,8 +134,8 @@ export default function LeaderboardPage() {
             className={cn(
               "flex-1 py-2 text-small font-medium rounded-md transition-all",
               activeTab === tab.key
-                ? "bg-dark-elevated text-white"
-                : "text-gray-500 hover:text-gray-300"
+                ? "bg-white/[0.06] text-white"
+                : "text-slate-500 hover:text-slate-300"
             )}
           >
             {tab.label}
@@ -158,7 +158,7 @@ export default function LeaderboardPage() {
               </div>
               <div className="flex-1">
                 <p className="text-body font-semibold text-primary">{userEntry.name} (Bạn)</p>
-                <div className="flex items-center gap-2 text-small text-gray-400">
+                <div className="flex items-center gap-2 text-small text-slate-400">
                   <span>{userEntry.xp.toLocaleString()} XP</span>
                   <span className="flex items-center gap-0.5">
                     <Flame size={12} className="text-accent-streak" /> {userEntry.streak}
@@ -187,7 +187,7 @@ export default function LeaderboardPage() {
               )}
             >
               <div className="flex items-center gap-3">
-                <span className="text-body font-bold text-gray-400 w-8">{entry.rank}</span>
+                <span className="text-body font-bold text-slate-400 w-8">{entry.rank}</span>
                 <div className={cn("w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm", entry.color)}>
                   {entry.initial}
                 </div>
@@ -195,7 +195,7 @@ export default function LeaderboardPage() {
                   <p className={cn("text-body font-semibold", entry.isUser && "text-primary")}>
                     {entry.name}{entry.isUser ? " (Bạn)" : ""}
                   </p>
-                  <div className="flex items-center gap-2 text-small text-gray-400">
+                  <div className="flex items-center gap-2 text-small text-slate-400">
                     <span>{entry.xp.toLocaleString()} XP</span>
                     <span className="flex items-center gap-0.5">
                       <Flame size={12} className="text-accent-streak" /> {entry.streak}
