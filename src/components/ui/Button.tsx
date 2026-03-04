@@ -26,17 +26,17 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-semibold rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed";
+      "inline-flex items-center justify-center font-semibold rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden";
 
     const variants = {
       primary:
-        "bg-primary-gradient text-white shadow-glow hover:shadow-[0_0_30px_rgba(108,99,255,0.4)] hover:brightness-110",
+        "bg-primary-gradient text-white shadow-glow btn-3d glass-shine hover:shadow-glow-lg hover:brightness-110",
       secondary:
-        "bg-secondary-gradient text-white shadow-glow-green hover:shadow-[0_0_30px_rgba(0,212,170,0.4)] hover:brightness-110",
-      ghost: "hover:bg-white/[0.06] text-white",
+        "bg-secondary-gradient text-white shadow-glow-green btn-3d glass-shine hover:shadow-glow-green-lg hover:brightness-110",
+      ghost: "hover:bg-white/[0.06] text-white active:bg-white/[0.1]",
       outline:
-        "border border-white/[0.12] hover:border-primary/50 text-white hover:text-primary hover:bg-primary/[0.06]",
-      glass: "btn-glass text-white",
+        "border border-white/[0.12] hover:border-primary/50 text-white hover:text-primary hover:bg-primary/[0.06] btn-3d",
+      glass: "btn-glass text-white glass-shine",
     };
 
     const sizes = {
@@ -48,7 +48,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
-        whileTap={{ scale: 0.97 }}
+        whileHover={{ y: -2, transition: { duration: 0.15 } }}
+        whileTap={{
+          y: 2,
+          scale: 0.97,
+          transition: { duration: 0.1 },
+        }}
         className={cn(
           baseStyles,
           variants[variant],
@@ -62,7 +67,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
         ) : null}
-        {children}
+        <span className="relative z-10">{children}</span>
       </motion.button>
     );
   }

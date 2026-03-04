@@ -72,8 +72,13 @@ const config: Config = {
       boxShadow: {
         glass: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
         "glass-sm": "0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
-        glow: "0 0 20px rgba(108, 99, 255, 0.3)",
-        "glow-green": "0 0 20px rgba(0, 212, 170, 0.3)",
+        "3d": "0 4px 14px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+        "3d-lg": "0 8px 28px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12)",
+        "3d-float": "0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+        glow: "0 0 20px rgba(108, 99, 255, 0.3), 0 4px 14px rgba(0, 0, 0, 0.3)",
+        "glow-lg": "0 0 30px rgba(108, 99, 255, 0.4), 0 0 60px rgba(108, 99, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.3)",
+        "glow-green": "0 0 20px rgba(0, 212, 170, 0.3), 0 4px 14px rgba(0, 0, 0, 0.3)",
+        "glow-green-lg": "0 0 30px rgba(0, 212, 170, 0.4), 0 0 60px rgba(0, 212, 170, 0.15), 0 8px 24px rgba(0, 0, 0, 0.3)",
       },
       backgroundImage: {
         "navy-gradient": "linear-gradient(180deg, #0A0E1A 0%, #0D1542 50%, #070B24 100%)",

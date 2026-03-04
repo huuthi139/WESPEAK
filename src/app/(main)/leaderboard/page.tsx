@@ -105,15 +105,22 @@ export default function LeaderboardPage() {
           const heights = { 1: "h-28", 2: "h-20", 3: "h-16" };
           const avatarSizes = { 1: "w-16 h-16", 2: "w-12 h-12", 3: "w-12 h-12" };
 
+          const glowShadows = {
+            1: "shadow-[0_0_12px_rgba(251,191,36,0.3)]",
+            2: "shadow-[0_0_12px_rgba(148,163,184,0.3)]",
+            3: "shadow-[0_0_12px_rgba(251,146,60,0.3)]",
+          };
+
           return (
             <div key={entry.rank} className="flex flex-col items-center flex-1">
               <div className={cn("rounded-full flex items-center justify-center text-lg font-bold mb-2", avatarSizes[podiumRank as 1 | 2 | 3], entry.color)}>
                 {entry.initial}
               </div>
               <div className={cn(
-                "w-full rounded-t-lg flex flex-col items-center justify-center bg-gradient-to-b",
+                "w-full rounded-t-lg flex flex-col items-center justify-center bg-gradient-to-b glass-3d glass-shine",
                 podiumColors[podiumRank as 1 | 2 | 3],
-                heights[podiumRank as 1 | 2 | 3]
+                heights[podiumRank as 1 | 2 | 3],
+                glowShadows[podiumRank as 1 | 2 | 3]
               )}>
                 <Crown size={podiumRank === 1 ? 24 : 18} className={crownColors[podiumRank as 1 | 2 | 3]} />
                 <span className="text-h3 font-bold mt-1">{podiumRank}</span>
@@ -134,8 +141,8 @@ export default function LeaderboardPage() {
             className={cn(
               "flex-1 py-2 text-small font-medium rounded-md transition-all",
               activeTab === tab.key
-                ? "bg-white/[0.06] text-white"
-                : "text-slate-500 hover:text-slate-300"
+                ? "bg-white/[0.06] text-white btn-3d"
+                : "text-slate-500 hover:text-slate-300 hover:-translate-y-0.5"
             )}
           >
             {tab.label}
@@ -183,6 +190,7 @@ export default function LeaderboardPage() {
             <Card
               key={entry.rank}
               className={cn(
+                "glass-3d",
                 entry.isUser && "border-primary/30 bg-primary/5"
               )}
             >

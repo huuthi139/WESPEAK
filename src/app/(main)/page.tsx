@@ -159,7 +159,7 @@ export default function HomePage() {
       >
         <div className="flex items-center gap-3">
           {/* Avatar */}
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-h3 text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-gradient shadow-glow text-h3 text-white glass-shine">
             {name.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -169,15 +169,18 @@ export default function HomePage() {
         </div>
 
         {/* Notification bell */}
-        <button className="relative rounded-lg p-2 transition-colors hover:bg-white/[0.06]">
+        <motion.button
+          whileTap={{ scale: 0.9, y: 1 }}
+          className="relative rounded-xl p-2 glass-3d transition-colors hover:bg-white/[0.08] press-glow"
+        >
           <Bell className="h-5 w-5 text-slate-400" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-status-error" />
-        </button>
+          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-status-error shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
+        </motion.button>
       </motion.header>
 
       {/* Stats row */}
       <motion.div
-        className="flex items-center justify-around rounded-lg bg-dark-card px-3 py-3 border border-white/[0.08]"
+        className="glass-3d glass-shine flex items-center justify-around rounded-xl px-3 py-3"
         variants={itemVariants}
       >
         <div className="flex items-center gap-1.5">
@@ -205,7 +208,7 @@ export default function HomePage() {
       {/* ========== 2. AI Mascot Card ========== */}
       <motion.div variants={itemVariants}>
         <Card
-          className="bg-gradient-to-br from-primary/20 via-dark-card to-secondary/10 border-primary/30"
+          className="!bg-gradient-to-br !from-primary/20 !via-dark-card !to-secondary/10 !border-primary/30 !shadow-glow"
           animated={false}
         >
           <div className="flex items-start gap-3">
@@ -222,27 +225,33 @@ export default function HomePage() {
 
           {/* Quick action buttons */}
           <div className="mt-4 flex gap-2">
-            <button
+            <motion.button
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 1, scale: 0.96 }}
               onClick={() => router.push("/chat")}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-small font-semibold text-white transition-colors hover:bg-primary-hover"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary-gradient py-2.5 text-small font-semibold text-white btn-3d glass-shine press-glow"
             >
               <MessageCircle className="h-4 w-4" />
               Chat
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 1, scale: 0.96 }}
               onClick={() => router.push("/chat")}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/[0.06] py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.08] py-2.5 text-small font-semibold text-white btn-3d glass-shine press-glow"
             >
               <Users className="h-4 w-4" />
               Role-play
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 1, scale: 0.96 }}
               onClick={() => router.push("/learn")}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/[0.06] py-2.5 text-small font-semibold text-white transition-colors hover:bg-gray-700"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.08] py-2.5 text-small font-semibold text-white btn-3d glass-shine press-glow"
             >
               <BookOpen className="h-4 w-4" />
               Học
-            </button>
+            </motion.button>
           </div>
         </Card>
       </motion.div>
@@ -254,8 +263,8 @@ export default function HomePage() {
           className="flex items-center gap-3"
           onClick={() => router.push(`/learn/${continueCourse.id}`)}
         >
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-secondary/20">
-            <BookOpen className="h-6 w-6 text-secondary" />
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/20 shadow-[0_0_12px_rgba(0,212,170,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <BookOpen className="h-6 w-6 text-secondary drop-shadow-[0_0_4px_rgba(0,212,170,0.4)]" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-body font-semibold text-white truncate">
@@ -274,7 +283,7 @@ export default function HomePage() {
               />
             </div>
           </div>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary-gradient shadow-glow-green btn-3d">
             <Play className="h-5 w-5 text-dark fill-dark" />
           </div>
         </Card>
@@ -343,11 +352,11 @@ export default function HomePage() {
             >
               <div
                 className={cn(
-                  "flex h-12 w-12 items-center justify-center rounded-full",
+                  "flex h-12 w-12 items-center justify-center rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_4px_12px_rgba(0,0,0,0.2)]",
                   item.bg
                 )}
               >
-                <item.icon className={cn("h-6 w-6", item.color)} />
+                <item.icon className={cn("h-6 w-6 drop-shadow-[0_0_4px_rgba(255,255,255,0.2)]", item.color)} />
               </div>
               <span className="text-small font-semibold text-white">
                 {item.label}
@@ -378,8 +387,8 @@ export default function HomePage() {
                     className={cn(
                       "flex h-9 w-9 items-center justify-center rounded-full text-small font-semibold transition-colors",
                       active
-                        ? "bg-accent-streak text-white"
-                        : "bg-white/[0.06] text-slate-500"
+                        ? "bg-accent-streak text-white shadow-[0_0_10px_rgba(255,107,107,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] btn-3d"
+                        : "bg-white/[0.06] text-slate-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                     )}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}

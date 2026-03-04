@@ -92,12 +92,12 @@ export default function ProfilePage() {
       <motion.div variants={item}>
         <Card className="text-center mb-4">
           <div className="relative inline-block mx-auto mb-3">
-            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-2xl font-bold mx-auto">
+            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-2xl font-bold mx-auto shadow-glow glass-shine">
               {name.charAt(0).toUpperCase()}
             </div>
             <Link
               href="/settings"
-              className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-white/[0.06] border border-slate-700 flex items-center justify-center hover:border-primary transition-colors"
+              className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-white/[0.06] border border-slate-700 flex items-center justify-center hover:border-primary transition-colors btn-3d"
             >
               <Pencil size={14} className="text-slate-400" />
             </Link>
@@ -126,7 +126,7 @@ export default function ProfilePage() {
           { icon: <BookOpen size={20} className="text-accent-gems" />, value: lessonsCompleted, label: "Bài học" },
           { icon: <Clock size={20} className="text-secondary" />, value: totalHours, label: "Giờ học" },
         ].map((stat, i) => (
-          <Card key={i} className="text-center py-3 px-2">
+          <Card key={i} className="glass-3d glass-shine text-center py-3 px-2">
             <div className="flex justify-center mb-1">{stat.icon}</div>
             <p className="text-h3 font-bold">{stat.value}</p>
             <p className="text-[11px] text-slate-500">{stat.label}</p>
@@ -144,7 +144,7 @@ export default function ProfilePage() {
         </div>
         <div className="grid grid-cols-3 gap-2">
           {mockAchievements.map((achievement, i) => (
-            <Card key={i} className="text-center py-3 px-2">
+            <Card key={i} className="glass-3d glass-shine text-center py-3 px-2">
               <span className="text-2xl block mb-1">{achievement.icon}</span>
               <p className="text-small font-semibold">{achievement.name}</p>
               <p className="text-[10px] text-slate-500 mt-0.5">{achievement.desc}</p>

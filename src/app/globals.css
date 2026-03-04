@@ -63,9 +63,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ==================== Glass Morphism Utilities ==================== */
+/* ==================== Glass Morphism & 3D Utilities ==================== */
 
 @layer utilities {
+  /* --- Base Glass --- */
   .glass {
     background: rgba(15, 20, 40, 0.65);
     backdrop-filter: blur(20px);
@@ -87,6 +88,60 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  /* --- 3D Elevated Glass --- */
+  .glass-3d {
+    background: rgba(15, 20, 40, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .glass-3d-heavy {
+    background: rgba(15, 20, 40, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 6px 24px rgba(0, 0, 0, 0.4),
+      0 12px 48px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  /* --- Light Shine (top-left glass reflection) --- */
+  .glass-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-shine::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 50%;
+    bottom: 60%;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* --- Glow effects --- */
   .glow-primary {
     box-shadow: 0 0 20px rgba(108, 99, 255, 0.25), 0 0 60px rgba(108, 99, 255, 0.1);
   }
@@ -95,17 +150,94 @@ body {
     box-shadow: 0 0 20px rgba(0, 212, 170, 0.25), 0 0 60px rgba(0, 212, 170, 0.1);
   }
 
+  /* --- Glass Button with 3D --- */
   .btn-glass {
     background: rgba(108, 99, 255, 0.15);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(108, 99, 255, 0.3);
-    transition: all 0.2s ease;
+    border-top-color: rgba(108, 99, 255, 0.45);
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-glass:hover {
     background: rgba(108, 99, 255, 0.25);
     border-color: rgba(108, 99, 255, 0.5);
-    box-shadow: 0 0 20px rgba(108, 99, 255, 0.2);
+    box-shadow:
+      0 6px 20px rgba(108, 99, 255, 0.25),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .btn-glass:active {
+    transform: translateY(1px);
+    box-shadow:
+      0 1px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* --- 3D Button (elevated, press-down on click) --- */
+  .btn-3d {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 4px 14px rgba(0, 0, 0, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-3d:hover {
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.35),
+      0 2px 6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .btn-3d:active {
+    border-bottom-width: 1px;
+    box-shadow:
+      0 1px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(2px);
+  }
+
+  /* --- Press glow burst animation --- */
+  @keyframes press-glow {
+    0% {
+      box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px 4px rgba(108, 99, 255, 0.3);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(108, 99, 255, 0);
+    }
+  }
+
+  @keyframes press-glow-green {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px 4px rgba(0, 212, 170, 0.3);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 212, 170, 0);
+    }
+  }
+
+  .press-glow:active {
+    animation: press-glow 0.4s ease-out;
+  }
+
+  .press-glow-green:active {
+    animation: press-glow-green 0.4s ease-out;
   }
 }

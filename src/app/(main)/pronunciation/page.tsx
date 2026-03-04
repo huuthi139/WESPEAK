@@ -134,7 +134,7 @@ export default function PronunciationPage() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
         >
-          <Card className="text-center py-8 mb-4">
+          <Card className="glass-3d glass-shine text-center py-8 mb-4">
             <VocabIllustration word={current.word} size="md" className="mx-auto mb-3" />
             <h2 className="text-3xl font-bold tracking-wider mb-2">
               {current.word}
@@ -162,9 +162,9 @@ export default function PronunciationPage() {
               whileTap={{ scale: 0.95 }}
               onClick={handleRecord}
               className={cn(
-                "w-20 h-20 rounded-full flex items-center justify-center transition-all",
+                "btn-3d w-20 h-20 rounded-full flex items-center justify-center transition-all",
                 isRecording
-                  ? "bg-status-error animate-pulse shadow-lg shadow-status-error/30"
+                  ? "bg-status-error animate-pulse shadow-lg shadow-status-error/30 shadow-glow"
                   : "bg-primary hover:bg-primary-hover shadow-lg shadow-primary/30"
               )}
             >
@@ -181,7 +181,7 @@ export default function PronunciationPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <Card className="mb-4">
+              <Card className="glass-3d mb-4">
                 <div className="text-center mb-4">
                   <span className={cn("text-4xl font-bold", getScoreColor(overallScore))}>
                     {overallScore}%
@@ -229,7 +229,7 @@ export default function PronunciationPage() {
                 </div>
               </Card>
 
-              <Card className="mb-4 border-primary/20 bg-primary/5">
+              <Card className="glass-3d mb-4 border-primary/20 bg-primary/5">
                 <p className="text-small">
                   💡 {current.tip}
                 </p>

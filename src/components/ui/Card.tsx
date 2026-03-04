@@ -8,6 +8,7 @@ interface CardProps {
   className?: string;
   onClick?: () => void;
   animated?: boolean;
+  glow?: "primary" | "secondary" | "none";
 }
 
 export default function Card({
@@ -15,17 +16,34 @@ export default function Card({
   className,
   onClick,
   animated = true,
+  glow = "none",
 }: CardProps) {
   const Component = animated ? motion.div : "div";
+
+  const glowMap = {
+    primary: "hover:shadow-glow",
+    secondary: "hover:shadow-glow-green",
+    none: "",
+  };
+
   const animationProps = animated
-    ? { whileTap: onClick ? { scale: 0.98 } : undefined }
+    ? {
+        whileHover: onClick
+          ? { y: -3, transition: { duration: 0.2, ease: "easeOut" as const } }
+          : undefined,
+        whileTap: onClick
+          ? { y: 1, scale: 0.98, transition: { duration: 0.1 } }
+          : undefined,
+      }
     : {};
 
   return (
     <Component
       className={cn(
-        "glass rounded-xl p-4 shadow-glass-sm",
-        onClick && "cursor-pointer hover:border-white/[0.14] transition-all",
+        "glass-3d glass-shine rounded-xl p-4",
+        onClick &&
+          "cursor-pointer transition-all press-glow",
+        glowMap[glow],
         className
       )}
       onClick={onClick}

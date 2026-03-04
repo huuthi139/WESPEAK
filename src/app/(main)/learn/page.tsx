@@ -147,19 +147,20 @@ export default function LearnPage() {
         transition={{ delay: 0.03 }}
       >
         {LANGUAGE_TABS.map((tab) => (
-          <button
+          <motion.button
             key={tab.key}
+            whileTap={{ scale: 0.93, y: 1 }}
             onClick={() => setActiveLanguage(tab.key)}
             className={cn(
-              "flex items-center gap-1.5 shrink-0 rounded-full px-3.5 py-2 text-small font-medium transition-colors",
+              "flex items-center gap-1.5 shrink-0 rounded-full px-3.5 py-2 text-small font-medium transition-all btn-3d",
               activeLanguage === tab.key
-                ? "bg-primary text-white"
-                : "bg-white/[0.06] text-slate-400 hover:bg-white/[0.06]/80"
+                ? "bg-primary-gradient text-white shadow-glow glass-shine"
+                : "bg-white/[0.06] text-slate-400 hover:bg-white/[0.08] hover:-translate-y-0.5"
             )}
           >
             <span className="text-[16px]">{tab.flag}</span>
             {tab.label}
-          </button>
+          </motion.button>
         ))}
       </motion.div>
 
@@ -179,7 +180,7 @@ export default function LearnPage() {
           placeholder="Tìm kiếm khóa học..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-md bg-white/[0.06] border border-gray-700 pl-10 pr-4 py-2.5 text-body text-white placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors"
+          className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-10 pr-4 py-2.5 text-body text-white placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-[0_0_12px_rgba(108,99,255,0.15)] shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] transition-all"
         />
       </motion.div>
 
@@ -208,7 +209,7 @@ export default function LearnPage() {
                   onClick={() => router.push(`/learn/${course.id}`)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white/[0.06] text-[28px] shrink-0">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.06] text-[28px] shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_12px_rgba(0,0,0,0.2)]">
                       {getLanguageFlag(course.language)}
                     </div>
                     <div className="flex-1 min-w-0">
