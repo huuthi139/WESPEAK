@@ -188,7 +188,7 @@ export default function OnboardingPage() {
           {step > 0 ? (
             <button
               onClick={handleBack}
-              className="flex items-center gap-1 text-body text-gray-400 hover:text-white transition-colors"
+              className="flex items-center gap-1 text-body text-slate-400 hover:text-white transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
               <span>Quay l\u1ea1i</span>
@@ -196,7 +196,7 @@ export default function OnboardingPage() {
           ) : (
             <div />
           )}
-          <span className="text-small text-gray-500">
+          <span className="text-small text-slate-500">
             {step + 1}/{TOTAL_STEPS}
           </span>
         </div>
@@ -212,7 +212,7 @@ export default function OnboardingPage() {
                   ? "bg-primary w-8"
                   : i < step
                     ? "bg-primary/50 w-2"
-                    : "bg-dark-elevated w-2"
+                    : "bg-white/[0.06] w-2"
               )}
               layout
               transition={{ duration: 0.3 }}
@@ -247,7 +247,7 @@ export default function OnboardingPage() {
                 <h1 className="text-h1 text-white">
                   Ch\u1ecdn ng\u00f4n ng\u1eef
                 </h1>
-                <p className="mt-1 text-body text-gray-400">
+                <p className="mt-1 text-body text-slate-400">
                   B\u1ea1n mu\u1ed1n h\u1ecdc ng\u00f4n ng\u1eef n\u00e0o?
                 </p>
               </div>
@@ -280,7 +280,7 @@ export default function OnboardingPage() {
                       <span
                         className={cn(
                           "text-body font-medium",
-                          isSelected ? "text-white" : "text-gray-400"
+                          isSelected ? "text-white" : "text-slate-400"
                         )}
                       >
                         {lang.name}
@@ -290,7 +290,7 @@ export default function OnboardingPage() {
                 })}
               </div>
 
-              <p className="mt-4 text-center text-small text-gray-500">
+              <p className="mt-4 text-center text-small text-slate-500">
                 B\u1ea1n c\u00f3 th\u1ec3 ch\u1ecdn nhi\u1ec1u ng\u00f4n
                 ng\u1eef
               </p>
@@ -312,7 +312,7 @@ export default function OnboardingPage() {
                 <h1 className="text-h1 text-white">
                   Tr\u00ecnh \u0111\u1ed9 c\u1ee7a b\u1ea1n
                 </h1>
-                <p className="mt-1 text-body text-gray-400">
+                <p className="mt-1 text-body text-slate-400">
                   Ch\u1ecdn tr\u00ecnh \u0111\u1ed9 hi\u1ec7n t\u1ea1i c\u1ee7a
                   b\u1ea1n
                 </p>
@@ -354,12 +354,12 @@ export default function OnboardingPage() {
                         <p
                           className={cn(
                             "text-h3",
-                            isSelected ? "text-white" : "text-gray-300"
+                            isSelected ? "text-white" : "text-slate-300"
                           )}
                         >
                           {level.label}
                         </p>
-                        <p className="text-small text-gray-500">
+                        <p className="text-small text-slate-500">
                           {level.description}
                         </p>
                       </div>
@@ -385,7 +385,7 @@ export default function OnboardingPage() {
                 <h1 className="text-h1 text-white">
                   M\u1ee5c ti\u00eau h\u00e0ng ng\u00e0y
                 </h1>
-                <p className="mt-1 text-body text-gray-400">
+                <p className="mt-1 text-body text-slate-400">
                   B\u1ea1n mu\u1ed1n h\u1ecdc bao l\u00e2u m\u1ed7i
                   ng\u00e0y?
                 </p>
@@ -409,12 +409,12 @@ export default function OnboardingPage() {
                       <span
                         className={cn(
                           "text-h2",
-                          isSelected ? "text-primary" : "text-gray-300"
+                          isSelected ? "text-primary" : "text-slate-300"
                         )}
                       >
                         {goal.label}
                       </span>
-                      <span className="text-small text-gray-500">
+                      <span className="text-small text-slate-500">
                         {goal.description}
                       </span>
                     </motion.button>

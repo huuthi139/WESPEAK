@@ -154,7 +154,7 @@ export default function LearnPage() {
               "flex items-center gap-1.5 shrink-0 rounded-full px-3.5 py-2 text-small font-medium transition-colors",
               activeLanguage === tab.key
                 ? "bg-primary text-white"
-                : "bg-dark-elevated text-gray-400 hover:bg-dark-elevated/80"
+                : "bg-white/[0.06] text-slate-400 hover:bg-white/[0.06]/80"
             )}
           >
             <span className="text-[16px]">{tab.flag}</span>
@@ -172,14 +172,14 @@ export default function LearnPage() {
       >
         <Search
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
         />
         <input
           type="text"
           placeholder="Tìm kiếm khóa học..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-md bg-dark-elevated border border-gray-700 pl-10 pr-4 py-2.5 text-body text-white placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors"
+          className="w-full rounded-md bg-white/[0.06] border border-gray-700 pl-10 pr-4 py-2.5 text-body text-white placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors"
         />
       </motion.div>
 
@@ -208,7 +208,7 @@ export default function LearnPage() {
                   onClick={() => router.push(`/learn/${course.id}`)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-md bg-dark-elevated text-[28px] shrink-0">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white/[0.06] text-[28px] shrink-0">
                       {getLanguageFlag(course.language)}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -225,7 +225,7 @@ export default function LearnPage() {
                           {course.level}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-small text-gray-400">
+                      <div className="flex items-center gap-3 text-small text-slate-400">
                         <span className="flex items-center gap-1">
                           <BookOpen size={12} />
                           {course.total_lessons} bài
@@ -279,7 +279,7 @@ export default function LearnPage() {
                   className="flex items-start gap-3"
                   onClick={() => router.push(`/learn/${course.id}`)}
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-dark-elevated text-[28px] shrink-0">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white/[0.06] text-[28px] shrink-0">
                     {getLanguageFlag(course.language)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -296,10 +296,10 @@ export default function LearnPage() {
                         {course.level}
                       </span>
                     </div>
-                    <p className="text-small text-gray-400 mb-1.5">
+                    <p className="text-small text-slate-400 mb-1.5">
                       {course.description}
                     </p>
-                    <div className="flex items-center gap-3 text-small text-gray-500">
+                    <div className="flex items-center gap-3 text-small text-slate-500">
                       <span className="flex items-center gap-1">
                         <BookOpen size={12} />
                         {course.total_lessons} bài
@@ -324,7 +324,7 @@ export default function LearnPage() {
       {/* Empty search */}
       {filtered.length === 0 && (
         <motion.div
-          className="flex flex-col items-center justify-center py-12 text-gray-500"
+          className="flex flex-col items-center justify-center py-12 text-slate-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >

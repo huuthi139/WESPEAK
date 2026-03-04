@@ -72,7 +72,7 @@ function VocabularyLesson({
         >
           {/* Card */}
           <div
-            className="w-full rounded-xl bg-dark-card border border-gray-800/50 p-6 text-center cursor-pointer"
+            className="w-full rounded-xl bg-dark-card border border-white/[0.08] p-6 text-center cursor-pointer"
             onClick={() => setFlipped(!flipped)}
           >
             <VocabIllustration word={word.word} size="lg" className="mx-auto mb-4" />
@@ -90,34 +90,34 @@ function VocabularyLesson({
                   className="mt-3 border-t border-gray-700 pt-3"
                 >
                   <p className="text-h2 text-primary mb-2">{word.translation}</p>
-                  <p className="text-body text-gray-300">{word.example}</p>
+                  <p className="text-body text-slate-300">{word.example}</p>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {!flipped && (
-              <p className="text-small text-gray-500 mt-3">Nhấn để xem nghĩa</p>
+              <p className="text-small text-slate-500 mt-3">Nhấn để xem nghĩa</p>
             )}
           </div>
 
           {/* Listen buttons */}
           <div className="flex items-center gap-3 mt-4">
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-dark-elevated px-3 py-2 text-small text-gray-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
               onClick={() => speak(word.word, 0.7)}
             >
               <Volume2 size={14} />
               Chậm
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-dark-elevated px-3 py-2 text-small text-gray-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
               onClick={() => speak(word.word)}
             >
               <Volume2 size={14} />
               Nghe
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-dark-elevated px-3 py-2 text-small text-gray-300 hover:border-secondary hover:text-secondary transition-colors"
+              className="flex items-center gap-1.5 rounded-full border border-gray-700 bg-white/[0.06] px-3 py-2 text-small text-slate-300 hover:border-secondary hover:text-secondary transition-colors"
               onClick={() => speak(word.example)}
             >
               <Volume2 size={14} />
@@ -213,12 +213,12 @@ function ListeningLesson({
     return (
       <div className="flex flex-col items-center flex-1">
         <div className="w-full max-w-sm">
-          <div className="rounded-xl bg-dark-card border border-gray-800/50 p-5 mb-6">
+          <div className="rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Volume2 size={18} className="text-secondary" />
               <span className="text-h3 text-white">Nghe đoạn hội thoại</span>
             </div>
-            <p className="text-body text-gray-300 leading-relaxed whitespace-pre-wrap">
+            <p className="text-body text-slate-300 leading-relaxed whitespace-pre-wrap">
               {audioText}
             </p>
           </div>
@@ -263,7 +263,7 @@ function ListeningLesson({
   return (
     <div className="flex flex-col items-center flex-1">
       <div className="w-full max-w-sm">
-        <p className="text-small text-gray-400 mb-2">
+        <p className="text-small text-slate-400 mb-2">
           Câu {qIndex + 1}/{questions.length}
         </p>
         <h3 className="text-h2 text-white mb-6">{q.question}</h3>
@@ -292,7 +292,7 @@ function ListeningLesson({
                 onClick={() => handleAnswer(i)}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="mr-2 font-semibold text-gray-500">
+                <span className="mr-2 font-semibold text-slate-500">
                   {String.fromCharCode(65 + i)}.
                 </span>
                 {opt}
@@ -372,9 +372,9 @@ function SpeakingLesson({
           className="flex flex-col items-center w-full max-w-sm"
         >
           {/* Phrase card */}
-          <div className="w-full rounded-xl bg-dark-card border border-gray-800/50 p-6 text-center">
+          <div className="w-full rounded-xl bg-dark-card border border-white/[0.08] p-6 text-center">
             <h2 className="text-h1 text-white mb-2">{phrase.text}</h2>
-            <p className="text-body text-gray-400">{phrase.translation}</p>
+            <p className="text-body text-slate-400">{phrase.translation}</p>
           </div>
 
           {/* Listen */}
@@ -409,7 +409,7 @@ function SpeakingLesson({
             )}
             <Mic size={32} className="text-white" />
           </motion.button>
-          <p className="text-small text-gray-400 mt-2">
+          <p className="text-small text-slate-400 mt-2">
             {isListening ? "Đang nghe... Nhấn để dừng" : "Nhấn để nói"}
           </p>
 
@@ -420,7 +420,7 @@ function SpeakingLesson({
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 w-full rounded-lg bg-primary/10 border border-primary/30 px-4 py-3"
             >
-              <p className="text-small text-gray-400 mb-1">Bạn nói:</p>
+              <p className="text-small text-slate-400 mb-1">Bạn nói:</p>
               <p className="text-body text-white">{transcript}</p>
             </motion.div>
           )}
@@ -494,12 +494,12 @@ function GrammarLesson({
       <div className="flex flex-col items-center flex-1">
         <div className="w-full max-w-sm">
           {/* Explanation */}
-          <div className="rounded-xl bg-dark-card border border-gray-800/50 p-5 mb-4">
+          <div className="rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-4">
             <div className="flex items-center gap-2 mb-3">
               <BookOpen size={18} className="text-accent-gems" />
               <span className="text-h3 text-white">Ngữ pháp</span>
             </div>
-            <div className="text-body text-gray-300 leading-relaxed whitespace-pre-wrap">
+            <div className="text-body text-slate-300 leading-relaxed whitespace-pre-wrap">
               {content.explanation}
             </div>
           </div>
@@ -511,7 +511,7 @@ function GrammarLesson({
                 Ví dụ:
               </p>
               {content.examples.map((ex, i) => (
-                <p key={i} className="text-body text-gray-300 mb-1">
+                <p key={i} className="text-body text-slate-300 mb-1">
                   {ex}
                 </p>
               ))}
@@ -561,7 +561,7 @@ function GrammarLesson({
   return (
     <div className="flex flex-col items-center flex-1">
       <div className="w-full max-w-sm">
-        <p className="text-small text-gray-400 mb-2">
+        <p className="text-small text-slate-400 mb-2">
           Bài tập {qIndex + 1}/{exercises.length}
         </p>
         <h3 className="text-h2 text-white mb-6">{q.question}</h3>
@@ -588,7 +588,7 @@ function GrammarLesson({
                 onClick={() => handleAnswer(i)}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="mr-2 font-semibold text-gray-500">
+                <span className="mr-2 font-semibold text-slate-500">
                   {String.fromCharCode(65 + i)}.
                 </span>
                 {opt}
@@ -669,7 +669,7 @@ function QuizLesson({
   return (
     <div className="flex flex-col items-center flex-1">
       <div className="w-full max-w-sm">
-        <p className="text-small text-gray-400 mb-2">
+        <p className="text-small text-slate-400 mb-2">
           Câu {qIndex + 1}/{questions.length}
         </p>
         <h3 className="text-h2 text-white mb-6">{q.question}</h3>
@@ -696,7 +696,7 @@ function QuizLesson({
                 onClick={() => handleAnswer(i)}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="mr-2 font-semibold text-gray-500">
+                <span className="mr-2 font-semibold text-slate-500">
                   {String.fromCharCode(65 + i)}.
                 </span>
                 {opt}
@@ -794,7 +794,7 @@ function ResultScreen({
       </motion.h2>
 
       <motion.p
-        className="text-body text-gray-400 mb-6"
+        className="text-body text-slate-400 mb-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
@@ -804,18 +804,18 @@ function ResultScreen({
 
       {/* Stats */}
       <motion.div
-        className="w-full max-w-xs rounded-xl bg-dark-card border border-gray-800/50 p-5 mb-6"
+        className="w-full max-w-xs rounded-xl bg-dark-card border border-white/[0.08] p-5 mb-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
       >
         <div className="flex items-center justify-between mb-3">
-          <span className="text-body text-gray-400">XP nhận được</span>
+          <span className="text-body text-slate-400">XP nhận được</span>
           <span className="text-h3 text-accent-xp">+{xp} XP</span>
         </div>
         {score !== null && (
           <div className="flex items-center justify-between">
-            <span className="text-body text-gray-400">Điểm số</span>
+            <span className="text-body text-slate-400">Điểm số</span>
             <span
               className={cn(
                 "text-h3",
@@ -931,20 +931,20 @@ export default function LessonPlayerPage() {
     <div className="flex min-h-screen flex-col bg-dark">
       {/* Top Bar */}
       <motion.div
-        className="sticky top-0 z-10 bg-dark/95 backdrop-blur-sm px-4 py-3 border-b border-gray-800/50"
+        className="sticky top-0 z-10 bg-dark/95 backdrop-blur-sm px-4 py-3 border-b border-white/[0.08]"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3">
           <button
-            className="shrink-0 rounded-lg p-1.5 text-gray-400 hover:text-white hover:bg-dark-elevated transition-colors"
+            className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
             onClick={() => router.push(`/learn/${courseId}`)}
           >
             <ArrowLeft size={20} />
           </button>
           <div className="flex-1 min-w-0">
             <h1 className="text-h3 text-white truncate">{lesson.title}</h1>
-            <p className="text-small text-gray-400">
+            <p className="text-small text-slate-400">
               {lessonTypeLabels[lesson.type] || lesson.type} | +{lesson.xp_reward} XP
             </p>
           </div>

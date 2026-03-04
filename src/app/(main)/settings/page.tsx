@@ -113,26 +113,26 @@ export default function SettingsPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link href="/profile">
-          <ChevronLeft size={24} className="text-gray-400" />
+          <ChevronLeft size={24} className="text-slate-400" />
         </Link>
         <h1 className="text-h2 font-bold">Cài đặt</h1>
       </div>
 
       {/* Learning Settings */}
-      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+      <h3 className="text-small text-slate-500 uppercase tracking-wider mb-2 px-1">
         Học tập
       </h3>
-      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+      <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden mb-6">
         {/* Daily Goal */}
         <button
           onClick={() => setShowGoalPicker(!showGoalPicker)}
-          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-white/[0.06]/50 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Target size={18} className="text-primary" />
             <span>Mục tiêu hàng ngày</span>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
+          <div className="flex items-center gap-1 text-slate-400">
             <span className="text-small">{dailyGoal} phút</span>
             <ChevronRight size={16} />
           </div>
@@ -142,7 +142,7 @@ export default function SettingsPage() {
           <motion.div
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
-            className="px-4 py-3 bg-dark-elevated/30"
+            className="px-4 py-3 bg-white/[0.06]/30"
           >
             <div className="grid grid-cols-3 gap-2">
               {dailyGoals.map((goal) => (
@@ -156,7 +156,7 @@ export default function SettingsPage() {
                     "py-2 rounded-md text-small font-medium transition-colors",
                     goal === dailyGoal
                       ? "bg-primary text-white"
-                      : "bg-dark-elevated text-gray-400 hover:text-white"
+                      : "bg-white/[0.06] text-slate-400 hover:text-white"
                   )}
                 >
                   {goal} phút
@@ -190,22 +190,22 @@ export default function SettingsPage() {
       </Card>
 
       {/* AI Model Settings */}
-      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+      <h3 className="text-small text-slate-500 uppercase tracking-wider mb-2 px-1">
         AI Model
       </h3>
-      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+      <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden mb-6">
         <button
           onClick={() => setShowModelPicker(!showModelPicker)}
-          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-white/[0.06]/50 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Bot size={18} className="text-primary" />
             <div>
               <span>Model AI</span>
-              <p className="text-[11px] text-gray-500">Chọn model cho chat</p>
+              <p className="text-[11px] text-slate-500">Chọn model cho chat</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
+          <div className="flex items-center gap-1 text-slate-400">
             <span className="text-small truncate max-w-[120px]">
               {FREE_MODELS.find((m) => m.id === aiModel)?.name || "Gemini 2.0 Flash"}
             </span>
@@ -217,7 +217,7 @@ export default function SettingsPage() {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            className="bg-dark-elevated/30"
+            className="bg-white/[0.06]/30"
           >
             {FREE_MODELS.map((m) => (
               <button
@@ -227,7 +227,7 @@ export default function SettingsPage() {
                   setShowModelPicker(false);
                 }}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-dark-elevated",
+                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-white/[0.06]",
                   aiModel === m.id && "bg-primary/10"
                 )}
               >
@@ -241,11 +241,11 @@ export default function SettingsPage() {
                     >
                       {m.name}
                     </p>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-dark-elevated text-gray-400">
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] text-slate-400">
                       {m.provider}
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-0.5">
+                  <p className="text-[11px] text-slate-500 mt-0.5">
                     {m.description}
                   </p>
                 </div>
@@ -259,23 +259,23 @@ export default function SettingsPage() {
       </Card>
 
       {/* Voice & TTS Settings */}
-      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+      <h3 className="text-small text-slate-500 uppercase tracking-wider mb-2 px-1">
         Giọng nói & Phát âm
       </h3>
-      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+      <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden mb-6">
         {/* Voice Selection */}
         <button
           onClick={() => setShowVoicePicker(!showVoicePicker)}
-          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-white/[0.06]/50 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Mic2 size={18} className="text-secondary" />
             <div>
               <span>Giọng AI</span>
-              <p className="text-[11px] text-gray-500">Chọn giọng phát âm</p>
+              <p className="text-[11px] text-slate-500">Chọn giọng phát âm</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
+          <div className="flex items-center gap-1 text-slate-400">
             <span className="text-small truncate max-w-[100px]">
               {selectedVoiceName}
             </span>
@@ -287,7 +287,7 @@ export default function SettingsPage() {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            className="bg-dark-elevated/30 max-h-[200px] overflow-y-auto"
+            className="bg-white/[0.06]/30 max-h-[200px] overflow-y-auto"
           >
             {/* Default option */}
             <button
@@ -296,7 +296,7 @@ export default function SettingsPage() {
                 setShowVoicePicker(false);
               }}
               className={cn(
-                "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-dark-elevated",
+                "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-white/[0.06]",
                 !selectedVoiceURI && "bg-primary/10"
               )}
             >
@@ -309,7 +309,7 @@ export default function SettingsPage() {
                 >
                   Mặc định
                 </p>
-                <p className="text-[11px] text-gray-500">Giọng hệ thống</p>
+                <p className="text-[11px] text-slate-500">Giọng hệ thống</p>
               </div>
               {!selectedVoiceURI && (
                 <span className="text-primary text-small">✓</span>
@@ -325,7 +325,7 @@ export default function SettingsPage() {
                   setShowVoicePicker(false);
                 }}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-dark-elevated",
+                  "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-white/[0.06]",
                   selectedVoiceURI === voice.voiceURI && "bg-primary/10"
                 )}
               >
@@ -340,7 +340,7 @@ export default function SettingsPage() {
                   >
                     {voice.name}
                   </p>
-                  <p className="text-[11px] text-gray-500">
+                  <p className="text-[11px] text-slate-500">
                     {voice.lang}
                     {voice.localService ? "" : " · Online"}
                   </p>
@@ -352,7 +352,7 @@ export default function SettingsPage() {
             ))}
 
             {voices.length === 0 && (
-              <p className="px-4 py-3 text-small text-gray-500 text-center">
+              <p className="px-4 py-3 text-small text-slate-500 text-center">
                 Không tìm thấy giọng nói
               </p>
             )}
@@ -362,18 +362,18 @@ export default function SettingsPage() {
         {/* Speed Control */}
         <button
           onClick={() => setShowSpeedPicker(!showSpeedPicker)}
-          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-white/[0.06]/50 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Gauge size={18} className="text-accent-streak" />
             <div>
               <span>Tốc độ phát âm</span>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-[11px] text-slate-500">
                 Chậm hơn để nghe rõ hơn
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-gray-400">
+          <div className="flex items-center gap-1 text-slate-400">
             <span className="text-small font-mono">{currentSpeedLabel}</span>
             <ChevronRight size={16} />
           </div>
@@ -383,7 +383,7 @@ export default function SettingsPage() {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            className="px-4 py-3 bg-dark-elevated/30"
+            className="px-4 py-3 bg-white/[0.06]/30"
           >
             <div className="flex items-center gap-1.5">
               {SPEED_OPTIONS.map((opt) => (
@@ -398,7 +398,7 @@ export default function SettingsPage() {
                     "flex-1 py-2 rounded-md text-small font-mono font-medium transition-colors",
                     opt.value === speechSpeed
                       ? "bg-primary text-white"
-                      : "bg-dark-elevated text-gray-400 hover:text-white"
+                      : "bg-white/[0.06] text-slate-400 hover:text-white"
                   )}
                 >
                   {opt.label}
@@ -411,34 +411,34 @@ export default function SettingsPage() {
         {/* Preview Button */}
         <button
           onClick={() => previewVoice()}
-          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-dark-elevated/50 transition-colors"
+          className="flex items-center justify-between px-4 py-3.5 w-full hover:bg-white/[0.06]/50 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Play size={18} className="text-accent-gems" />
             <span>Nghe thử giọng nói</span>
           </div>
-          <Volume2 size={16} className="text-gray-400" />
+          <Volume2 size={16} className="text-slate-400" />
         </button>
       </Card>
 
       {/* Notification Settings */}
-      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+      <h3 className="text-small text-slate-500 uppercase tracking-wider mb-2 px-1">
         Thông báo & Âm thanh
       </h3>
-      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+      <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden mb-6">
         <div className="flex items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-3">
             <Bell size={18} className="text-accent-streak" />
             <div>
               <span>Nhắc nhở học bài</span>
-              <p className="text-[11px] text-gray-500">Mỗi ngày lúc 20:00</p>
+              <p className="text-[11px] text-slate-500">Mỗi ngày lúc 20:00</p>
             </div>
           </div>
           <button
             onClick={() => setNotificationsEnabled(!notificationsEnabled)}
             className={cn(
               "w-11 h-6 rounded-full transition-colors relative",
-              notificationsEnabled ? "bg-primary" : "bg-gray-700"
+              notificationsEnabled ? "bg-primary" : "bg-slate-700"
             )}
           >
             <span
@@ -459,7 +459,7 @@ export default function SettingsPage() {
             onClick={() => setSoundEnabled(!soundEnabled)}
             className={cn(
               "w-11 h-6 rounded-full transition-colors relative",
-              soundEnabled ? "bg-primary" : "bg-gray-700"
+              soundEnabled ? "bg-primary" : "bg-slate-700"
             )}
           >
             <span
@@ -476,29 +476,29 @@ export default function SettingsPage() {
             <Moon size={18} className="text-accent-xp" />
             <span>Giao diện tối</span>
           </div>
-          <div className="text-small text-gray-500">Luôn bật</div>
+          <div className="text-small text-slate-500">Luôn bật</div>
         </div>
       </Card>
 
       {/* Other */}
-      <h3 className="text-small text-gray-500 uppercase tracking-wider mb-2 px-1">
+      <h3 className="text-small text-slate-500 uppercase tracking-wider mb-2 px-1">
         Khác
       </h3>
-      <Card className="divide-y divide-gray-800/50 p-0 overflow-hidden mb-6">
+      <Card className="divide-y divide-white/[0.06] p-0 overflow-hidden mb-6">
         <div className="flex items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-3">
-            <Shield size={18} className="text-gray-400" />
+            <Shield size={18} className="text-slate-400" />
             <span>Quyền riêng tư</span>
           </div>
-          <ChevronRight size={16} className="text-gray-500" />
+          <ChevronRight size={16} className="text-slate-500" />
         </div>
 
         <div className="flex items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-3">
-            <HelpCircle size={18} className="text-gray-400" />
+            <HelpCircle size={18} className="text-slate-400" />
             <span>Trợ giúp & Phản hồi</span>
           </div>
-          <ChevronRight size={16} className="text-gray-500" />
+          <ChevronRight size={16} className="text-slate-500" />
         </div>
       </Card>
 
@@ -511,7 +511,7 @@ export default function SettingsPage() {
         <span className="font-medium">Đăng xuất</span>
       </button>
 
-      <p className="text-center text-[11px] text-gray-600 mt-6 mb-4">
+      <p className="text-center text-[11px] text-slate-600 mt-6 mb-4">
         WeSPEAK v1.0.0
       </p>
     </motion.div>

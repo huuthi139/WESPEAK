@@ -121,7 +121,7 @@ export default function PronunciationPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link href="/">
-          <ChevronLeft size={24} className="text-gray-400" />
+          <ChevronLeft size={24} className="text-slate-400" />
         </Link>
         <h1 className="text-h2 font-bold">Luyện phát âm</h1>
       </div>
@@ -140,14 +140,14 @@ export default function PronunciationPage() {
               {current.word}
             </h2>
             <p className="text-body text-secondary mb-1">{current.phonetic}</p>
-            <p className="text-small text-gray-400">{current.meaning}</p>
+            <p className="text-small text-slate-400">{current.meaning}</p>
 
             <div className="flex justify-center gap-3 mt-6">
               {["Chậm", "Bình thường", "Nhanh"].map((speed) => (
                 <button
                   key={speed}
                   onClick={() => speak(current.word, SPEED_MAP[speed])}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-dark-elevated text-small text-gray-300 hover:text-white transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.06] text-small text-slate-300 hover:text-white transition-colors"
                 >
                   <Volume2 size={14} />
                   {speed}
@@ -171,7 +171,7 @@ export default function PronunciationPage() {
               <Mic size={32} className="text-white" />
             </motion.button>
           </div>
-          <p className="text-center text-small text-gray-500 mb-4">
+          <p className="text-center text-small text-slate-500 mb-4">
             {isRecording ? "Đang ghi âm..." : "Nhấn để ghi âm"}
           </p>
 
@@ -194,7 +194,7 @@ export default function PronunciationPage() {
                           "text-lg",
                           star <= Math.round(overallScore / 20)
                             ? "text-status-warning"
-                            : "text-gray-700"
+                            : "text-slate-700"
                         )}
                       >
                         ★
@@ -203,16 +203,16 @@ export default function PronunciationPage() {
                   </div>
                 </div>
 
-                <h4 className="text-small font-semibold text-gray-400 mb-3">
+                <h4 className="text-small font-semibold text-slate-400 mb-3">
                   📊 Phân tích chi tiết
                 </h4>
                 <div className="space-y-2">
                   {current.phonemes.map((phoneme, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <span className="text-small text-gray-300 w-10 font-mono">
+                      <span className="text-small text-slate-300 w-10 font-mono">
                         {phoneme.sound}
                       </span>
-                      <div className="flex-1 h-2 bg-dark-elevated rounded-full overflow-hidden">
+                      <div className="flex-1 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                         <motion.div
                           className={cn("h-full rounded-full", getScoreBarColor(phoneme.score))}
                           initial={{ width: 0 }}

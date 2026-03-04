@@ -208,7 +208,7 @@ function useTimer() {
 function ModelLabel() {
   const { aiModel } = useSettingsStore();
   const name = FREE_MODELS.find((m) => m.id === aiModel)?.name || "Gemini";
-  return <p className="text-[10px] text-gray-500">{name}</p>;
+  return <p className="text-[10px] text-slate-500">{name}</p>;
 }
 
 // ==================== Bouncing Dots ====================
@@ -243,7 +243,7 @@ function SpeedPill() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 rounded-full bg-dark-elevated px-2.5 py-1 text-small font-mono text-gray-400 transition-colors hover:text-white hover:bg-dark-elevated/80"
+        className="flex items-center gap-1 rounded-full bg-white/[0.06] px-2.5 py-1 text-small font-mono text-slate-400 transition-colors hover:text-white hover:bg-white/[0.06]/80"
       >
         <Gauge className="h-3 w-3" />
         {speechSpeed}x
@@ -255,7 +255,7 @@ function SpeedPill() {
             initial={{ opacity: 0, y: -4, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
-            className="absolute right-0 top-full mt-1 z-30 rounded-lg border border-gray-800/50 bg-dark-card shadow-lg shadow-black/40 overflow-hidden"
+            className="absolute right-0 top-full mt-1 z-30 rounded-lg border border-white/[0.08] bg-dark-card shadow-lg shadow-black/40 overflow-hidden"
           >
             {SPEED_OPTIONS.map((opt) => (
               <button
@@ -265,10 +265,10 @@ function SpeedPill() {
                   setOpen(false);
                 }}
                 className={cn(
-                  "block w-full px-4 py-2 text-left text-small font-mono transition-colors hover:bg-dark-elevated",
+                  "block w-full px-4 py-2 text-left text-small font-mono transition-colors hover:bg-white/[0.06]",
                   opt.value === speechSpeed
                     ? "text-primary bg-primary/10"
-                    : "text-gray-300"
+                    : "text-slate-300"
                 )}
               >
                 {opt.label}
@@ -322,7 +322,7 @@ function MessageBubble({
           "max-w-[75%] rounded-lg px-4 py-3",
           isUser
             ? "rounded-br-sm bg-primary text-white"
-            : "rounded-bl-sm bg-dark-card text-white border border-gray-800/50"
+            : "rounded-bl-sm bg-dark-card text-white border border-white/[0.08]"
         )}
       >
         {/* Message content */}
@@ -330,7 +330,7 @@ function MessageBubble({
 
         {/* Translation for AI messages */}
         {!isUser && message.translation && (
-          <p className="mt-2 text-small text-gray-400 italic">
+          <p className="mt-2 text-small text-slate-400 italic">
             ({message.translation})
           </p>
         )}
@@ -339,7 +339,7 @@ function MessageBubble({
         {!isUser && (
           <button
             onClick={() => onSpeak(message.content)}
-            className="mt-2 flex items-center gap-1 rounded-md bg-dark-elevated px-2.5 py-1 text-small text-secondary transition-colors hover:bg-dark-elevated/80"
+            className="mt-2 flex items-center gap-1 rounded-md bg-white/[0.06] px-2.5 py-1 text-small text-secondary transition-colors hover:bg-white/[0.06]/80"
           >
             <Volume2 className="h-3 w-3" />
             Nghe
@@ -357,7 +357,7 @@ function MessageBubble({
               Gợi ý sửa lỗi:
             </p>
             {message.feedback.corrections.map((correction, idx) => (
-              <p key={idx} className="mt-1 text-small text-gray-300">
+              <p key={idx} className="mt-1 text-small text-slate-300">
                 {correction}
               </p>
             ))}
@@ -368,7 +368,7 @@ function MessageBubble({
         <p
           className={cn(
             "mt-1 text-[10px]",
-            isUser ? "text-white/50 text-right" : "text-gray-500"
+            isUser ? "text-white/50 text-right" : "text-slate-500"
           )}
         >
           {new Date(message.timestamp).toLocaleTimeString("vi-VN", {
@@ -557,11 +557,11 @@ export default function ChatPage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="relative z-20 flex items-center justify-between border-b border-gray-800/50 bg-dark px-4 py-3"
+        className="relative z-20 flex items-center justify-between border-b border-white/[0.08] bg-dark-surface px-4 py-3"
       >
         <button
           onClick={() => router.back()}
-          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-dark-elevated"
+          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
         >
           <ArrowLeft className="h-5 w-5 text-white" />
         </button>
@@ -572,9 +572,9 @@ export default function ChatPage() {
             <h1 className="text-h3 text-white">AI Tutor</h1>
             <ModelLabel />
           </div>
-          <div className="flex items-center gap-1 rounded-md bg-dark-elevated px-2 py-0.5">
-            <Clock className="h-3 w-3 text-gray-400" />
-            <span className="text-small font-mono text-gray-400">
+          <div className="flex items-center gap-1 rounded-md bg-white/[0.06] px-2 py-0.5">
+            <Clock className="h-3 w-3 text-slate-400" />
+            <span className="text-small font-mono text-slate-400">
               {timer.formatted}
             </span>
           </div>
@@ -582,18 +582,18 @@ export default function ChatPage() {
 
         <button
           onClick={handleClose}
-          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-dark-elevated"
+          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
         >
-          <X className="h-5 w-5 text-gray-400" />
+          <X className="h-5 w-5 text-slate-400" />
         </button>
       </motion.header>
 
       {/* ==================== Scenario + Speed Bar ==================== */}
-      <div className="relative z-10 border-b border-gray-800/50 bg-dark px-4 py-2">
+      <div className="relative z-10 border-b border-white/[0.08] bg-dark-surface px-4 py-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowScenarioDropdown(!showScenarioDropdown)}
-            className="flex flex-1 items-center justify-between rounded-lg bg-dark-card px-3 py-2 transition-colors hover:bg-dark-elevated"
+            className="flex flex-1 items-center justify-between rounded-lg bg-dark-card px-3 py-2 transition-colors hover:bg-white/[0.06]"
           >
             <div className="flex items-center gap-2">
               <span className="text-body">{currentScenario.icon}</span>
@@ -605,7 +605,7 @@ export default function ChatPage() {
               animate={{ rotate: showScenarioDropdown ? 180 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown className="h-4 w-4 text-gray-400" />
+              <ChevronDown className="h-4 w-4 text-slate-400" />
             </motion.div>
           </button>
 
@@ -621,14 +621,14 @@ export default function ChatPage() {
               animate={{ opacity: 1, y: 0, scaleY: 1 }}
               exit={{ opacity: 0, y: -8, scaleY: 0.9 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-4 right-4 top-full mt-1 overflow-hidden rounded-lg border border-gray-800/50 bg-dark-card shadow-lg shadow-black/40"
+              className="absolute left-4 right-4 top-full mt-1 overflow-hidden rounded-lg border border-white/[0.08] bg-dark-card shadow-lg shadow-black/40"
             >
               {SCENARIOS.map((s) => (
                 <button
                   key={s.key}
                   onClick={() => handleScenarioChange(s.key)}
                   className={cn(
-                    "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-dark-elevated",
+                    "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-white/[0.06]",
                     scenario === s.key && "bg-primary/10"
                   )}
                 >
@@ -642,7 +642,7 @@ export default function ChatPage() {
                     >
                       {s.label}
                     </p>
-                    <p className="text-small text-gray-500">{s.description}</p>
+                    <p className="text-small text-slate-500">{s.description}</p>
                   </div>
                 </button>
               ))}
@@ -677,7 +677,7 @@ export default function ChatPage() {
               className="flex items-center gap-2 justify-start"
             >
               <MascotAvatar size="sm" mood="thinking" animate={false} />
-              <div className="rounded-lg rounded-bl-sm border border-gray-800/50 bg-dark-card">
+              <div className="rounded-lg rounded-bl-sm border border-white/[0.08] bg-dark-card">
                 <BouncingDots />
               </div>
             </motion.div>
@@ -694,14 +694,14 @@ export default function ChatPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="flex items-center justify-center gap-2 border-t border-gray-800/50 bg-dark-card px-4 py-2"
+            className="flex items-center justify-center gap-2 border-t border-white/[0.08] bg-dark-card px-4 py-2"
           >
             <motion.div
               className="h-2 w-2 rounded-full bg-status-error"
               animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             />
-            <span className="text-small text-gray-400">
+            <span className="text-small text-slate-400">
               Đang nghe... Hãy nói gì đó
             </span>
             {transcript && (
@@ -718,7 +718,7 @@ export default function ChatPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="border-t border-gray-800/50 bg-dark px-4 py-3"
+        className="border-t border-white/[0.08] bg-dark-surface px-4 py-3"
       >
         <div className="flex items-center gap-2">
           {/* Microphone button */}
@@ -728,7 +728,7 @@ export default function ChatPage() {
               "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors",
               isListening
                 ? "bg-status-error text-white"
-                : "bg-dark-elevated text-gray-400 hover:text-white"
+                : "bg-white/[0.06] text-slate-400 hover:text-white"
             )}
           >
             {/* Pulsing ring when recording */}
@@ -752,7 +752,7 @@ export default function ChatPage() {
               onKeyDown={handleKeyDown}
               placeholder="Nhập tin nhắn..."
               disabled={isListening}
-              className="w-full rounded-lg border border-gray-800/50 bg-dark-card px-4 py-2.5 text-body text-white placeholder-gray-500 outline-none transition-colors focus:border-primary/50"
+              className="w-full rounded-lg border border-white/[0.08] bg-dark-card px-4 py-2.5 text-body text-white placeholder-gray-500 outline-none transition-colors focus:border-primary/50"
             />
           </div>
 

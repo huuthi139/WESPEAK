@@ -86,7 +86,7 @@ function LoginForm() {
             <Languages className="h-8 w-8 text-primary" />
           </motion.div>
           <h1 className="text-h1 text-white">WeSPEAK</h1>
-          <p className="mt-1 text-body text-gray-400">
+          <p className="mt-1 text-body text-slate-400">
             Speak Like a Native with AI
           </p>
         </div>
@@ -180,7 +180,7 @@ function LoginForm() {
         {/* Divider */}
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-700" />
-          <span className="text-small text-gray-500">hoặc</span>
+          <span className="text-small text-slate-500">hoặc</span>
           <div className="h-px flex-1 bg-gray-700" />
         </div>
 
@@ -217,7 +217,7 @@ function LoginForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 text-center text-body text-gray-400"
+          className="mt-8 text-center text-body text-slate-400"
         >
           Chưa có tài khoản?{" "}
           <Link
